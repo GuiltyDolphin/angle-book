@@ -32,14 +32,24 @@ development of code.
 Angle is intended to be a weak and dynamically typed, functional,
 general-purpose scripting language.
 
+\subparagraph{Dynamic}
+\label{par:dynamic}
+
 Being dynamically typed means that type-checking in Angle is
 performed at run-time,\footnote{http://c2.com/cgi/wiki?DynamicTyping}
 thus programs are not guaranteed to be type-correct
 (unlike in Haskell, where the compiler ensures that programs do not
 compile if any inconsistencies in types are noticed).
 
-The weak typeing
+\subparagraph{Weak}
+\label{par:weak}
 
+Angle has weak typing as types are not guaranteed to remain constant
+during run-time.\footnote{http://c2.com/cgi/wiki?WeaklyTyped}
+One example of this would be Angle's type casting capabilities
+through one of the builtin functions. Using this function allows the
+programmer to (for instance) convert an integer to a string or vice
+versa.
 
 
 \part{Grammar}
