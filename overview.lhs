@@ -10,8 +10,10 @@
 
 \title{An implementation of a basic general-purpose scripting language}
 \author{Ben Moon}
-\maketitle
 \date{}
+\maketitle
+
+\tableofcontents
 
 \paragraph{How to read this document}
 \label{par:how_to_read_this_document}
@@ -169,9 +171,9 @@ and the digits used in the denary system ([`0'..`9']) respectively.
 \subsection{Statements}
 \label{sub:statements}
 
-A single source file will comprise many statements;
-statements themselves being made of assignments, exressions
-and language constructs.
+The building blocks of Angle programs are statements; statements
+themselves being made of assignments, expressions and language
+constructs.
 
 \begin{spec}
 stmt        = single_stmt  | multi_stmt ;
@@ -196,7 +198,7 @@ stmt_assign = simple_ident `=' expr ;
 \subsubsection{Looping structures}
 \label{ssub:looping_structures}
 
-These structures allow looping over certain values or until a
+Looping structures allow iterating over certain values or until a
 condition is satisfied.
 
 \begin{spec}
@@ -210,8 +212,8 @@ loop_while = `while'            expr `do' stmt ;
 \subsubsection{Conditional constructs}
 \label{ssub:conditional_constructs}
 
-These allow the programmer to control which parts of code get executed
-based on the boolean result of expressions.
+Conditionals allow the programmer to control which parts of code get
+executed based on the boolean result of expressions.
 
 \begin{spec}
 stmt_condition = cond_if | cond_unless ;
@@ -224,7 +226,7 @@ cond_unless = `unless' expr        stmt                 ;
 \subsubsection{Control statements}
 \label{ssub:control_statements}
 
-These statements are used to control the flow of the program via
+Control statements are used to control the flow of the program via
 returning early from functions and loops.
 
 \begin{spec}
@@ -233,6 +235,19 @@ stmt_control     = control_return | control_break | control_continue ;
 control_return   = `return'   [ expr ] ;
 control_break    = `break'    [ expr ] ;
 control_continue = `continue'          ;
+\end{spec}
+
+
+\subsubsection{Function definitions}
+\label{ssub:function_definitions}
+
+Function definitions allow the programmer to assign a lambda to an
+identifier in a semantically clear manner.
+
+\begin{spec}
+function_def = simple_ident `(' { parameter } `)' stmt ;
+
+parameter = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
 \end{spec}
 
 \subsection{Expressions}
@@ -272,7 +287,7 @@ binOp     = `+' | `-'  | `/' | `*'
 \label{ssub:literals}
 
 Literals allow the programmer to specify exact values in Angle that
-will remain constant through multiple runs of the program, provided
+will remain constant through separate runs of the program, provided
 the source code is not modified.\footnote{https://www.cs.cf.ac.uk/Dave/Multimedia/node71.html}
 
 The following are referenced below but not defined:
@@ -307,11 +322,11 @@ range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
 \subsubsection{Function calls}
 \label{ssub:function_calls}
 
-Function calls are just expressions where the result is that
-produced by running the function with the provided arguments.
+All functions in Angle produce values when executed. This may be the
+`null' value, or a well-defined value.
 
 \begin{spec}
-funcall = ident, `(' {, expr }, `)' ;
+function_call = simple_ident `(' { expr } `)' ;
 \end{spec}
 
 \subsubsection{Identifiers}
@@ -321,11 +336,11 @@ Identifiers represent names given to functions and values so that
 they may be referred to elsewhere within the program.
 
 \begin{spec}
-ident = identSimple | identFunction ;
+identifier = simple_ident | function_ident ;
 
-identSimple = alpha, { alpha | digit } ;
+simple_ident = alpha, { alpha | digit } ;
 
-identFunction = `dollar', identSimple ;
+function_ident = `\$', simple_ident ;
 \end{spec}
 
 \part{Scanner}
