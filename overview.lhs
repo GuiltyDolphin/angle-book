@@ -51,7 +51,6 @@ a notation that can be used to express the grammar of formal languages.\footnote
 
 \subsection{Describing Macro in EBNF}
 \label{sub:describing_macro_in_ebnf}
-% This is not how to use footnotes!
 BNF can be used to decribe context-free grammars\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/},
 which are grammars that consist of names and expansions (the components).
 \\
@@ -61,32 +60,62 @@ and the digits used in the denary system ([`0'..`9']) respectively.
 
 % TODO: Check spaces - that could mess things up
 
-\paragraph{Statements}
-\label{par:statements}
-
+\subsection{Statements}
+\label{sub:statements}
 
 A single source file will comprise many statements;
 statements themselves being made of assignments, exressions
 and language constructs.
 
 \begin{spec}
-statement  = singleStmt | multiStmt ;
+statement  = single_stmt  | multi_stmt ;
 
-singleStmt = functionDef | stmtExpr | stmtControl | stmtLoop | stmtCondition ;
+singleStmt = function_def | stmt_expr      | stmt_control
+           | stmt_loop    | stmt_condition | stmt_assign ;
 
-multiStmt  = `{', statement, { statement }, `}';
+multi_stmt = `{', statement, { statement }, `}';
 \end{spec}
+
+\subsubsection{Assignment}
+\label{ssub:assignment}
 
 Assignment is just giving the result of some expression to an
 identifier.
 \begin{spec}
 
-assign = simple_ident `=' expr ;
+stmt_assign = simple_ident `=' expr ;
 
 \end{spec}
 
-\paragraph{Expressions}
-\label{par:expressions}
+\subsubsection{Structures}
+\label{ssub:structures}
+
+Structures are the basic language features that allow for things such
+as iteration and selection.
+
+\begin{spec}
+struct = stmt_if | loop_for ;
+
+ifStmt  = `if' expr `then' stmt [ `else' stmt] ;
+\end{spec}
+
+\subsubsection{Looping structures}
+\label{ssub:looping_structures}
+
+These structures allow looping over certain values or until a
+condition is satisfied.
+
+\begin{spec}
+
+stmt_loop  = loop_for | loop_while ;
+
+loop_for   = `for'   ident `in' expr `do' stmt ;
+loop_while = `while'            expr `do' stmt ;
+\end{spec}
+
+
+\subsection{Expressions}
+\label{sub:expressions}
 
 Expressions are blocks of code that can be evaluated\footnote{https://msdn.microsoft.com/en-us/library/ms173144.aspx}
 to produce some value.
@@ -95,8 +124,8 @@ to produce some value.
 expr = operation | literal | functionCall | identifier ;
 \end{spec}
 
-\subparagraph{Operations}
-\label{par:operations}
+\subsubsection{Operations}
+\label{ssub:operations}
 
 Operations consist of operators and operands.
 The operator determine the type of operation to perform
@@ -117,8 +146,8 @@ binOp     = `+' | `-'  | `/' | `*'
 \end{spec}
 
 
-\subparagraph{Literals}
-\label{par:literals}
+\subsubsection{Literals}
+\label{ssub:literals}
 
 By the language specification, the basic types should include:
 numbers, lists, strings and booleans.
@@ -126,29 +155,26 @@ numbers, lists, strings and booleans.
 % TODO: Literals causing some compile issues.
 
 \begin{spec}
+
 literal = number | list | string | boolean | `none' ;
 
 number  = integer | float ;
 
+integer = [`-'], digit, { digit } ;
+float   = [`-'], digit, { digit }, `.', digit, { digit } ;
+
+(* As lists hold values of varying types, they shall be
+allowed to hold expressions *)
+
+(* Ranges are groups of elements in sequence *)
+list    = `[' {, (expr | range), `,' }, `]' ;
+range   = expr, `..', expr [, `..', integer ] ;
+string  = `"', { all characters - `"' }, `"' ;
+boolean = `true' | `false' ;
 \end{spec}
-% \begin{spec}
-%
-%
-% integer = [`-'], digit, { digit } ;
-% float   = [`-'], digit, { digit }, `.', digit, { digit } ;
 
-% (* As lists hold values of varying types, they shall be
-% allowed to hold expressions *)
-%
-% (* Ranges are groups of elements in sequence *)
-% list    = `[' {, (expr | range), `,' }, `]' ;
-% range   = expr, `..', expr [, `..', integer ] ;
-% string  = `"', { all characters - `"' }, `"' ;
-% boolean = `true' | `false' ;
-% \end{spec}
-
-\subparagraph{Function calls}
-\label{par:function_calls}
+\subsubsection{Function calls}
+\label{ssub:function_calls}
 
 Function calls are just expressions where the result is that
 produced by running the function with the provided arguments.
@@ -157,8 +183,8 @@ produced by running the function with the provided arguments.
 funcall = ident, `(' {, expr }, `)' ;
 \end{spec}
 
-\subparagraph{Identifiers}
-\label{par:identifiers}
+\subsubsection{Identifiers}
+\label{ssub:identifiers}
 
 Identifiers represent names given to functions and values so that
 they may be referred to elsewhere within the program.
@@ -170,22 +196,6 @@ identSimple = alpha, { alpha | digit } ;
 
 identFunction = `dollar', identSimple ;
 \end{spec}
-
-% TODO: Might want to change the name `constructs'
-\paragraph{Constructs}
-\label{par:constructs}
-
-Constructs are the basic language features that allow for things such
-as iteration and selection.
-
-\begin{spec}
-construct = ifStmt | loopFor ;
-
-ifStmt  = `if' expr `then' stmt [ `else' stmt] ;
-loopFor = `for' ident `in' expr `do' stmt ;
-loopWhile = `while' expr `do' stmt ;
-\end{spec}
-
 
 \part{Scanner}
 \label{sec:scanner}
