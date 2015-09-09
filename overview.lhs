@@ -26,6 +26,9 @@ development of code.
 \part{Introduction}
 \label{prt:introduction}
 
+\section{The Language}
+\label{sec:the_language}
+
 \paragraph{What is Angle?}
 \label{par:what_is_angle_}
 
@@ -87,6 +90,43 @@ distributed as source without the need for any additional files.
 
 As Angle does not have its own compiler and is interpreted, it
 classifies as a scripting language.
+
+\section{Project Overview}
+\label{sec:project_overview}
+
+\subsection{Components}
+\label{sub:components}
+
+Angle is defined by two components: the package and the executable.
+
+The package contains the source files, and everything required to
+configure, test and install the executable.
+
+The executable is a program that can be used to run scripts written
+using Angle's syntax.
+
+
+\subsection{Using Angle}
+\label{sub:using_angle}
+
+The `angle' program supports two main modes of execution: interactive
+and non-interactive.
+
+\paragraph{Interactive Angle}
+\label{par:interactive_angle}
+
+When Angle runs in interactive mode, the user is presented with a
+prompt at which they may enter code line-by-line and have it execute
+immediately. This mode allows a programmer to debug code, test short
+snippets and ensure that a line consists of the correct syntax before
+using it in a program.
+
+\paragraph{Non-Interactive}
+\label{par:non_interactive}
+
+When Angle runs in non-interactive mode, achieved by passing a file
+to be executed, a source file is read and run by the Angle
+interpreter. This mode is how programs should usually be run.
 
 
 \part{Grammar}
