@@ -4,6 +4,8 @@
 %include lhs2TeX.sty
 %include polycode.fmt
 
+% \usepackage[nounderscore]{syntax}
+% \usepackage{underscore}
 \begin{document}
 
 \title{An implementation of a basic general-purpose programming language}
@@ -21,7 +23,161 @@ reflect the final source, and should be assumed to be non-functional.
 Relevant modules will be stated before any sections describing the
 development of code.
 
+\part{Grammar}
+\label{prt:grammar}
 
+\paragraph{Relevant modules}
+\label{par:relevant_modules}
+
+`Angle.Types.Lang' and `Angle.Lex.Lexer.Internal' implement the
+language grammar in terms of Haskell types and functions.
+
+\paragraph{Overview}
+\label{par:overview}
+
+The following provides a brief outline of a simple language grammar
+intended to represent some of the features of Angle. The grammar is
+not complete and is only intended to give an overview of Angle's
+syntax.
+
+\section{Defining the Language Grammar}
+\label{sec:language_grammar}
+
+\paragraph{Extended Bakus Noire Form (EBNF)}
+\label{par:extended_bakus_noire_form_ebnf_}
+
+Extended Bakus Noire Form is an extended version of Bakus Noire Form,
+a notation that can be used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
+
+\subsection{Describing Macro in EBNF}
+\label{sub:describing_macro_in_ebnf}
+% This is not how to use footnotes!
+BNF can be used to decribe context-free grammars\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/},
+which are grammars that consist of names and expansions (the components).
+\\
+I refer to `alpha' and `digit' without formally defining them,
+they refer to the characters of the roman alphabet (upper and lower; [`a'..`z'], [`A'..`Z'])
+and the digits used in the denary system ([`0'..`9']) respectively.
+
+% TODO: Check spaces - that could mess things up
+
+\paragraph{Statements}
+\label{par:statements}
+
+
+A single source file will comprise many statements;
+statements themselves being made of assignments, exressions
+and language constructs.
+
+\begin{spec}
+statement = singleStmt | multiStmt ;
+
+singleStmt = functionDef | stmtExpr | stmtControl | stmtLoop | stmtCondition ;
+
+multiStmt = `{', statement, { statement }, `}';
+\end{spec}
+
+Assignment is just giving the result of some expression to an
+identifier.
+% \begin{spec}
+%
+% assign = simple_ident `=' expr ;
+%
+% \end{spec}
+
+\paragraph{Expressions}
+\label{par:expressions}
+
+Expressions are blocks of code that can be evaluated\footnote{https://msdn.microsoft.com/en-us/library/ms173144.aspx}
+to produce some value.
+
+\begin{spec}
+expr = operation | literal | functionCall | identifier ;
+\end{spec}
+% TODO: remove these parens - they are just here to stop me getting
+% annoyed!
+\subparagraph{Operations}
+\label{par:operations}
+
+Operations consist of operators and operands.
+The operator determine the type of operation to perform
+and the operands are the values to perform the operation on.
+\\
+Operators will be split into two types: binary and unary.
+Binary operators take two operands whilst unary operators
+only take one.
+% TODO: Operators causing some compile issues.
+% \begin{spec}
+% operation = (expr binOp expr) | (unOp expr) ;
+%
+% unOp      = `\^' ;
+% binOp     = `+' | `-'  | `/' | `*'
+%                 | `|'  | `\&' | `>='
+%                 | `<=' | `>' | `<' | `==' ;
+% \end{spec}
+
+
+\subparagraph{Literals}
+\label{par:literals}
+
+By the language specification, the basic types should include:
+numbers, lists, strings and booleans.
+% TODO: Check the 'none', may be unwise
+% TODO: Literals causing some compile issues.
+% \begin{spec}
+% literal = number | list | string | boolean | `none' ;
+%
+% number  = integer | float ;
+% integer = [`-'], digit, { digit } ;
+% float   = [`-'], digit, { digit }, `.', digit, { digit } ;
+%
+% (* As lists hold values of varying types, they shall be
+% allowed to hold expressions *)
+% list    = `[' {, (expr | range), `,' }, `]' ;
+% (* Ranges are groups of elements in sequence *)
+% range   = expr, `..', expr [, `..', integer ] ;
+% string  = `"', { all characters - `"' }, `"' ;
+% boolean = `true' | `false' ;
+% \end{spec}
+
+\subparagraph{Function calls}
+\label{par:function_calls}
+
+Function calls are just expressions where the result is that
+produced by running the function with the provided arguments.
+
+\begin{spec}
+funcall = ident, `(' {, expr }, `)' ;
+\end{spec}
+
+\subparagraph{Identifiers}
+\label{par:identifiers}
+
+Identifiers represent names given to functions and values so that
+they may be referred to elsewhere within the program.
+
+\begin{spec}
+ident = identSimple | identFunction ;
+
+identSimple = alpha, { alpha | digit } ;
+
+identFunction = `dollar', identSimple ;
+\end{spec}
+
+% TODO: Might want to change the name `constructs'
+\paragraph{Constructs}
+\label{par:constructs}
+
+Constructs are the basic language features that allow for things such
+as iteration and selection.
+
+\begin{spec}
+construct = ifStmt | loopFor ;
+
+ifStmt  = `if' expr `then' stmt [ `else' stmt] ;
+loopFor = `for' ident `in' expr `do' stmt ;
+loopWhile = `while' expr `do' stmt ;
+\end{spec}
 
 
 \part{Scanner}
@@ -30,7 +186,7 @@ development of code.
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
 
-`Angle.Scanner`
+`Angle.Scanner'
 
 \section{Creating the Scanner}
 \label{prt:creating_the_scanner}
@@ -99,7 +255,7 @@ existing State monad.\footnote{https://hackage.haskell.org/package/mtl-1.1.0.2/d
 The State monad has a type signature\footnote{This is actually
 incorrect - the State Monad is infact a StateT using Identity as the
 base monad (but for the purpose of this document it is safe to treat
-State as a newtype wrapper) https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Lazy.html#t:State} of:
+State as a newtype wrapper) https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Lazy.html\#t:State} of:
 \begin{spec}
 newtype State s a = State { runState :: s -> (a, s) }
 \end{spec}
@@ -181,7 +337,7 @@ data ScanEnv = ScanEnv
 \end{spec}
 One last thing to add is error handling, via the ExceptT monad
 transformer.\footnote{Initially `ErrorT' was used, but due to
-depreciation `ExceptT` was used instead - https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html#t:ExceptT}
+depreciation `ExceptT' was used instead - https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
 
 Thus the final type is:
 \begin{spec}
@@ -220,7 +376,7 @@ scanChar = do
   if indx >= genericLength sourceString
   then unexpectedErr "end of stream"
   else do
-    let chr = sourceString `genericIndex` indx
+    let chr = sourceString `genericIndex' indx
     put st{sourcePos=if chr == '\n'
                      then incNL pos  -- Error messages more useful
                                      -- if tracking the line number
