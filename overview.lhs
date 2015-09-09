@@ -68,35 +68,23 @@ statements themselves being made of assignments, exressions
 and language constructs.
 
 \begin{spec}
-statement  = single_stmt  | multi_stmt ;
+stmt        = single_stmt  | multi_stmt ;
 
-singleStmt = function_def | stmt_expr      | stmt_control
-           | stmt_loop    | stmt_condition | stmt_assign ;
+single_stmt = function_def | stmt_expr      | stmt_control
+            | stmt_loop    | stmt_condition | stmt_assign ;
 
-multi_stmt = `{', statement, { statement }, `}';
+multi_stmt  = `{' { stmt } `}' ;
 \end{spec}
 
 \subsubsection{Assignment}
 \label{ssub:assignment}
 
-Assignment is just giving the result of some expression to an
-identifier.
+Assignment binds the result of an expression to a name
+(the identifier).
 \begin{spec}
 
 stmt_assign = simple_ident `=' expr ;
 
-\end{spec}
-
-\subsubsection{Structures}
-\label{ssub:structures}
-
-Structures are the basic language features that allow for things such
-as iteration and selection.
-
-\begin{spec}
-struct = stmt_if | loop_for ;
-
-ifStmt  = `if' expr `then' stmt [ `else' stmt] ;
 \end{spec}
 
 \subsubsection{Looping structures}
@@ -113,15 +101,42 @@ loop_for   = `for'   ident `in' expr `do' stmt ;
 loop_while = `while'            expr `do' stmt ;
 \end{spec}
 
+\subsubsection{Conditional constructs}
+\label{ssub:conditional_constructs}
+
+These allow the programmer to control which parts of code get executed
+based on the boolean result of expressions.
+
+\begin{spec}
+stmt_condition = cond_if | cond_unless ;
+
+cond_if     = `if'     expr `then' stmt [ `else' stmt ] ;
+cond_unless = `unless' expr        stmt                 ;
+\end{spec}
+
+
+\subsubsection{Control statements}
+\label{ssub:control_statements}
+
+These statements are used to control the flow of the program via
+returning early from functions and loops.
+
+\begin{spec}
+stmt_control     = control_return | control_break | control_continue ;
+
+control_return   = `return'   [ expr ] ;
+control_break    = `break'    [ expr ] ;
+control_continue = `continue'          ;
+\end{spec}
 
 \subsection{Expressions}
 \label{sub:expressions}
 
-Expressions are blocks of code that can be evaluated\footnote{https://msdn.microsoft.com/en-us/library/ms173144.aspx}
-to produce some value.
+Expressions are blocks of code that can be evaluated
+to produce some value.\footnote{https://msdn.microsoft.com/en-us/library/ms173144.aspx}
 
 \begin{spec}
-expr = operation | literal | functionCall | identifier ;
+expr = operation | literal | function_call | identifier ;
 \end{spec}
 
 \subsubsection{Operations}
@@ -131,17 +146,18 @@ Operations consist of operators and operands.
 The operator determine the type of operation to perform
 and the operands are the values to perform the operation on.
 \\
-Operators will be split into two types: binary and unary.
-Binary operators take two operands whilst unary operators
-only take one.
+Operators in Angle are split into two types: unary and variadic.
+The unary operators are prefix and take a single argument, whereas
+the variadic operators are prefix within parentheses and can take
+a variable number of arguments.
 \begin{spec}
 
-operation = (expr binOp expr) | (unOp expr) ;
+operation = unop expr | `(' varop { expr } `)' ;
 
-unOp      = `^' ;
+unop      = `^' | `-' ;
 
 binOp     = `+' | `-'  | `/' | `*'
-                | `|'  | `\&' | `>='
+                | `|'  | `&' | `>='
                 | `<=' | `>' | `<' | `==' ;
 \end{spec}
 
@@ -149,28 +165,30 @@ binOp     = `+' | `-'  | `/' | `*'
 \subsubsection{Literals}
 \label{ssub:literals}
 
-By the language specification, the basic types should include:
-numbers, lists, strings and booleans.
+Literals allow the programmer to specify exact values in Angle that
+will remain constant through multiple runs of the program, provided
+the source code is not modified.\footnote{https://www.cs.cf.ac.uk/Dave/Multimedia/node71.html}
+
+
 % TODO: Check the 'none', may be unwise
 % TODO: Literals causing some compile issues.
 
 \begin{spec}
 
-literal = number | list | string | boolean | `none' ;
+literal = number | list | string | boolean | range     ;
 
-number  = integer | float ;
+number  = integer | float                              ;
 
-integer = [`-'], digit, { digit } ;
-float   = [`-'], digit, { digit }, `.', digit, { digit } ;
+integer = [ `-' ] digit { digit }                      ;
+float   = [ `-' ] digit { digit } `.' digit { digit }  ;
 
-(* As lists hold values of varying types, they shall be
-allowed to hold expressions *)
+boolean = `true' | `false'                             ;
 
-(* Ranges are groups of elements in sequence *)
-list    = `[' {, (expr | range), `,' }, `]' ;
-range   = expr, `..', expr [, `..', integer ] ;
-string  = `"', { all characters - `"' }, `"' ;
-boolean = `true' | `false' ;
+char    =         `''   char_char     `'' ;
+string  = [ `e' ] `"' { string_char } `"' ;
+
+list    = `[' { literal `,' }                                 `]' ;
+range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
 \end{spec}
 
 \subsubsection{Function calls}
