@@ -30,7 +30,7 @@ development of code.
 \label{par:what_is_angle_}
 
 Angle is intended to be a weak and dynamically typed, functional,
-general-purpose scripting language.
+interpreted, general-purpose scripting language.
 
 \subparagraph{Dynamic}
 \label{par:dynamic}
@@ -61,6 +61,32 @@ can accept other functions as arguments and call these functions
 with another set of arguments. Due to these capabilities, Angle is
 a functional language, albeit an impure one.\footnote{https://wiki.haskell.org/Functional\_programming}
 
+\subparagraph{General-purpose}
+\label{par:general_purpose}
+
+Angle is intended to be able to cope with the implementation of an
+array of different types of programs; there is no specific use case
+in mind that dictated the implementation.
+
+\subparagraph{Interpreted}
+\label{par:interpreted}
+
+Interpreted languages differ from compiled languages in that instead
+of programs first being translated to machine code before being
+executed, instructions are translated to machine code and executed
+at run-time, thus possibly incurring a speed decrease when compared
+to a similar compiled language.\footnote{http://www.vanguardsw.com/dphelp4/dph00296.htm}
+
+Choosing to make Angle an interpreted language rather than compiled
+means that a compiler need not be written. It also means that
+programs do not need to be compiled before they are run and can be
+distributed as source without the need for any additional files.
+
+\subparagraph{Scripting language}
+\label{par:scripting_language}
+
+As Angle does not have its own compiler and is interpreted, it
+classifies as a scripting language.
 
 
 \part{Grammar}
