@@ -6,14 +6,17 @@
 
 % \usepackage[nounderscore]{syntax}
 % \usepackage{underscore}
-\begin{document}
 
 \title{An implementation of a basic general-purpose scripting language}
 \author{Ben Moon}
 \date{}
+
+\begin{document}
+
 \maketitle
 
 \tableofcontents
+
 
 \paragraph{How to read this document}
 \label{par:how_to_read_this_document}
@@ -105,7 +108,8 @@ The package contains the source files, and everything required to
 configure, test and install the executable.
 
 The executable is a program that can be used to run scripts written
-using Angle's syntax.
+using Angle's syntax. See section \ref{sub:using_angle} `Using Angle'
+for information on how this is used.
 
 
 \subsection{Using Angle}
