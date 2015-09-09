@@ -8,7 +8,7 @@
 % \usepackage{underscore}
 \begin{document}
 
-\title{An implementation of a basic general-purpose programming language}
+\title{An implementation of a basic general-purpose scripting language}
 \author{Ben Moon}
 \maketitle
 \date{}
@@ -22,6 +22,25 @@ reflect the final source, and should be assumed to be non-functional.
 \\
 Relevant modules will be stated before any sections describing the
 development of code.
+
+\part{Introduction}
+\label{prt:introduction}
+
+\paragraph{What is Angle?}
+\label{par:what_is_angle_}
+
+Angle is intended to be a weak and dynamically typed, functional,
+general-purpose scripting language.
+
+Being dynamically typed means that type-checking in Angle is
+performed at run-time,\footnote{http://c2.com/cgi/wiki?DynamicTyping}
+thus programs are not guaranteed to be type-correct
+(unlike in Haskell, where the compiler ensures that programs do not
+compile if any inconsistencies in types are noticed).
+
+The weak typeing
+
+
 
 \part{Grammar}
 \label{prt:grammar}
@@ -169,13 +188,20 @@ Literals allow the programmer to specify exact values in Angle that
 will remain constant through multiple runs of the program, provided
 the source code is not modified.\footnote{https://www.cs.cf.ac.uk/Dave/Multimedia/node71.html}
 
+The following are referenced below but not defined:
+
+% TODO: Add information about special cases for char_char,
+% string_char
+% \begin{itemize}
+%   \item char_char -
+% \end{itemize}
 
 % TODO: Check the 'none', may be unwise
 % TODO: Literals causing some compile issues.
 
 \begin{spec}
 
-literal = number | list | string | boolean | range     ;
+literal = number | list | string | char | boolean | range     ;
 
 number  = integer | float                              ;
 
