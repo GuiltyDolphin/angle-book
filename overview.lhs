@@ -51,6 +51,17 @@ through one of the builtin functions. Using this function allows the
 programmer to (for instance) convert an integer to a string or vice
 versa.
 
+\subparagraph{Functional}
+\label{par:functional}
+
+Functions in Angle are treated as first-class citizens; they can be
+passed as values (via lambdas) just like any other data (integers,
+strings etc.). Functions can also be higher-order, meaning that they
+can accept other functions as arguments and call these functions
+with another set of arguments. Due to these capabilities, Angle is
+a functional language, albeit an impure one.\footnote{https://wiki.haskell.org/Functional\_programming}
+
+
 
 \part{Grammar}
 \label{prt:grammar}
