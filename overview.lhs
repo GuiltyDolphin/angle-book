@@ -70,20 +70,20 @@ statements themselves being made of assignments, exressions
 and language constructs.
 
 \begin{spec}
-statement = singleStmt | multiStmt ;
+statement  = singleStmt | multiStmt ;
 
 singleStmt = functionDef | stmtExpr | stmtControl | stmtLoop | stmtCondition ;
 
-multiStmt = `{', statement, { statement }, `}';
+multiStmt  = `{', statement, { statement }, `}';
 \end{spec}
 
 Assignment is just giving the result of some expression to an
 identifier.
-% \begin{spec}
-%
-% assign = simple_ident `=' expr ;
-%
-% \end{spec}
+\begin{spec}
+
+assign = simple_ident `=' expr ;
+
+\end{spec}
 
 \paragraph{Expressions}
 \label{par:expressions}
@@ -94,8 +94,7 @@ to produce some value.
 \begin{spec}
 expr = operation | literal | functionCall | identifier ;
 \end{spec}
-% TODO: remove these parens - they are just here to stop me getting
-% annoyed!
+
 \subparagraph{Operations}
 \label{par:operations}
 
@@ -106,15 +105,16 @@ and the operands are the values to perform the operation on.
 Operators will be split into two types: binary and unary.
 Binary operators take two operands whilst unary operators
 only take one.
-% TODO: Operators causing some compile issues.
-% \begin{spec}
-% operation = (expr binOp expr) | (unOp expr) ;
-%
-% unOp      = `\^' ;
-% binOp     = `+' | `-'  | `/' | `*'
-%                 | `|'  | `\&' | `>='
-%                 | `<=' | `>' | `<' | `==' ;
-% \end{spec}
+\begin{spec}
+
+operation = (expr binOp expr) | (unOp expr) ;
+
+unOp      = `^' ;
+
+binOp     = `+' | `-'  | `/' | `*'
+                | `|'  | `\&' | `>='
+                | `<=' | `>' | `<' | `==' ;
+\end{spec}
 
 
 \subparagraph{Literals}
@@ -124,17 +124,24 @@ By the language specification, the basic types should include:
 numbers, lists, strings and booleans.
 % TODO: Check the 'none', may be unwise
 % TODO: Literals causing some compile issues.
+
+\begin{spec}
+literal = number | list | string | boolean | `none' ;
+
+number  = integer | float ;
+
+\end{spec}
 % \begin{spec}
-% literal = number | list | string | boolean | `none' ;
 %
-% number  = integer | float ;
+%
 % integer = [`-'], digit, { digit } ;
 % float   = [`-'], digit, { digit }, `.', digit, { digit } ;
-%
+
 % (* As lists hold values of varying types, they shall be
 % allowed to hold expressions *)
-% list    = `[' {, (expr | range), `,' }, `]' ;
+%
 % (* Ranges are groups of elements in sequence *)
+% list    = `[' {, (expr | range), `,' }, `]' ;
 % range   = expr, `..', expr [, `..', integer ] ;
 % string  = `"', { all characters - `"' }, `"' ;
 % boolean = `true' | `false' ;
