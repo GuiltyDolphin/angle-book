@@ -135,6 +135,36 @@ to be executed, a source file is read and run by the Angle
 interpreter. This mode is how programs should usually be run.
 
 
+\section{Features}
+\label{sec:features}
+
+Angle supports many features, such as looping and support for
+functional programming, along with some more obscure features such as
+parameter constraints.
+
+Angle also has a lot of potential for more big features to be
+implemented, some of which are largely essential to a good programming
+environment - exception handling and imports. The way in which Angle
+has been implemented and refined means that adding new features
+requires modifying as little of the existing code as possible, and
+instead promotes constructive modification.
+
+Some features and where to find the respective information is shown
+in the table below.
+
+`Types' refers to a type defined in `Angle.Types.Lang' that provides
+more information on the feature.
+
+\begin{tabular}{l c r}
+  Feature & Types & Sections \\
+  \hline
+  Conditionals & `LangStruct' & section~\ref{ssub:conditional_constructs} \\
+  Parameter constraints & `ConstrRef' & section~\ref{ssub:function_definitions} \\
+  Parameter annotations & `AnnType' & section~\ref{ssub:function_definitions} \\
+  Looping structures & `LangStruct' & section~\ref{ssub:looping_structures} \\
+\end{tabular}
+
+
 \part{Grammar}
 \label{prt:grammar}
 
