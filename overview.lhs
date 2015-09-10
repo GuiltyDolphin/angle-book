@@ -108,7 +108,7 @@ The package contains the source files, and everything required to
 configure, test and install the executable.
 
 The executable is a program that can be used to run scripts written
-using Angle's syntax. See section \ref{sub:using_angle} `Using Angle'
+using Angle's syntax. See section~\ref{sub:using_angle} `Using Angle'
 for information on how this is used.
 
 
@@ -248,6 +248,18 @@ control_continue = `continue'          ;
 Function definitions allow the programmer to assign a lambda to an
 identifier in a semantically clear manner.
 
+\paragraph{Parameters}
+\label{par:parameters}
+
+Angle supports certain annotations to parameters when defining a
+function that allow the programmer to restrict the types of values
+that a function will accept.
+
+See `Angle.Types.Lang.ConstrRef' and `Angle.Types.Lang.AnnType' for
+more information.
+
+% FIXME: '$' character needs escaping to have correct syntax
+% highlighting - but this shows up in the pdf.
 \begin{spec}
 function_def = simple_ident `(' { parameter } `)' stmt ;
 
@@ -261,8 +273,15 @@ Expressions are blocks of code that can be evaluated
 to produce some value.\footnote{https://msdn.microsoft.com/en-us/library/ms173144.aspx}
 
 \begin{spec}
-expr = operation | literal | function_call | identifier ;
+expr = operation  | literal   | function_call
+     | identifier | expr_list | expr_range    ;
 \end{spec}
+
+Note the inclusion of @expr_list@ and @expr_range@ which are
+represented as literals in section~\ref{ssub:literals}.
+
+See section~\ref{ssub:lists_and_ranges_as_expressions} for more
+information.
 
 \subsubsection{Operations}
 \label{ssub:operations}
@@ -296,14 +315,16 @@ the source code is not modified.\footnote{https://www.cs.cf.ac.uk/Dave/Multimedi
 
 The following are referenced below but not defined:
 
-% TODO: Add information about special cases for char_char,
-% string_char
-% \begin{itemize}
-%   \item char_char -
-% \end{itemize}
-
-% TODO: Check the 'none', may be unwise
-% TODO: Literals causing some compile issues.
+% TODO: Might want a citation - or a better way of linking to the
+% docs.
+\begin{itemize}
+  \item @string_char@ - which is any character accepted in a Haskell
+    String. A special type of string exists (by prefixing `e') in
+    Angle that treats backslashes literally and thus will not
+    interpret escape characters.
+  \item @char_char@ - which is any character accepted in a Haskell
+    Char.\footnote{https://hackage.haskell.org/package/base-4.8.1.0/docs/Data-Char.html\#t:Char}
+\end{itemize}
 
 \begin{spec}
 
@@ -322,6 +343,25 @@ string  = [ `e' ] `"' { string_char } `"' ;
 list    = `[' { literal `,' }                                 `]' ;
 range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
 \end{spec}
+
+\subsubsection{Lists and ranges as expressions}
+\label{ssub:lists_and_ranges_as_expressions}
+
+The reason for having lists and ranges defined as both literals and
+expressions is to enable lists and ranges that have indeterminate
+contents at run-time. Angle first attempts to parse a literal list
+or range, meaning that if the programmer hard-codes a list containing
+only literals, it will be treated as a literal when the file is being
+lexed. If any part of the list or range is not a literal value, and
+thus has no definite value, Angle will treat it as an expression
+rather than a literal so that the contents are only known when the
+list or range is evaluated.
+
+\begin{spec}
+expr_list =    `[' { expr `,' }                           `]' ;
+expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
+\end{spec}
+
 
 \subsubsection{Function calls}
 \label{ssub:function_calls}
