@@ -158,19 +158,13 @@ syntax.
 \paragraph{Extended Bakus Noire Form (EBNF)}
 \label{par:extended_bakus_noire_form_ebnf_}
 
-Extended Bakus Noire Form is an extended version of Bakus Noire Form,
-a notation that can be used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
+EBNF is an extended version of Bakus Noire Form, a notation that can be
+used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
 
-\subsection{Describing Macro in EBNF}
-\label{sub:describing_macro_in_ebnf}
 BNF can be used to decribe context-free grammars\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/},
-which are grammars that consist of names and expansions (the components).
-\\
-I refer to `alpha' and `digit' without formally defining them,
-they refer to the characters of the roman alphabet (upper and lower; [`a'..`z'], [`A'..`Z'])
-and the digits used in the denary system ([`0'..`9']) respectively.
-
-% TODO: Check spaces - that could mess things up
+which are grammars that consist of names and expansions
+(the components), meaning that it may be used to express a grammar for
+Angle.
 
 \subsection{Statements}
 \label{sub:statements}
@@ -180,12 +174,12 @@ themselves being made of assignments, expressions and language
 constructs.
 
 \begin{spec}
-stmt        = single_stmt  | multi_stmt ;
+stmt        = single_stmt  | multi_stmt                   ;
 
 single_stmt = function_def | stmt_expr      | stmt_control
             | stmt_loop    | stmt_condition | stmt_assign ;
 
-multi_stmt  = `{' { stmt } `}' ;
+multi_stmt  = `{' { stmt } `}'                            ;
 \end{spec}
 
 \subsubsection{Assignment}
@@ -194,9 +188,7 @@ multi_stmt  = `{' { stmt } `}' ;
 Assignment binds the result of an expression to a name
 (the identifier).
 \begin{spec}
-
 stmt_assign = simple_ident `=' expr ;
-
 \end{spec}
 
 \subsubsection{Looping structures}
@@ -206,8 +198,7 @@ Looping structures allow iterating over certain values or until a
 condition is satisfied.
 
 \begin{spec}
-
-stmt_loop  = loop_for | loop_while ;
+stmt_loop  = loop_for | loop_while             ;
 
 loop_for   = `for'   ident `in' expr `do' stmt ;
 loop_while = `while'            expr `do' stmt ;
@@ -220,7 +211,7 @@ Conditionals allow the programmer to control which parts of code get
 executed based on the boolean result of expressions.
 
 \begin{spec}
-stmt_condition = cond_if | cond_unless ;
+stmt_condition = cond_if | cond_unless                  ;
 
 cond_if     = `if'     expr `then' stmt [ `else' stmt ] ;
 cond_unless = `unless' expr        stmt                 ;
@@ -378,13 +369,16 @@ function_call = simple_ident `(' { expr } `)' ;
 
 Identifiers represent names given to functions and values so that
 they may be referred to elsewhere within the program.
+\\
+I refer to `alpha' and `digit' without formally defining them,
+they refer to the characters of the roman alphabet (upper and lower; [`a'..`z'], [`A'..`Z'])
+and the digits used in the denary system ([`0'..`9']) respectively.
 
 \begin{spec}
-identifier = simple_ident | function_ident ;
+identifier     = simple_ident  | function_ident ;
 
-simple_ident = alpha, { alpha | digit } ;
-
-function_ident = `\$', simple_ident ;
+simple_ident   = alpha { alpha | digit }        ;
+function_ident = `\$'    simple_ident           ;
 \end{spec}
 
 \part{Scanner}
