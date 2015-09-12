@@ -340,28 +340,28 @@ The following are referenced below but not defined:
 
 % TODO: Might want a citation - or a better way of linking to the
 % docs.
-\begin{itemize}
-  \item @string_char@ - which is any character accepted in a Haskell
+\begin{description}
+  \item[string\_char] which is any character accepted in a Haskell
     String. A special type of string exists (by prefixing `e') in
     Angle that treats backslashes literally and thus will not
     interpret escape characters.
-  \item @char_char@ - which is any character accepted in a Haskell
+  \item[char\_char] which is any character accepted in a Haskell
     Char.\footnote{https://hackage.haskell.org/package/base-4.8.1.0/docs/Data-Char.html\#t:Char}
-\end{itemize}
+\end{description}
 
 \begin{spec}
 
-literal = number | list | string | char | boolean | range     ;
+literal = number  | list | string | char | boolean | range        ;
 
-number  = integer | float                              ;
+number  = integer | float                                         ;
 
-integer = [ `-' ] digit { digit }                      ;
-float   = [ `-' ] digit { digit } `.' digit { digit }  ;
+integer = [ `-' ] digit { digit }                                 ;
+float   = [ `-' ] digit { digit } `.' digit { digit }             ;
 
-boolean = `true' | `false'                             ;
+boolean = `true'  | `false'                                       ;
 
-char    =         `''   char_char     `'' ;
-string  = [ `e' ] `"' { string_char } `"' ;
+char    =         `''   char_char     `''                         ;
+string  = [ `e' ] `"' { string_char } `"'                         ;
 
 list    = `[' { literal `,' }                                 `]' ;
 range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
