@@ -7,7 +7,7 @@
 % \usepackage[nounderscore]{syntax}
 % \usepackage{underscore}
 
-\title{An implementation of a basic general-purpose scripting language}
+\title{An implementation of a basic general-purpose programming language}
 \author{Ben Moon}
 \date{}
 
@@ -38,7 +38,7 @@ development of code.
 \label{par:what_is_angle_}
 
 Angle is intended to be a weak and dynamically typed, functional,
-interpreted, general-purpose scripting language.
+interpreted, general-purpose programming language.
 
 \subparagraph{Dynamic}
 \label{par:dynamic}
@@ -90,12 +90,6 @@ means that a compiler need not be written. It also means that
 programs do not need to be compiled before they are run and can be
 distributed as source without the need for any additional files.
 
-\subparagraph{Scripting language}
-\label{par:scripting_language}
-
-As Angle does not have its own compiler and is interpreted, it
-classifies as a scripting language.
-
 \section{Project Overview}
 \label{sec:project_overview}
 
@@ -112,6 +106,8 @@ using Angle's syntax. See section~\ref{sub:using_angle} `Using Angle'
 for information on how this is used.
 
 
+% TODO: Maybe a Readme that has usage information and this links to
+% that?
 \subsection{Using Angle}
 \label{sub:using_angle}
 
@@ -162,6 +158,8 @@ more information on the feature.
   Parameter constraints & `ConstrRef' & section~\ref{ssub:function_definitions} \\
   Parameter annotations & `AnnType' & section~\ref{ssub:function_definitions} \\
   Looping structures & `LangStruct' & section~\ref{ssub:looping_structures} \\
+  Functions & `Lambda' & section~\ref{ssub:function_definitions} \\
+  Operators & `LangOp' & section~\ref{ssub:operations} \\
 \end{tabular}
 
 
@@ -171,7 +169,7 @@ more information on the feature.
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
 
-`Angle.Types.Lang' and `Angle.Lex.Lexer.Internal' implement the
+`Angle.Types.Lang' and `Angle.Parse.Parser.Internal' implement the
 language grammar in terms of Haskell types and functions.
 
 \paragraph{Overview}
@@ -190,7 +188,7 @@ syntax.
 
 EBNF is an extended version of Bakus Noire Form, a notation that can be
 used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
-
+\\
 BNF can be used to decribe context-free grammars\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/},
 which are grammars that consist of names and expansions
 (the components), meaning that it may be used to express a grammar for
@@ -321,7 +319,7 @@ operation = unop expr | `(' varop { expr } `)' ;
 
 unop      = `^' | `-' ;
 
-binOp     = `+' | `-'  | `/' | `*'
+varop     = `+' | `-'  | `/' | `*'
                 | `|'  | `&' | `>='
                 | `<=' | `>' | `<' | `==' ;
 \end{spec}
@@ -500,7 +498,7 @@ type Scanner = State SourcePos
 % thus, maybe a monad transformer? Reader and State
 
 There is one major issue with this type; after having created a few
-tokenizer functions in the `Lexer' module, I noticed that I was
+tokenizer functions in the `Parser' module, I noticed that I was
 having to pass strings (the source code) to many of the functions.
 \\ \\ \textit{Example: the `integer' function for parsing a single
 integer requires a string in order to perform its task}
@@ -629,6 +627,17 @@ scanChar = do
 
 \part{Lexer}
 \label{sec:lexer}
+
+\section{Creating the Lexer}
+\label{sec:creating_the_lexer}
+
+\paragraph{What is a Lexer?}
+\label{par:what_is_a_lexer_}
+
+A lexer (or lexical analyzer) requests characters from the scanner and forms these into
+discrete components of a language, called tokens.\footnote{http://www.perl.com/pub/2012/10/an-overview-of-lexing-and-parsing.html}
+These tokens can then be passed to the parser to be connected to language
+grammar.
 
 \part{Parser}
 \label{sec:parser}
