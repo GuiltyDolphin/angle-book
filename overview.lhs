@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[a4paper,11pt,oneside]{article}
 
 %include lhs2TeX.fmt
 %include lhs2TeX.sty
@@ -442,16 +442,36 @@ some basic principles:
   \item The program exits and memory is freed.
 \end{enumerate}
 
-\part{Scanner}
-\label{sec:scanner}
+To be able to achieve this method of execution the project will need
+to be split into three main sections:
+\begin{description}
+  \item[executable] for running programs, the main interface for the
+    user. See section~\ref{sub:using_angle} for more information.
+  \item[parser] which will deal with translating source code into
+    an abstract syntax tree that represents the language.
+  \item[interpreter] which executes the AST produced by the parser
+    and performs IO actions.
+\end{description}
 
-\paragraph{Relevant modules}
-\label{par:relevant_modules}
+\section{Parser}
+\label{sec:parser}
 
-`Angle.Scanner'
+In Angle the parser does the job of converting source text into a
+format that can be executed by the interpreter. Part~\ref{prt:grammar}
+defines the form this source can take.
+\\
+`The parser' mainly refers to two things:
 
-\section{Creating the Scanner}
-\label{prt:creating_the_scanner}
+\begin{description}
+  \item[@Parser a@ monad] - which is a stack of monads which produces
+    a value of type @a@ from an input stream. See section~\ref{sub:defining_the_parser}.
+  \item[@Angle.Parse@ modules] - a collection of modules which use the
+    @Parser a@ monad to convert the input stream into an abstract
+    syntax tree representing an Angle program.
+\end{description}
+
+\subsection{Scanner}
+\label{sub:scanner}
 
 \paragraph{What is a Scanner?}
 \label{par:what_is_a_scanner_}
@@ -472,15 +492,40 @@ There are two main requirements for the scanner:
   were parsed.
 \end{itemize}
 
+
+The scanner itself will act as the basemost parser that will simply
+yield characters, throwing an exception when the stream is empty.
+
+\begin{spec}
+scanChar :: Parser Char
+scanChar = do
+  st <- get
+  sourceString <- liftM sourceText ask
+  let pos  = sourcePos st
+      indx = sourceIndex pos
+  if indx >= genericLength sourceString
+  then unexpectedErr "end of stream"
+  else do
+    let chr = sourceString `genericIndex' indx
+    put st{sourcePos=if chr == '\n'
+                     then incNL pos
+                     else incCol pos}
+    return chr
+\end{spec}
+
+\subsection{Defining the parser}
+\label{sub:defining_the_parser}
+
 \subsection{The types}
 \label{sec:the_types}
 
 \paragraph{Source Position}
 \label{par:source_position}
 
-As the scanner will need to be able to keep track of its position in
-source, it is convenient to use a newtype wrapper of a triple of
-integers to provide a solid type to hold this information.
+As the `scanner' will act as the base-most part of the parser, the
+parser type will need to accomodate the positional tracking required
+by the scanner. It is convenient to use a newtype wrapper of a triple
+of integers to provide a solid type to hold this information.
 \\
 The reason for having three integers is that it is more useful
 to refer to the line and column (first two values) numbers in
@@ -492,29 +537,22 @@ newtype SourcePos = SourcePos
 \end{spec}
 
 \subsubsection{The parser type}
-\label{sub:the_scanner_type}
+\label{ssub:the_parser_type}
 
-\paragraph{Representing the scanner}
+\paragraph{Representing the parser}
 \label{par:representing_the_scanner}
 
-The scanner itself will be a single function that yields characters
-to the function that is requesting them.
-\\
-Functions of this sort will be called 'Parsers', this will not always
-be the correct terminology for the different use-cases, but will
-mostly be true for the main parser.
-\\
 As it is unknown at this time the exact type of value that will be
-returned by functions using the scanner, the parser type will have
-to be polymorphic.
+returned by parsing functions, the parser type will have to be
+polymorphic.
 It is known however, that the scanner will be keeping track of its
 current position in the source file - I have already defined a type
-for the position in the source file 'SourcePos'.
+for the position in the source file `SourcePos'.
 Therefore, the parser could have a type of:
 \begin{spec}
 SourcePos -> (v, SourcePos)
 \end{spec}
-That is, providing it with a new SourcePosition allows it to
+That is, providing it with a new position in source allows it to
 determine a new value and advance position. \\
 This type signature actually represents a stateful computation -
 something that can be represented more usefully by using the
@@ -526,10 +564,10 @@ State as a newtype wrapper) https://hackage.haskell.org/package/mtl-2.2.1/docs/C
 \begin{spec}
 newtype State s a = State { runState :: s -> (a, s) }
 \end{spec}
-And from the signature for the scanner, we could then replace the `s'
+And from the signature for the parser, we could then replace the `s'
 with `SourcePos' and produce:
 \begin{spec}
-type Scanner = State SourcePos
+type Parser = State SourcePos
 \end{spec}
 
 % TODO: I think we want a Reader in here (to pass string around)
@@ -541,7 +579,7 @@ having to pass strings (the source code) to many of the functions.
 \\ \\ \textit{Example: the `integer' function for parsing a single
 integer requires a string in order to perform its task}
 \begin{spec}
-integer :: String -> Scanner Integer
+integer :: String -> Parser Integer
 \end{spec}
 The source code being passed in to these functions could be referred
 to as the `environment' - a static piece of information which they
@@ -550,9 +588,10 @@ standard monad for representing computations to which an environment
 is passed - the Reader monad.\footnote{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Reader.html}
 \\
 The Reader monad has a type of:
+\\ \\ \textit{`runReader' takes an environment of type `e' and unwraps and
+evaluates the computation inside the Reader.}
+
 \begin{spec}
--- `runReader' takes an environment of type `e' and unwraps and
--- evaluates the computation inside the Reader.
 newtype Reader e a = Reader { runReader :: e -> a }
 \end{spec}
 
@@ -561,8 +600,8 @@ type:
 \begin{spec}
 type SourceEnv = Reader String
 \end{spec}
-But the problem with the scanner is still not solved, the SourceEnv
-and Scanner need to be somehow merged together in order to allow the
+But the problem with the parser is still not solved, the SourceEnv
+and Parser need to be somehow merged together in order to allow the
 passing of both state and environment.
 \\
 Haskell provides a convenient means of doing this - via monad
@@ -573,20 +612,20 @@ a single monad that can access the functionality of each.\footnote{http://book.r
 This means that the use of a State Transformer with the Reader monad
 will allow the combination of persistent environment and state.
 \begin{spec}
-type Scanner = StateT SourcePos (Reader String)
+type Parser = StateT SourcePos (Reader String)
 \end{spec}
 % TODO: Not sure about this bit!
 This is good, but leaves the implementation a little exposed, which
 can lead to issues later on.\footnote{http://book.realworldhaskell.org/read/programming-with-monads.html\#id646649}
 \\
-To hide the internals of the type, we can wrap the Scanner in a
+To hide the internals of the type, we can wrap the Parser in a
 newtype declaration.
 \begin{spec}
-newtype Scanner a = Scanner
-    { runScanner :: StateT SourcePos (Reader String) a
+newtype Parser a = Parser
+    { runParser :: StateT SourcePos (Reader String) a
     } deriving (Functor, Applicative, Monad)
 \end{spec}
-`runScanner' can be used to retrieve the monad stack from a Scanner.
+`runParser' can be used to retrieve the monad stack from a Parser.
 \\
 As this is one of the base types of the system, it will be worth
 making a custom datatype for the environment and position state, to
@@ -597,8 +636,8 @@ data ScanState = ScanState
     { sourcePos :: SourcePos
     } deriving (Show, Eq)
 
--- The environment variables that the scanner can access.
-data ScanEnv = ScanEnv
+-- The environment variables that the parser can access.
+data ParseEnv = ParseEnv
     { sourceText :: String
     } deriving (Show, Eq)
 \end{spec}
@@ -608,8 +647,8 @@ depreciation `ExceptT' was used instead - https://hackage.haskell.org/package/mt
 
 Thus the final type is:
 \begin{spec}
-newtype Scanner a = Scanner
-    { runScanner :: ExceptT ScanError (StateT ScanState (Reader ScanEnv)) a
+newtype Parser a = Parser
+    { runParser :: ExceptT ScanError (StateT ScanState (Reader ScanEnv)) a
     } deriving ( Functor, Applicative, Alternative, Monad, MonadPlus
            , MonadState ScanState, MonadReader ScanEnv, MonadError ScanError)
 \end{spec}
@@ -630,26 +669,6 @@ data ScanError = ScanError { expectedMsg :: String -- Human readable statement o
 
 % Note, need to be able to detect end of string/file
 % Maybe no strings, only handles?
-Having determined the type signature for the Scanner, we now
-need a way of progressing the position of the scanner and retrieving
-a character.
-\begin{spec}
-scanChar :: Scanner Char
-scanChar = do
-  st <- get
-  sourceString <- liftM sourceText ask
-  let pos  = sourcePos st
-      indx = sourceIndex pos
-  if indx >= genericLength sourceString
-  then unexpectedErr "end of stream"
-  else do
-    let chr = sourceString `genericIndex' indx
-    put st{sourcePos=if chr == '\n'
-                     then incNL pos  -- Error messages more useful
-                                     -- if tracking the line number
-                     else incCol pos}
-    return chr
-\end{spec}
 % -- This will set the value of the Scanner to the next character
 % -- whilst incrementing the position in the file.
 % else genericIndex st . sourceIndex $ pos -- This is the character at pos
@@ -661,6 +680,19 @@ scanChar = do
 %   return readChar
 
 % This is not used in final project.
+
+
+\part{Scanner}
+\label{sec:scanner}
+
+\paragraph{Relevant modules}
+\label{par:relevant_modules}
+
+`Angle.Scanner'
+
+\section{Creating the Scanner}
+\label{prt:creating_the_scanner}
+
 \end{document}
 
 \part{Lexer}
