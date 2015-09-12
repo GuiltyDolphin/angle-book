@@ -27,6 +27,10 @@ reflect the final source, and should be assumed to be non-functional.
 \\
 Relevant modules will be stated before any sections describing the
 development of code.
+\\
+Additional documentation is provided in the form of HTML files. Any
+capable browser will be sufficient to view the documentation
+interactively.
 
 \part{Introduction}
 \label{prt:introduction}
@@ -409,6 +413,35 @@ simple_ident   = alpha { alpha | digit }        ;
 function_ident = `\$'    simple_ident           ;
 \end{spec}
 
+\part{Creating Angle}
+\label{prt:creating_angle}
+
+\section{How it should work}
+\label{sec:how_it_should_work}
+
+As Angle is intended to be a programming language it should satisfy
+some basic principles:
+
+\begin{enumerate}
+  \item The programmer writes a program using Angle syntax.
+  \item The source file is run using the `angle' program.
+    \begin{enumerate}
+      \item The source file is checked for syntax errors and read
+        into Haskell datatypes.
+        \begin{enumerate}
+          \item If any malformed structures exist, the program will
+            halt and alert the runner.
+        \end{enumerate}
+      \item The program is executed.
+        \begin{enumerate}
+          \item Run-time errors may be encountered; if run-time errors
+            occur then the program will halt and the runner will be
+            notified.
+        \end{enumerate}
+    \end{enumerate}
+  \item The program exits and memory is freed.
+\end{enumerate}
+
 \part{Scanner}
 \label{sec:scanner}
 
@@ -454,25 +487,30 @@ to refer to the line and column (first two values) numbers in
 error messages and debugging. For practical reasons, the total
 character index is recorded as the third element.
 \begin{spec}
--- Represents a position in source.
 newtype SourcePos = SourcePos
     { getSourcePos :: (Int, Int, Int) }
-        deriving (Eq)
 \end{spec}
 
-\subsubsection{The scanner type}
+\subsubsection{The parser type}
 \label{sub:the_scanner_type}
 
 \paragraph{Representing the scanner}
 \label{par:representing_the_scanner}
 
+The scanner itself will be a single function that yields characters
+to the function that is requesting them.
+\\
+Functions of this sort will be called 'Parsers', this will not always
+be the correct terminology for the different use-cases, but will
+mostly be true for the main parser.
+\\
 As it is unknown at this time the exact type of value that will be
-returned by functions using the scanner, the scanner type will have
+returned by functions using the scanner, the parser type will have
 to be polymorphic.
 It is known however, that the scanner will be keeping track of its
 current position in the source file - I have already defined a type
 for the position in the source file 'SourcePos'.
-Therefore, the scanner could have a type of:
+Therefore, the parser could have a type of:
 \begin{spec}
 SourcePos -> (v, SourcePos)
 \end{spec}
