@@ -495,6 +495,12 @@ There are two main requirements for the scanner:
 \subsubsection{Scanner type}
 \label{ssub:scanner_type}
 
+\paragraph{Relevant modules}
+\label{par:relevant_modules}
+
+`Angle.Scanner' defines the scanner.
+
+
 \paragraph{Source Position}
 \label{par:source_position}
 
@@ -547,18 +553,22 @@ type Scanner = State SourcePos
 \subsection{Defining the parser}
 \label{sub:defining_the_parser}
 
+\paragraph{Relevant modules}
+\label{par:relevant_modules}
+
+`Angle.Scanner' defines the parser type. `Angle.Parse.Parser',
+`Angle.Parse.Helpers' and `Angle.Parse.Token' implement the parser
+functions. `Angle.Types.Lang' defines language structures in terms
+of Haskell types.
+
+\subsubsection{The parser type}
+\label{ssub:the_parser_type}
+
 Having defined the scanner type to be synonymous with
 @State SourcePos@, and the knowledge that the scanner will be
 integrated with the parser to provide positional information, as well
 as access to characters from a stream, the parser type can start to be
 defined.
-
-
-\subsection{The types}
-\label{sec:the_types}
-
-\subsubsection{The parser type}
-\label{ssub:the_parser_type}
 
 \paragraph{Representing the parser}
 \label{par:representing_the_scanner}
@@ -641,5 +651,62 @@ newtype Parser a = Parser
 
 Thus the base-most parser (scanner) can be represented as a
 single function with the type @scanChar :: Parser Char@.
+
+\subsubsection{Parsing Angle}
+\label{ssub:parsing_angle}
+
+Having a `Parser' type alone doesn't automatically allow the parsing
+of Angle syntax. Angle must be described in Haskell's type system
+and functions must be defined to parse each of the constructs.
+
+The parsing functions are defined through three modules.
+`Angle.Parse.Helpers' defines the most basic parsers for use in other
+modules. `Angle.Parse.Token' defines parsers that deal with very basic
+structures, such as strings and integers. `Angle.Parse.Parser' defines
+the parsers that read Angle syntax into Angle types.
+
+As an example of the process of defining a new Angle feature, I will
+use string literals.
+
+Functions from `Angle.Parse.Helpers':
+\begin{description}
+  \item[@char :: Char -> Parser Char@] parses the specified character.
+  \item[@manyTill :: Parser b -> Parser a -> Parser [a]@] a
+    higher-order parser that parses until the first parser is
+    satisfied.
+  \item[@anyChar :: Parser Char@] essentially the same as the base
+    scanner function - parses any character.
+\end{description}
+
+Using these functions means that a parser could be defined in
+`Angle.Parse.Token' for parsing a basic string.\footnote{There are a
+lot of edge cases when parsing strings, see
+`Angle.Parse.Token.tokString' for a better representation.}
+
+\begin{spec}
+string :: Parser String
+string = char `"' *> manyTill (char `"') anyChar
+\end{spec}
+
+Which would parse some text surrounded by double quotes.
+
+Then, assuming the type
+
+\begin{spec}
+data LangLit = ...
+             | LitStr String
+             | ...
+\end{spec}
+
+defined in `Angle.Types.Lang', a parser can be implemented in
+`Angle.Parse.Parser' for wrapping a Haskell string in an Angle string.
+
+\begin{spec}
+litStr :: Scanner LangLit
+litStr = liftM LitStr tokString
+\end{spec}
+
+Then this process is repeated for any other structures that need to
+be parsed.
 
 \end{document}
