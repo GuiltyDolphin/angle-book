@@ -492,40 +492,16 @@ There are two main requirements for the scanner:
   were parsed.
 \end{itemize}
 
-
-The scanner itself will act as the basemost parser that will simply
-yield characters, throwing an exception when the stream is empty.
-
-\begin{spec}
-scanChar :: Parser Char
-scanChar = do
-  st <- get
-  sourceString <- liftM sourceText ask
-  let pos  = sourcePos st
-      indx = sourceIndex pos
-  if indx >= genericLength sourceString
-  then unexpectedErr "end of stream"
-  else do
-    let chr = sourceString `genericIndex' indx
-    put st{sourcePos=if chr == '\n'
-                     then incNL pos
-                     else incCol pos}
-    return chr
-\end{spec}
-
-\subsection{Defining the parser}
-\label{sub:defining_the_parser}
-
-\subsection{The types}
-\label{sec:the_types}
+\subsubsection{Scanner type}
+\label{ssub:scanner_type}
 
 \paragraph{Source Position}
 \label{par:source_position}
 
-As the `scanner' will act as the base-most part of the parser, the
-parser type will need to accomodate the positional tracking required
-by the scanner. It is convenient to use a newtype wrapper of a triple
-of integers to provide a solid type to hold this information.
+As stated previously, the scanner needs to be able to keep track
+of its current position in source. It is convenient to use a newtype
+wrapper of a triple of integers to provide a solid type to hold this
+information.
 \\
 The reason for having three integers is that it is more useful
 to refer to the line and column (first two values) numbers in
@@ -536,22 +512,16 @@ newtype SourcePos = SourcePos
     { getSourcePos :: (Int, Int, Int) }
 \end{spec}
 
-\subsubsection{The parser type}
-\label{ssub:the_parser_type}
+\paragraph{Tracking position}
+\label{par:tracking_position}
 
-\paragraph{Representing the parser}
-\label{par:representing_the_scanner}
+This is not enough to be able to advance position whilst yielding
+characters however, thus the scanner must have a type similar to:
 
-As it is unknown at this time the exact type of value that will be
-returned by parsing functions, the parser type will have to be
-polymorphic.
-It is known however, that the scanner will be keeping track of its
-current position in the source file - I have already defined a type
-for the position in the source file `SourcePos'.
-Therefore, the parser could have a type of:
 \begin{spec}
 SourcePos -> (v, SourcePos)
 \end{spec}
+
 That is, providing it with a new position in source allows it to
 determine a new value and advance position. \\
 This type signature actually represents a stateful computation -
@@ -561,13 +531,44 @@ The State monad has a type signature\footnote{This is actually
 incorrect - the State Monad is infact a StateT using Identity as the
 base monad (but for the purpose of this document it is safe to treat
 State as a newtype wrapper) https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Lazy.html\#t:State} of:
+
 \begin{spec}
 newtype State s a = State { runState :: s -> (a, s) }
 \end{spec}
-And from the signature for the parser, we could then replace the `s'
+
+And from the signature for the scanner, we could then replace the `s'
 with `SourcePos' and produce:
+
 \begin{spec}
-type Parser = State SourcePos
+type Scanner = State SourcePos
+\end{spec}
+
+
+\subsection{Defining the parser}
+\label{sub:defining_the_parser}
+
+Having defined the scanner type to be synonymous with
+@State SourcePos@, and the knowledge that the scanner will be
+integrated with the parser to provide positional information, as well
+as access to characters from a stream, the parser type can start to be
+defined.
+
+
+\subsection{The types}
+\label{sec:the_types}
+
+\subsubsection{The parser type}
+\label{ssub:the_parser_type}
+
+\paragraph{Representing the parser}
+\label{par:representing_the_scanner}
+
+As it is unknown at this time the exact type of value that will be
+returned by parsing functions, the parser type will have to be
+polymorphic.
+\\ \\ \textit{The parser consisting of just the scanner component.}
+\begin{spec}
+type Parser a = State SourcePos a
 \end{spec}
 
 % TODO: I think we want a Reader in here (to pass string around)
@@ -611,6 +612,7 @@ a single monad that can access the functionality of each.\footnote{http://book.r
 \\
 This means that the use of a State Transformer with the Reader monad
 will allow the combination of persistent environment and state.
+\\ \\ \textit{Notice the scanner is still present in the stack, `StateT SourcePos'.}
 \begin{spec}
 type Parser = StateT SourcePos (Reader String)
 \end{spec}
@@ -622,98 +624,22 @@ To hide the internals of the type, we can wrap the Parser in a
 newtype declaration.
 \begin{spec}
 newtype Parser a = Parser
-    { runParser :: StateT SourcePos (Reader String) a
-    } deriving (Functor, Applicative, Monad)
+    { runParser :: StateT SourcePos (Reader String) a }
 \end{spec}
 `runParser' can be used to retrieve the monad stack from a Parser.
 \\
-As this is one of the base types of the system, it will be worth
-making a custom datatype for the environment and position state, to
-allow for extensibility later on.
-\begin{spec}
--- Holds information about the current position in source.
-data ScanState = ScanState
-    { sourcePos :: SourcePos
-    } deriving (Show, Eq)
-
--- The environment variables that the parser can access.
-data ParseEnv = ParseEnv
-    { sourceText :: String
-    } deriving (Show, Eq)
-\end{spec}
 One last thing to add is error handling, via the ExceptT monad
 transformer.\footnote{Initially `ErrorT' was used, but due to
 depreciation `ExceptT' was used instead - https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
-
+\\
 Thus the final type is:
+\\ \\ \textit{`ParseError' contains information about exceptions that occur during parsing.}
 \begin{spec}
 newtype Parser a = Parser
-    { runParser :: ExceptT ScanError (StateT ScanState (Reader ScanEnv)) a
-    } deriving ( Functor, Applicative, Alternative, Monad, MonadPlus
-           , MonadState ScanState, MonadReader ScanEnv, MonadError ScanError)
+    { runParser :: ExceptT ScanError (StateT SourcePos (Reader String)) a }
 \end{spec}
 
-`ScanError' is a type synonym for a string.
-% TODO: Not actually using the 'unexpectedMsg' yet - need to implement
-% this in the lexer
-\begin{spec}
--- type ScanError = String
---
-data ScanError = ScanError { expectedMsg :: String -- Human readable statement of an expected value
-                           , unexpectedMsg :: String
-                           , errMsg :: String    -- A general error message that does not fit
-                                                -- into one of the above two categories
-                           , errPos :: SourcePos  -- The position in source where the error occurred
-                           }
-\end{spec}
-
-% Note, need to be able to detect end of string/file
-% Maybe no strings, only handles?
-% -- This will set the value of the Scanner to the next character
-% -- whilst incrementing the position in the file.
-% else genericIndex st . sourceIndex $ pos -- This is the character at pos
-%   case readChar of
-% '\NUL' -> put pos              -- I have chosen '\NUL' to represent the end of the string
-% '\n'   -> put . posNewLine $ pos -- Encountered a new line,
-% -- reset the column while incrementing line number
-% _      -> put . incCol $ pos
-%   return readChar
-
-% This is not used in final project.
-
-
-\part{Scanner}
-\label{sec:scanner}
-
-\paragraph{Relevant modules}
-\label{par:relevant_modules}
-
-`Angle.Scanner'
-
-\section{Creating the Scanner}
-\label{prt:creating_the_scanner}
-
-\end{document}
-
-\part{Lexer}
-\label{sec:lexer}
-
-\section{Creating the Lexer}
-\label{sec:creating_the_lexer}
-
-\paragraph{What is a Lexer?}
-\label{par:what_is_a_lexer_}
-
-A lexer (or lexical analyzer) requests characters from the scanner and forms these into
-discrete components of a language, called tokens.\footnote{http://www.perl.com/pub/2012/10/an-overview-of-lexing-and-parsing.html}
-These tokens can then be passed to the parser to be connected to language
-grammar.
-
-\part{Parser}
-\label{sec:parser}
-
-
-
-
+Thus the base-most parser (scanner) can be represented as a
+single function with the type @scanChar :: Parser Char@.
 
 \end{document}
