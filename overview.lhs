@@ -186,8 +186,8 @@ intended to represent some of the features of Angle. The grammar is
 not complete and is only intended to give an overview of Angle's
 syntax.
 
-\section{Defining the Language Grammar}
-\label{sec:language_grammar}
+\section{Defining the language grammar}
+\label{sec:defining_the_language_grammar}
 
 \paragraph{Extended Bakus Noire Form (EBNF)}
 \label{par:extended_bakus_noire_form_ebnf_}
@@ -195,7 +195,7 @@ syntax.
 EBNF is an extended version of Bakus Noire Form, a notation that can be
 used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
 \\
-BNF can be used to decribe context-free grammars\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/},
+BNF can be used to decribe context-free grammars,\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/}
 which are grammars that consist of names and expansions
 (the components), meaning that it may be used to express a grammar for
 Angle.
@@ -255,11 +255,14 @@ cond_unless = `unless' expr        stmt                 ;
 \subsubsection{Control statements}
 \label{ssub:control_statements}
 
-Control statements are used to control the flow of the program via
-returning early from functions and loops.
+Control statements help the programmer to control the flow of a
+program via allowing code to be skipped when it would otherwise
+be executed.
 
 \begin{spec}
-stmt_control     = control_return | control_break | control_continue ;
+stmt_control     = control_return
+                 | control_break
+                 | control_continue    ;
 
 control_return   = `return'   [ expr ] ;
 control_break    = `break'    [ expr ] ;
@@ -271,7 +274,7 @@ control_continue = `continue'          ;
 \label{ssub:function_definitions}
 
 Function definitions allow the programmer to assign a lambda to an
-identifier in a semantically clear manner.
+identifier.
 
 \paragraph{Parameters}
 \label{par:parameters}
@@ -286,9 +289,9 @@ more information.
 % FIXME: '$' character needs escaping to have correct syntax
 % highlighting - but this shows up in the pdf.
 \begin{spec}
-function_def = simple_ident `(' { parameter } `)' stmt ;
+function_def = simple_ident `(' { parameter } `)' stmt                  ;
 
-parameter = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
+parameter    = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
 \end{spec}
 
 \subsection{Expressions}
@@ -321,9 +324,10 @@ the variadic operators are prefix within parentheses and can take
 a variable number of arguments.
 \begin{spec}
 
-operation = unop expr | `(' varop { expr } `)' ;
+operation =     unop    expr
+          | `(' varop { expr } `)'        ;
 
-unop      = `^' | `-' ;
+unop      = `^' | `-'                     ;
 
 varop     = `+' | `-'  | `/' | `*'
                 | `|'  | `&' | `>='
@@ -390,12 +394,12 @@ expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
 
 \subsubsection{Function calls}
 \label{ssub:function_calls}
-
-All functions in Angle produce values when executed. This may be the
-`null' value, or a well-defined value.
+All functions in Angle produce values when executed. The `null' value
+is returned implicitly from functions that would otherwise return
+nothing.
 
 \begin{spec}
-function_call = simple_ident `(' { expr } `)' ;
+function_call = simple_ident `(' { expr `,' } `)' ;
 \end{spec}
 
 \subsubsection{Identifiers}
@@ -403,12 +407,12 @@ function_call = simple_ident `(' { expr } `)' ;
 
 Identifiers represent names given to functions and values so that
 they may be referred to elsewhere within the program.
-\\
-I refer to `alpha' and `digit' without formally defining them,
-they refer to the characters of the roman alphabet (upper and lower; [`a'..`z'], [`A'..`Z'])
-and the digits used in the denary system ([`0'..`9']) respectively.
 
 \begin{spec}
+
+alpha          = `a'..`Z'                       ;
+digit          = `0'..`9'                       ;
+
 identifier     = simple_ident  | function_ident ;
 
 simple_ident   = alpha { alpha | digit }        ;
@@ -421,8 +425,8 @@ function_ident = `\$'    simple_ident           ;
 \section{How it should work}
 \label{sec:how_it_should_work}
 
-As Angle is intended to be a programming language it should satisfy
-some basic principles:
+The basic sequence of executing a program in Angle should be as
+follows:
 
 \begin{enumerate}
   \item The programmer writes a program using Angle syntax.
@@ -444,8 +448,9 @@ some basic principles:
   \item The program exits and memory is freed.
 \end{enumerate}
 
-To be able to achieve this method of execution the project will need
-to be split into three main sections:
+To achieve this method of execution the project is split into
+three sections.
+
 \begin{description}
   \item[executable] for running programs, the main interface for the
     user. See section~\ref{sub:using_angle} for more information.
@@ -575,9 +580,8 @@ defined.
 \paragraph{Representing the parser}
 \label{par:representing_the_scanner}
 
-As it is unknown at this time the exact type of value that will be
-returned by parsing functions, the parser type will have to be
-polymorphic.
+As the exact types of values that the parser will be expected to
+produce may vary, its type has to be polymorphic.
 \\ \\ \textit{The parser consisting of just the scanner component.}
 \begin{spec}
 type Parser a = State SourcePos a
