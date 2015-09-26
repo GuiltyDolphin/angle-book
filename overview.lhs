@@ -35,6 +35,16 @@ the documentation interactively.
 \section{Background}
 \label{sec:background}
 
+\subsection{Haskell}
+\label{sub:haskell}
+
+I have decided to write my project using the Haskell programming
+language. Haskell is a statically-typed, functional, lazy language
+that supports type-inference.\footnote{https://www.haskell.org/}
+
+Haskell's type system makes it very easy to develop projects quickly
+and safely as a project will not compile unless types match up.
+
 \subsection{Software}
 \label{sub:software}
 
@@ -68,6 +78,23 @@ The Glasgow Haskell Compiler, or GHC, is the main actively-maintained
 compiler for Haskell.\footnote{https://www.haskell.org/ghc/} It is very
 stable and provides a lot of additional features that may be used when
 required by a programmer.
+
+\subsubsection{Modules}
+\label{ssub:modules}
+
+% TODO: What... Fix the phrasing!
+I have used external modules to cope with aspects of the project which
+it would be redundant for me to re-write.
+
+\begin{description}
+  \item[QuickCheck] - a testing library that can generate random tests
+    for checking that specified properties hold when applied to
+    different data.\footnote{https://hackage.haskell.org/package/QuickCheck}
+  \item[tasty] - a test framework that allows the combination of tests
+    into a single test suite for running.\footnote{https://hackage.haskell.org/package/tasty}
+  \item[Criterion] - a benchmarking library for measuring the
+    performance of code.\footnote{https://hackage.haskell.org/package/criterion}
+\end{description}
 
 
 \part{Introduction}
