@@ -79,18 +79,18 @@ compiler for Haskell.\footnote{https://www.haskell.org/ghc/} It is very
 stable and provides a lot of additional features that may be used when
 required by a programmer.
 
-\subsubsection{Modules}
-\label{ssub:modules}
+\subsubsection{Libraries}
+\label{ssub:libraries}
 
-% TODO: What... Fix the phrasing!
-I have used external modules to cope with aspects of the project which
-it would be redundant for me to re-write.
+Throughout the project I have used many libraries written by other
+developers. Some part of the Haskell Platform\footnote{https://www.haskell.org/platform/contents.html},
+others standalone. Below are some of the packages I have used.
 
 \begin{description}
   \item[QuickCheck] - a testing library that can generate random tests
     for checking that specified properties hold when applied to
     different data.\footnote{https://hackage.haskell.org/package/QuickCheck}
-  \item[tasty] - a test framework that allows the combination of tests
+  \item[Tasty] - a test framework that allows the combination of tests
     into a single test suite for running.\footnote{https://hackage.haskell.org/package/tasty}
   \item[Criterion] - a benchmarking library for measuring the
     performance of code.\footnote{https://hackage.haskell.org/package/criterion}
@@ -220,7 +220,7 @@ instead promotes constructive modification.
 Some features and where to find the respective information is shown
 in the table below.
 
-`Types' refers to a type defined in `Angle.Types.Lang' that provides
+`Types' refers to a type defined in \texttt{Angle.Types.Lang} that provides
 more information on the feature.
 
 \begin{tabular}{l c r}
@@ -241,7 +241,7 @@ more information on the feature.
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
 
-`Angle.Types.Lang' and `Angle.Parse.Parser.Internal' implement the
+\texttt{Angle.Types.Lang} and \texttt{Angle.Parse.Parser.Internal} implement the
 language grammar in terms of Haskell types and functions.
 
 \paragraph{Overview}
@@ -349,7 +349,7 @@ Angle supports certain annotations to parameters when defining a
 function that allow the programmer to restrict the types of values
 that a function will accept.
 
-See `Angle.Types.Lang.ConstrRef' and `Angle.Types.Lang.AnnType' for
+See \texttt{Angle.Types.Lang.ConstrRef} and \texttt{Angle.Types.Lang.AnnType} for
 more information.
 
 % FIXME: '$' character needs escaping to have correct syntax
@@ -571,7 +571,7 @@ There are two main requirements for the scanner:
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
 
-`Angle.Scanner' defines the scanner.
+\texttt{Angle.Scanner} defines the scanner.
 
 
 \paragraph{Source Position}
@@ -629,9 +629,9 @@ type Scanner = State SourcePos
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
 
-`Angle.Scanner' defines the parser type. `Angle.Parse.Parser',
-`Angle.Parse.Helpers' and `Angle.Parse.Token' implement the parser
-functions. `Angle.Types.Lang' defines language structures in terms
+\texttt{Angle.Scanner} defines the parser type. \texttt{Angle.Parse.Parser},
+\texttt{Angle.Parse.Helpers} and \texttt{Angle.Parse.Token} implement the parser
+functions. \texttt{Angle.Types.Lang} defines language structures in terms
 of Haskell types.
 
 \subsubsection{The parser type}
@@ -732,15 +732,15 @@ of Angle syntax. Angle must be described in Haskell's type system
 and functions must be defined to parse each of the constructs.
 
 The parsing functions are defined through three modules.
-`Angle.Parse.Helpers' defines the most basic parsers for use in other
-modules. `Angle.Parse.Token' defines parsers that deal with very basic
-structures, such as strings and integers. `Angle.Parse.Parser' defines
+\texttt{Angle.Parse.Helpers} defines the most basic parsers for use in other
+modules. \texttt{Angle.Parse.Token} defines parsers that deal with very basic
+structures, such as strings and integers. \texttt{Angle.Parse.Parser} defines
 the parsers that read Angle syntax into Angle types.
 
 As an example of the process of defining a new Angle feature, I will
 use string literals.
 
-Functions from `Angle.Parse.Helpers':
+Functions from \texttt{Angle.Parse.Helpers}:
 \begin{description}
   \item[@char :: Char -> Parser Char@] parses the specified character.
   \item[@manyTill :: Parser b -> Parser a -> Parser [a]@] a
@@ -751,9 +751,9 @@ Functions from `Angle.Parse.Helpers':
 \end{description}
 
 Using these functions means that a parser could be defined in
-`Angle.Parse.Token' for parsing a basic string.\footnote{There are a
+\texttt{Angle.Parse.Token} for parsing a basic string.\footnote{There are a
 lot of edge cases when parsing strings, see
-`Angle.Parse.Token.tokString' for a better representation.}
+\texttt{Angle.Parse.Token.tokString} for a better representation.}
 
 \begin{spec}
 string :: Parser String
@@ -770,8 +770,8 @@ data LangLit = ...
              | ...
 \end{spec}
 
-defined in `Angle.Types.Lang', a parser can be implemented in
-`Angle.Parse.Parser' for wrapping a Haskell string in an Angle string.
+defined in \texttt{Angle.Types.Lang}, a parser can be implemented in
+\texttt{Angle.Parse.Parser} for wrapping a Haskell string in an Angle string.
 
 \begin{spec}
 litStr :: Scanner LangLit
