@@ -77,8 +77,8 @@ a functional language, albeit an impure one.\footnote{https://wiki.haskell.org/F
 \label{par:general_purpose}
 
 There was no specific use-case in mind when developing Angle, as such
-it is intended to be able to cope with the implementation of an array
-of different type of software.
+it is intended to be able to cope with the implementation of a variety
+of different types of software.
 
 \subparagraph{Interpreted}
 \label{par:interpreted}
@@ -93,7 +93,7 @@ Choosing to make Angle an interpreted language rather than compiled
 means that a compiler need not be written. It also means that
 programs do not need to be compiled before they are run and can be
 distributed as source without the need for any additional files,
-although the `angle' programm will be required to run the programs.
+although the `angle' program will be required to run the programs.
 
 \section{Project Overview}
 \label{sec:project_overview}
@@ -189,10 +189,10 @@ syntax.
 \section{Defining the language grammar}
 \label{sec:defining_the_language_grammar}
 
-\paragraph{Extended Bakus Naur Form (EBNF)}
-\label{par:extended_bakus_naur_form_ebnf_}
+\paragraph{Extended Backus Naur Form (EBNF)}
+\label{par:extended_backus_naur_form_ebnf_}
 
-EBNF is an extended version of Bakus Naur Form, a notation that can be
+EBNF is an extended version of Backus Naur Form, a notation that can be
 used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
 \\
 BNF can be used to decribe context-free grammars,\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/}
