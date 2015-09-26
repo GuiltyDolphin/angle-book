@@ -85,15 +85,16 @@ of different types of software.
 
 Interpreted languages differ from compiled languages in that instead
 of programs first being translated to machine code before being
-executed, instructions are translated to machine code and executed
-at run-time, thus possibly incurring a speed decrease when compared
-to a similar compiled language.\footnote{http://www.vanguardsw.com/dphelp4/dph00296.htm}
+executed, instructions are translated into pre-compiled subroutines and
+executed directly at run-time, thus possibly incurring a speed decrease
+when compared to a similar compiled language.\footnote{http://www.vanguardsw.com/dphelp4/dph00296.htm}
 
 Choosing to make Angle an interpreted language rather than compiled
 means that a compiler need not be written. It also means that
 programs do not need to be compiled before they are run and can be
 distributed as source without the need for any additional files,
-although the `angle' program will be required to run the programs.
+although the interpreter (`angle') is required in order to run the
+programs.
 
 \section{Project Overview}
 \label{sec:project_overview}
