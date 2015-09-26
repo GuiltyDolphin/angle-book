@@ -189,10 +189,10 @@ syntax.
 \section{Defining the language grammar}
 \label{sec:defining_the_language_grammar}
 
-\paragraph{Extended Bakus Noire Form (EBNF)}
-\label{par:extended_bakus_noire_form_ebnf_}
+\paragraph{Extended Bakus Naur Form (EBNF)}
+\label{par:extended_bakus_naur_form_ebnf_}
 
-EBNF is an extended version of Bakus Noire Form, a notation that can be
+EBNF is an extended version of Bakus Naur Form, a notation that can be
 used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
 \\
 BNF can be used to decribe context-free grammars,\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/}
