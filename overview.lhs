@@ -125,10 +125,10 @@ and non-interactive.
 \label{par:interactive_angle}
 
 When Angle runs in interactive mode, the user is presented with a
-prompt at which they may enter code line-by-line and have it execute
-immediately. This mode allows a programmer to debug code, test short
-snippets and ensure that a line consists of the correct syntax before
-using it in a program.
+prompt at which they may enter one or more lines of code which can then
+be executed. This mode allows a programmer to debug code, test short
+snippets and ensure code has the correct syntax before using it in a
+program.
 
 \paragraph{Non-Interactive}
 \label{par:non_interactive}
