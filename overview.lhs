@@ -833,4 +833,40 @@ The use of Cabal has greatly sped up development of Angle, as changes
 to directory structure need only be updated in the cabal file, and
 cabal's support for benchmarks and testing aided in the development
 workflow.
+
+\section{Implementation changes}
+\label{sec:implementation_changes}
+
+As is often the case, with hindsight I am aware of areas of the
+implementation that may have been improved if certain knowledge was
+availiable at the beginning of the project.
+\\
+For example, Haskell supports Generalized Algebraic Datatypes - a
+system that allows you to explicity state types signatures of the
+constructors of a type.\footnote{https://downloads.haskell.org/~ghc/6.6.1/docs/html/users\_guide/gadt.html}
+Knowledge of this when starting the project may have made it easier
+and cleaner to come up with a representation for the language
+structures.
+\\
+\\
+In the early stages of the project there were some issues with the
+testing frameworks - the sizes of the test-cases that QuickCheck was
+generating were too large to be completed in a reasonable time. With
+\texttt{test-framework}, the initial testing framework, I had great
+difficulty controlling the size of individual test-cases. After
+switching to \texttt{tasty} these issues were more easily dealt with.
+\\
+For future projects I shall have to do more research into testing
+libraries to ensure they can cope with all my projects' needs before
+commencing on the actual project itself.
+
+\section{Final comments}
+\label{sec:final_comments}
+
+After having now created a basic programming language, I feel I have
+gained enough knowledge to study the topic more in-depth and implement
+more small languages. I will perhaps revisit Angle in the future to
+implement some of the mentioned lacking features and review how my
+methods have changed.
+
 \end{document}
