@@ -812,4 +812,25 @@ litStr = liftM LitStr tokString
 Then this process is repeated for any other structures that need to
 be parsed.
 
+\part{Conclusion}
+\label{prt:conclusion}
+
+Angle satisfies many of the initial design requirements; although not
+fully featured (lacking import capabilities and user exception
+handling), it supports the essential features such as subroutines,
+conditional constructs, looping structures and rudimentary IO. This
+means it can be used for the implementation of general software - its
+intended purpose.
+\\
+Although lacking some important features, the design of the language
+allows for new features to be implemented in a fairly simple manner.
+\\
+The documentation for the source code is satisfactory, and the use of
+Haddock means that this documentation may be displayed in a
+user-friendly manner.
+\\
+The use of Cabal has greatly sped up development of Angle, as changes
+to directory structure need only be updated in the cabal file, and
+cabal's support for benchmarks and testing aided in the development
+workflow.
 \end{document}
