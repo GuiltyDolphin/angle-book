@@ -860,6 +860,36 @@ For future projects I shall have to do more research into testing
 libraries to ensure they can cope with all my projects' needs before
 commencing on the actual project itself.
 
+\subsection{Errors and debugging}
+\label{sub:errors_and_debugging}
+
+An important part of any language is its ability to convey error
+messages to the programmer, and provide support for debugging the
+software.
+\\
+This was a design consideration from quite early in the project, and
+I feel that Angle's error reporting system is satisfactory for the
+project level. Angle provides no separate debugging utilities, bar the
+interactive mode accessible through the software. In future projects
+I would encourage a more ingrained error system, with much more
+detailed messages (function calls that lead to the error, etc.,),
+especially at the parsing stage.
+
+\subsection{Type system}
+\label{sub:type_system}
+
+My choice was to have a dynamic type system for Angle - this was done
+intentionally to reduce reliance on Haskell's type system to improve
+my understanding of coping with non-static type systems.
+\\
+% TODO: Piggyback... Really?
+In the future, when this is not a goal in mind, I believe it would be
+wise to allow Haskell to enforce type-correctness in any small
+language implementations. This would not only reduce the required
+effort, but also perhaps provide some speed increases and allow me to
+better understand how to piggyback off of another type system.
+
+
 \section{Final comments}
 \label{sec:final_comments}
 
