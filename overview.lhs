@@ -342,10 +342,10 @@ Conditionals allow the programmer to control which parts of code get
 executed based on the boolean result of expressions.
 
 \begin{spec}
-stmt_condition = cond_if | cond_unless                  ;
+stmt_condition = cond_if | cond_unless                     ;
 
-cond_if     = `if'     expr `then' stmt [ `else' stmt ] ;
-cond_unless = `unless' expr        stmt                 ;
+cond_if        = `if'     expr `then' stmt [ `else' stmt ] ;
+cond_unless    = `unless' expr        stmt                 ;
 \end{spec}
 
 
@@ -484,7 +484,7 @@ rather than a literal so that the contents are only known when the
 list or range is evaluated.
 
 \begin{spec}
-expr_list =    `[' { expr `,' }                           `]' ;
+expr_list    = `[' { expr `,' }                           `]' ;
 expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
 \end{spec}
 
@@ -773,11 +773,11 @@ use string literals.
 
 Functions from \texttt{Angle.Parse.Helpers}:
 \begin{description}
-  \item[@char :: Char -> Parser Char@] parses the specified character.
+  \item[@char     :: Char     -> Parser Char@] parses the specified character.
   \item[@manyTill :: Parser b -> Parser a -> Parser [a]@] a
     higher-order parser that parses until the first parser is
     satisfied.
-  \item[@anyChar :: Parser Char@] essentially the same as the base
+  \item[@anyChar  :: Parser Char@] essentially the same as the base
     scanner function - parses any character.
 \end{description}
 
