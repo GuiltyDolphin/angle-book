@@ -22,8 +22,9 @@
 \label{par:how_to_read_this_document}
 
 This document should be read in conjunction with the source files
-provided. Examples of code presented in this document may not
-reflect the final source, and should be assumed to be non-functional.
+provided. Examples of code in this document are for illustration
+purposes and should be assumed to be non-functional - the source files
+should be referred to for working code.
 \\
 Relevant modules will be stated before any sections describing the
 development of code.
