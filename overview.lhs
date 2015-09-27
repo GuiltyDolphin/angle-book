@@ -15,6 +15,16 @@
 
 \maketitle
 
+\begin{abstract}
+  The purpose of this project was to create a general-purpose
+  programming language. The programming language `Haskell', along with
+  standard tools such as cabal and the Glasgow Haskell Compiler have
+  been used for the implementation. Each component of the language has
+  been custom built - the scanner, parser and interpreter. The end
+  product is a piece of software that can be used to run syntactically
+  correct source files either interactively or non-interactively.
+\end{abstract}
+
 \tableofcontents
 
 
