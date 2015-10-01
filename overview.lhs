@@ -24,6 +24,7 @@
   Cabal and the Glasgow Haskell Compiler have been used for the
   implementation.
   \\
+  % FIXME: Not sure about the colon after including.
   Angle takes inspiration from many programming languages, including:
   Perl, Lisp, Python, Ruby and Haskell itself.
   \\
@@ -815,6 +816,15 @@ be parsed.
 \part{Conclusion}
 \label{prt:conclusion}
 
+% FIXME: Doesn't support any C-libraries and whatnot, would be quite
+% difficult to implement software in it.
+% If it perhaps provided a system-call interface then this would
+% be feasable, but it doesn't...
+% Would need file reading capabilities for any decent software
+% development.
+% Maybe implement a small file IO system? Could use syntax similar
+% to Perl, and use Haskell's file reading functions (they can provide
+% handles).
 Angle satisfies many of the initial design requirements; although not
 fully featured (lacking import capabilities and user exception
 handling), it supports the essential features such as subroutines,
@@ -822,6 +832,7 @@ conditional constructs, looping structures and rudimentary IO. This
 means it can be used for the implementation of general software - its
 intended purpose.
 \\
+% FIXME: This is quite repetitive ('...lacking important features...')
 Although lacking some important features, the design of the language
 allows for new features to be implemented in a fairly simple manner.
 \\
@@ -882,12 +893,11 @@ My choice was to have a dynamic type system for Angle - this was done
 intentionally to reduce reliance on Haskell's type system to improve
 my understanding of coping with non-static type systems.
 \\
-% TODO: Piggyback... Really?
 In the future, when this is not a goal in mind, I believe it would be
 wise to allow Haskell to enforce type-correctness in any small
 language implementations. This would not only reduce the required
 effort, but also perhaps provide some speed increases and allow me to
-better understand how to piggyback off of another type system.
+better understand how to use existing type-systems to my advantage.
 
 
 \section{Final comments}
