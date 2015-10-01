@@ -113,6 +113,7 @@ others standalone. Below are some of the packages I have used.
 \paragraph{How to read this document}
 \label{par:how_to_read_this_document}
 
+% FIXME: There is repetition on '...refer to the source files...'
 This document should be read in conjunction with the source files
 provided. Examples of code in this document are for illustration
 purposes and should be assumed to be non-functional - the source files
@@ -242,6 +243,8 @@ Angle supports many features, such as looping and support for
 functional programming, along with some more obscure features such as
 parameter constraints.
 
+% TODO: Update this to reflect the addition of exception handling,
+% file io and the possibility for imports through eval.
 Angle also has a lot of potential for more big features to be
 implemented, some of which are largely essential to a good programming
 environment - exception handling and imports. The way in which Angle
@@ -306,12 +309,13 @@ themselves being made of assignments, expressions and language
 constructs.
 
 \begin{spec}
-stmt        = single_stmt  | multi_stmt                   ;
+stmt        = single_stmt  | multi_stmt                    ;
 
 single_stmt = function_def | stmt_expr      | stmt_control
-            | stmt_loop    | stmt_condition | stmt_assign ;
+            | stmt_loop    | stmt_condition | stmt_assign
+            | stmt_raise   | stmt_try_catch                ;
 
-multi_stmt  = `{' { stmt } `}'                            ;
+multi_stmt  = `{' { stmt } `}'                             ;
 \end{spec}
 
 \subsubsection{Assignment}
@@ -391,6 +395,44 @@ function_def = simple_ident `(' { parameter } `)' stmt                  ;
 
 parameter    = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
 \end{spec}
+
+
+\subsubsection{Raising exceptions}
+\label{ssub:raising_exceptions}
+
+Angle provides the @raise@ statement to allow the user to throw
+exceptions. These can be used for control flow or to indicate the
+arisal of errors or unexpected scenarios occuring during run-time.
+
+\begin{spec}
+stmt_raise = `raise ' litKeyword ;
+\end{spec}
+
+Keywords are used to represent the exceptions.
+
+
+\subsubsection{Catching exceptions}
+\label{ssub:catching_exceptions}
+
+Angle provides a construct for handling exceptions. A statement is
+wrapped in @try@ and then any exceptions that occur during the
+execution of this statement are passed to the following @catch(s)@.
+\\
+Each @catch@ specifies either a single keyword or a list of keywords
+that represent the exceptions that should be handled by the
+accompanying statement. If the exception matches that of any of those
+that the @catch@ can handle, then the provided statement is executed
+and no further @catch(s)@ will be executed.
+
+
+\begin{spec}
+  stmt_try_catch = `try '   stmt catch_spec { catch_spec } ;
+
+  catch_spec     = `catch ' catch_keyword stmt             ;
+
+  catch_keyword  = litKeyword | `[' { litKeyword `,' } `]' ;
+\end{spec}
+
 
 \subsection{Expressions}
 \label{sub:expressions}
