@@ -858,21 +858,46 @@ be parsed.
 \part{Conclusion}
 \label{prt:conclusion}
 
-% FIXME: Doesn't support any C-libraries and whatnot, would be quite
-% difficult to implement software in it.
-% If it perhaps provided a system-call interface then this would
-% be feasable, but it doesn't...
-% Would need file reading capabilities for any decent software
-% development.
-% Maybe implement a small file IO system? Could use syntax similar
-% to Perl, and use Haskell's file reading functions (they can provide
-% handles).
-Angle satisfies many of the initial design requirements; although not
-fully featured (lacking import capabilities and user exception
-handling), it supports the essential features such as subroutines,
-conditional constructs, looping structures and rudimentary IO. This
-means it can be used for the implementation of general software - its
-intended purpose.
+% TODO: Update conclusion to reflect the addition of basic exception
+% handling and file io (also maybe mention import through eval?)
+% Also has the shell function.
+
+Angle satisfies its initial design requirement as a general-purpose
+programming language. It supports most major language features,
+including subroutines, variables, looping and conditional structures,
+exception handling and file IO.
+
+% Angle satisfies many of the initial design requirements; it supports
+% most major language features (with the exception of imports):
+% subroutines, variables, looping and conditional structures, file IO,
+% and exception handling.
+\\
+I believe that Angle is fit for purpose as a general-purpose
+programming language. For small projects, the standard structures,
+along with the support for input and output to files, as well as direct
+calls to shell commands, means that most use-cases should be handled
+directly.
+\\
+For larger projects, the ability to embed code from other files
+through builtin functions should encourage the use of multiple source
+files in a single project, and the creation of libraries to reduce
+code duplication.
+\\
+Regarding the internal structure: the design of Angle allows for new
+syntax, bulitins, types and language structures to be defined
+relatively easily. This means that
+% I believe Angle is fit for purpose as a general-purpose programming
+% language. Although Angle does not support imports directly, and import
+% capabilities are fairly essential to a successful programming
+% language, the functionality can be achieved through the use of the
+% builtin @eval@ function.
+
+% Angle satisfies many of the initial design requirements; although not
+% fully featured (lacking import capabilities and user exception
+% handling), it supports the essential features such as subroutines,
+% conditional constructs, looping structures and rudimentary IO. This
+% means it can be used for the implementation of general software - its
+% intended purpose.
 \\
 % FIXME: This is quite repetitive ('...lacking important features...')
 Although lacking some important features, the design of the language
