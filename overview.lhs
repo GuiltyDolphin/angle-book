@@ -26,14 +26,14 @@
   \\
   % FIXME: Not sure about the colon after including.
   Angle takes inspiration from many programming languages, including:
-  Perl, Lisp, Python, Ruby and Haskell itself.
+  Perl, Lisp, Python, Ruby, and Haskell itself.
   \\
-  The end product is a piece of software that can be used to run
-  syntactically correct source files either interactively or
-  non-interactively.
-  % TODO: Meh? Do you want this bit?
-  Each component of the language has been custom built - the scanner,
-  parser and interpreter.
+  The end product is twofold: the language itself, its grammar,
+  implementation details and semantics; and the software that can be
+  used to execute source either interactively or non-interactively.
+  % The end product is a piece of software that can be used to run
+  % syntactically correct source files either interactively or
+  % non-interactively.
 
 \end{abstract}
 
@@ -866,12 +866,11 @@ Angle satisfies its initial design requirement as a general-purpose
 programming language. It supports most major language features,
 including subroutines, variables, looping and conditional structures,
 exception handling and file IO.
-
+\\
 % Angle satisfies many of the initial design requirements; it supports
 % most major language features (with the exception of imports):
 % subroutines, variables, looping and conditional structures, file IO,
 % and exception handling.
-\\
 I believe that Angle is fit for purpose as a general-purpose
 programming language. For small projects, the standard structures,
 along with the support for input and output to files, as well as direct
@@ -884,24 +883,10 @@ files in a single project, and the creation of libraries to reduce
 code duplication.
 \\
 Regarding the internal structure: the design of Angle allows for new
-syntax, bulitins, types and language structures to be defined
-relatively easily. This means that
-% I believe Angle is fit for purpose as a general-purpose programming
-% language. Although Angle does not support imports directly, and import
-% capabilities are fairly essential to a successful programming
-% language, the functionality can be achieved through the use of the
-% builtin @eval@ function.
-
-% Angle satisfies many of the initial design requirements; although not
-% fully featured (lacking import capabilities and user exception
-% handling), it supports the essential features such as subroutines,
-% conditional constructs, looping structures and rudimentary IO. This
-% means it can be used for the implementation of general software - its
-% intended purpose.
-\\
-% FIXME: This is quite repetitive ('...lacking important features...')
-Although lacking some important features, the design of the language
-allows for new features to be implemented in a fairly simple manner.
+syntax, builtin-functions, types and language structures to be defined
+relatively easily. This extensibility means that creating new language
+features in the future is a definite possibility.
+% FIXME: ^ not sure about 'definite possibility'
 \\
 The documentation for the source code is satisfactory, and the use of
 Haddock means that this documentation may be displayed in a
@@ -912,7 +897,7 @@ to directory structure need only be updated in the cabal file, and
 cabal's support for benchmarks and testing aided in the development
 workflow.
 
-\section{Implementation changes}
+\section{Implementation}
 \label{sec:implementation_changes}
 
 As is often the case, with hindsight I am aware of areas of the
@@ -973,7 +958,6 @@ better understand how to use existing type-systems to my advantage.
 After having now created a basic programming language, I feel I have
 gained enough knowledge to study the topic more in-depth and implement
 more small languages. I will perhaps revisit Angle in the future to
-implement some of the mentioned lacking features and review how my
-methods have changed.
+implement additional features and review how my methods have changed.
 
 \end{document}
