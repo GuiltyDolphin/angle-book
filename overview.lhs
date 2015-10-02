@@ -236,42 +236,42 @@ to be executed, a source file is read and run by the Angle
 interpreter. This mode is how programs should usually be run.
 
 
-\section{Features}
-\label{sec:features}
+% \section{Features}
+% \label{sec:features}
+%
+% Angle supports many features, such as looping and support for
+% functional programming, along with some more obscure features such as
+% parameter constraints.
+%
+% % TODO: Update this to reflect the addition of exception handling,
+% % file io and the possibility for imports through eval.
+% Angle also has a lot of potential for more big features to be
+% implemented, some of which are largely essential to a good programming
+% environment - exception handling and imports. The way in which Angle
+% has been implemented and refined means that adding new features
+% requires modifying as little of the existing code as possible, and
+% instead promotes constructive modification.
+%
+% Some features and where to find the respective information is shown
+% in the table below.
+%
+% `Types' refers to a type defined in \texttt{Angle.Types.Lang} that provides
+% more information on the feature.
+%
+% \begin{tabular}{l c r}
+%   Feature & Types & Sections \\
+%   \hline
+%   Conditionals & `LangStruct' & section~\ref{ssub:conditional_constructs} \\
+%   Parameter constraints & `ConstrRef' & section~\ref{ssub:function_definitions} \\
+%   Parameter annotations & `AnnType' & section~\ref{ssub:function_definitions} \\
+%   Looping structures & `LangStruct' & section~\ref{ssub:looping_structures} \\
+%   Functions & `Lambda' & section~\ref{ssub:function_definitions} \\
+%   Operators & `LangOp' & section~\ref{ssub:operations} \\
+% \end{tabular}
 
-Angle supports many features, such as looping and support for
-functional programming, along with some more obscure features such as
-parameter constraints.
 
-% TODO: Update this to reflect the addition of exception handling,
-% file io and the possibility for imports through eval.
-Angle also has a lot of potential for more big features to be
-implemented, some of which are largely essential to a good programming
-environment - exception handling and imports. The way in which Angle
-has been implemented and refined means that adding new features
-requires modifying as little of the existing code as possible, and
-instead promotes constructive modification.
-
-Some features and where to find the respective information is shown
-in the table below.
-
-`Types' refers to a type defined in \texttt{Angle.Types.Lang} that provides
-more information on the feature.
-
-\begin{tabular}{l c r}
-  Feature & Types & Sections \\
-  \hline
-  Conditionals & `LangStruct' & section~\ref{ssub:conditional_constructs} \\
-  Parameter constraints & `ConstrRef' & section~\ref{ssub:function_definitions} \\
-  Parameter annotations & `AnnType' & section~\ref{ssub:function_definitions} \\
-  Looping structures & `LangStruct' & section~\ref{ssub:looping_structures} \\
-  Functions & `Lambda' & section~\ref{ssub:function_definitions} \\
-  Operators & `LangOp' & section~\ref{ssub:operations} \\
-\end{tabular}
-
-
-\part{Grammar}
-\label{prt:grammar}
+\part{Grammar and language features}
+\label{prt:grammar_and_language_features}
 
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
@@ -282,10 +282,14 @@ language grammar in terms of Haskell types and functions.
 \paragraph{Overview}
 \label{par:overview}
 
-The following provides a brief outline of a simple language grammar
-intended to represent some of the features of Angle. The grammar is
-not complete and is only intended to give an overview of Angle's
-syntax.
+% The following provides a brief outline of a simple language grammar
+% intended to represent some of the features of Angle. The grammar is
+% not complete and is only intended to give an overview of Angle's
+% syntax.
+
+The following provides a brief outline of Angle's language grammar,
+written in a slightly modified Extended Backus Naur form, along with
+an overview of some of the features Angle provides.
 
 \section{Defining the language grammar}
 \label{sec:defining_the_language_grammar}
@@ -461,7 +465,8 @@ and the operands are the values to perform the operation on.
 Operators in Angle are split into two types: unary and variadic.
 The unary operators are prefix and take a single argument, whereas
 the variadic operators are prefix within parentheses and can take
-a variable number of arguments.
+a variable number of arguments. See \texttt{Angle.Exec.Operations}
+for more information on how the operators work.
 \begin{spec}
 
 operation =     unop    expr
@@ -555,9 +560,11 @@ digit          = `0'..`9'                       ;
 
 identifier     = simple_ident  | function_ident ;
 
-simple_ident   = alpha { alpha | digit }        ;
+simple_ident   = (alpha | `_') { alpha | digit | `_' }        ;
 function_ident = `\$'    simple_ident           ;
 \end{spec}
+% FIXME: Another $ that needs escaping in the source code.
+% unescape it for final document.
 
 \part{Creating Angle}
 \label{prt:creating_angle}
