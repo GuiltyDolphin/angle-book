@@ -119,6 +119,98 @@ others standalone. Below are some of the packages I have used.
     performance of code.\footnote{https://hackage.haskell.org/package/criterion}
 \end{description}
 
+
+\subsection{A brief overview of language implementation}
+\label{sub:a_brief_overview_of_language_implementation}
+
+\subsubsection{Translator Software}
+\label{ssub:translator_software}
+
+% TODO: Get a link for this bit.
+Translator software is used to traslate a program written in one
+language to another language, without loosing any functionality.
+\\
+Although people often refer to languages as `compiled' or
+`interpereted', the translator software is distinct from the language
+itself, and thus a language could be both interpreted \textit{and}
+compiled.\footnote{This is quite common with the more popular
+languages, for example: Python and Lisp both have compiler and
+interpreter implementations.}
+% TODO: Not sure about that previous paragraph!
+
+
+% FIXME: Don't like this sentence.
+Compilers and interpreters are two very different methods for providing
+what is essentially the same result.
+\\
+\paragraph{Compilers}
+\label{par:compilers}
+A compiler is a piece of software that takes a file containing the
+source code for one language, and produces output in another language.
+The output language is often in a form that can be executed by the
+system's CPU - namely object code.
+\\
+% There are numerous advantages to having a compiler for a language:
+% compiled source is often faster than non-compiled source, as the
+% CPU doesn't have to perform
+Compilers can range from
+
+
+\paragraph{Interpreters}
+\label{par:interpreters}
+Interpreters differ from compilers in that instead of programs first
+being translated to machine code before being executed, instructions
+are translated into pre-compiled subroutines and executed directly at
+run-time, thus possibly incurring a speed decrease when compared to a
+similar compiled language.\footnote{http://www.vanguardsw.com/dphelp4/dph00296.htm}
+\\
+One of the main disadvantages of an interpreter is that it is
+required every time a program needs to be run. Source code is also
+more transparent, as the files are run directly by the interpreter.
+
+\subsubsection{Programming Paradigms}
+\label{ssub:programming_paradigms}
+
+Programming paradigms are a way of writing programs using a
+programming language. Most languages encourage the use of one or more
+paradigms (for example, Haskell strongly encourages the use of the
+functional paradigm), but will not usually \textit{force} the
+programmer to use a single one.
+
+\paragraph{Common paradigms}
+\label{par:common_paradigms}
+
+% FIXME: Don't like this sentence.
+Although many paradigms exist, a few have risen in popularity above
+others. This is a brief overview of these.\footnote{http://cs.lmu.edu/~ray/notes/paradigms/}
+
+\paragraph{Declarative}
+\label{par:declarative}
+
+The declarative paradigm is one in which programs describe what
+actions should be performed, but don't explicity state \textit{how}
+this should be done.
+\\
+Common examples of declarative languages are database query languages such as SQL.
+\\
+\\
+\textit{The programmer specifies that the required action is retrieving a column from a row in a database. No indication of how to achieve this is given.}
+\begin{spec}
+SELECT column FROM row WHERE condition
+\end{spec}
+
+
+\paragraph{Imperative}
+\label{par:imperative}
+
+In the opposite spectrum of paradigms to declarative is imperative.
+In imperative languages the programmer specifies how to perform
+computations via a sequence of sep-by-step instructions.\footnote{https://msdn.microsoft.com/en-gb/library/bb669144.aspx}
+Contrary to declarative languages, the order of execution in
+imperative languages can greatly affect the outcome of the program.
+
+
+
 \paragraph{How to read this document}
 \label{par:how_to_read_this_document}
 
