@@ -180,9 +180,8 @@ programmer to use a single one.
 \paragraph{Common paradigms}
 \label{par:common_paradigms}
 
-% FIXME: Don't like this sentence.
-Although many paradigms exist, a few have risen in popularity above
-others. This is a brief overview of these.\footnote{http://cs.lmu.edu/~ray/notes/paradigms/}
+Following is a brief description of some of the more common
+paradigms.\footnote{http://cs.lmu.edu/~ray/notes/paradigms/}
 
 \paragraph{Declarative}
 \label{par:declarative}
@@ -208,6 +207,52 @@ In imperative languages the programmer specifies how to perform
 computations via a sequence of sep-by-step instructions.\footnote{https://msdn.microsoft.com/en-gb/library/bb669144.aspx}
 Contrary to declarative languages, the order of execution in
 imperative languages can greatly affect the outcome of the program.
+
+
+\paragraph{Object-oriented}
+\label{par:object_oriented}
+
+In object-oriented languages, structures called objects, which have
+state (usually represented by properties) and methods that are used
+to change this state.
+\\
+Objects can call other objects' methods, or potentially directly
+modify their properties in order to change this state.
+\\
+Inheritance is usually present in object-oriented languages, and
+allows a parent-child relationship between different objects.
+\\
+\\
+\textit{A python3 example of class-based object-oriented programming.}
+\begin{spec}
+class Animal:
+    noise = "roar"
+
+    def __init__(self, name):
+        self.name = name
+
+class Duck(Animal):
+    noise = "quack"
+
+    def __init__(self, *args):
+        super().__init__(*args)
+
+
+sam = Duck("Sam")
+\end{spec}
+
+
+In the above example, it could be said that @sam@ is a @Duck@ called
+@Sam@, and that a @Duck@ is a type of @Animal@.
+\\
+@noise@ is a class variable, and does not rely on an instance (@sam@)
+being created, thus @Duck.noise == 'quack'@, but also
+@sam.noise == 'quack'@.
+
+
+\paragraph{Functional}
+\label{par:functional}
+
 
 
 
