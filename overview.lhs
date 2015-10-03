@@ -80,9 +80,8 @@ compiling, running tests and installing packages.
 
 Haddock is a system for generating documentation from annotated Haskell
 source files.\footnote{https://www.haskell.org/haddock/}
-I chose Haddock due to it's markdown-like syntax
-(which is familiar to me), ease of readability and integration with
-Cabal.
+I chose Haddock due to it's intuitive syntax, ease of readability and
+integration with Cabal.
 
 
 \subsubsection{Glasgow Haskell Compiler}
