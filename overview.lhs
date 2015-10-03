@@ -283,6 +283,39 @@ Haskell is an example of a purely-functional programming language.
 % a functional language, albeit an impure one.\footnote{https://wiki.haskell.org/Functional\_programming}
 
 
+\subsubsection{Type systems}
+\label{ssub:type_systems}
+
+\paragraph{Static and dynamic type checking}
+\label{par:static_and_dynamic_type_checking}
+
+% FIXME: Not happy with this paragraph
+
+In a statically-typed language, certain type-related criterion must
+be met before a program can be executed. These criterion can ensure
+a program will have well-typed operations and that types are not used
+incorrectly.\footnote{http://courses.cs.washington.edu/courses/cse341/04wi/lectures/13-dynamic-vs-static-types.html}
+\\
+Statically-typed languages often require the programmer to annotate
+code, stating the types of variables and functions when they are
+declared. This being one of the main disadvantages when compared to a
+dynamically-typed language.
+\\
+In a dynamically-typed language, types are checked at run-time, this
+means that type-correctness is not ensured and errors may occur as a
+result of types being used in places for which they are not valid.\footnote{http://c2.com/cgi/wiki?DynamicTyping}
+
+
+% \subparagraph{Dynamic}
+% \label{par:dynamic}
+%
+% Being dynamically typed means that type-checking in Angle is
+% performed at run-time,\footnote{http://c2.com/cgi/wiki?DynamicTyping}
+% thus programs are not guaranteed to be type-correct
+% (unlike in Haskell, where the compiler ensures that programs do not
+% compile if any inconsistencies in types are noticed).
+
+
 
 
 \paragraph{How to read this document}
