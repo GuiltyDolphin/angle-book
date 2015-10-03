@@ -7,6 +7,16 @@
 % \usepackage[nounderscore]{syntax}
 % \usepackage{underscore}
 
+% This provides a table of contents that okular can read.
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=black
+}
+
 \title{An implementation of a basic general-purpose programming language}
 \author{Ben Moon}
 \date{}
