@@ -231,6 +231,7 @@ class Animal:
     def __init__(self, name):
         self.name = name
 
+
 class Duck(Animal):
     noise = "quack"
 
@@ -252,6 +253,34 @@ being created, thus @Duck.noise == 'quack'@, but also
 
 \paragraph{Functional}
 \label{par:functional}
+
+In functional languages, computations are treated as the evaluation
+of mathematical functions. Side-effects are usually low to
+non-existant as in a purely functional language functions should be
+referentially transparent (the same result should always arise with
+the same arguments).\footnote{https://wiki.haskell.org/Functional\_programming}
+\\
+Several features are prominent in functional languages:
+
+\begin{description}
+  \item[functions as first-class citizens] this means that functions
+    are treated equally when used in place of other data structures
+    (integers, lists etc...) and can thus be passed around as data.
+  \item[higher-order functions] functions that are higher-order can
+    take functions as arguments or produce them as results. This
+    makes sense when functions are first-class citizens as they should
+    be generally indistinguishable from other data.
+\end{description}
+
+
+Haskell is an example of a purely-functional programming language.
+
+% Functions in Angle are treated as first-class citizens; they can be
+% passed as values (via lambdas) just like any other data (integers,
+% strings etc.). Functions can also be higher-order, meaning that they
+% can accept other functions as arguments and call these functions
+% with another set of arguments. Due to these capabilities, Angle is
+% a functional language, albeit an impure one.\footnote{https://wiki.haskell.org/Functional\_programming}
 
 
 
