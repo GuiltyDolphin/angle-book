@@ -663,6 +663,69 @@ In this case the user exception is @:greaterThan5@, and is handled
 directly.
 
 
+\subsection{Looping Structures}
+\label{sub:looping_structures}
+
+Repeated execution of a block of code can generally be achieved by
+two methods: recursion and iteration, both of which are supported in
+Angle.
+
+\subsubsection{Recursion}
+\label{ssub:recursion}
+
+Recursion is achieved by a function self-calling with reduced
+arguments. A base case exists which when satisfied will return a
+well-formed value.
+
+\begin{spec}
+  defun factorial(n) {
+    if (== n 0) then return 1;
+    return (* n factorial((- n 1)));
+  }
+\end{spec}
+
+For the @factorial@ function, the base case is when the argument
+equals 0, and the value being passed in is reduced by 1 each time.
+
+
+\subsubsection{Iteration}
+\label{ssub:iteration}
+
+Angle supports two constructs for iteration: @for@ loops and @while@
+loops.
+\\
+\paragraph{For loops}
+\label{par:for_loops}
+
+For loops, when given a enumerable value such as a list or range,
+will pass over the contained values, assigning each element to a
+temporary variable for access in the body.
+\\
+\\
+\textit{Welcoming several people with the use of a for loop.}
+\begin{spec}
+names = ["Jannet", "Harry", "Theo"];
+
+for name in names do {
+  print("Welcome ", name);
+}
+\end{spec}
+
+\paragraph{While loops}
+\label{par:while_loops}
+
+Unlike their @for@ loop counterparts, which traverse a series of
+values, @while@ loops execute until some condition is met.
+
+\begin{spec}
+  age = 7;
+  while (< age 18) do {
+    print("Not an adult yet!");
+    age = (+ age 1);
+  }
+\end{spec}
+
+
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
 
