@@ -569,6 +569,10 @@ called in a class context.
 \label{sub:exceptions_and_exception_handling}
 
 
+\paragraph{Handling exceptions}
+\label{par:handling_exceptions}
+
+
 Exceptions arise as a result of any of a number of things going
 unexpectedly in a program; these can range from types being used in
 incorrect places and functions being called with the wrong number of
@@ -610,8 +614,53 @@ input (string) to an integer; when the user's input does not
 represent a valid integer string, a @:read@ exception is thrown. This
 is then caught by the @catch@ and the user is notified of their
 mistake. The @break :try@ statement at the end is a special form of
-the @break@ statement that just repeats the @try..catch@, as this
-handle-user-input-repeat form is quite common.
+the @break@ statement (see section~\ref{sub:looping_structures}) that
+just repeats the @try..catch@, as this handle-user-input-repeat form
+is quite common.
+
+
+\paragraph{User exceptions and re-raising}
+\label{par:user_exceptions_and_re_raising}
+
+Although catching exceptions is very useful itself, sometimes it may
+be useful to throw the exceptions.
+\\
+For example, what about the scenario where the `no such file'
+exception \textit{should} be fatal, but some cleanup should be
+performed before the program exits? Well, Angle provides the @raise@
+statement, which, when used with the currently-handled exception,
+will just re-raise the same exception.
+
+\begin{spec}
+  try {
+    my_handle = open("some_file.txt", "<");
+  }
+  catch :noSuchFile {
+    ... cleanup ...
+    raise :noSuchFile;
+  }
+\end{spec}
+
+Of course, @raise@ isn't just limited to existing exceptions, the
+programmer may specify their own exceptions instead, although as the
+user-exception system is rather limited, the only information
+availiable to those catching will be the name.
+
+\begin{spec}
+  try {
+    for i in (1..10) do {
+      if (> i 5) then {
+        raise :greaterThan5;
+      }
+    }
+  }
+  catch :greaterThan5 {
+    print("Got a number larger than 5!");
+  }
+\end{spec}
+
+In this case the user exception is @:greaterThan5@, and is handled
+directly.
 
 
 \paragraph{Relevant modules}
