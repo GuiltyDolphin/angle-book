@@ -565,6 +565,55 @@ Additionally, when called with a prefix @@\@@, a function will be
 called in a class context.
 
 
+\subsection{Exceptions and exception handling}
+\label{sub:exceptions_and_exception_handling}
+
+
+Exceptions arise as a result of any of a number of things going
+unexpectedly in a program; these can range from types being used in
+incorrect places and functions being called with the wrong number of
+arguments, to a requested file not being found on the filesystem or
+attempting to access a closed handle.
+\\
+The above exceptions are examples of those that can be raised by the
+interpreter during run-time; there is an issue with this system of
+exceptions however, the program would crash every single time an
+error occurred.
+\\
+To stop these exceptions reaching the user, Angle provides a
+@try...catch@ structure that allows the programmer to wrap a body of
+code with the @try@, and any exceptions that occur while executing
+that code are passed to the @catch@ for processing.
+\\
+Just after @catch@, the programmer specifies which categories of
+exceptions can be caught by the supplied body, allowing only certain
+types of exception to be stopped and others to be allowed to
+propagate upwards.
+\\
+An common example of @try..catch@ usage is with handling user input;
+this is usually a case that shouldn't crash the program, so it makes
+sense to handle it.
+
+\begin{spec}
+  try {
+    user_input = input("Enter an integer: ");
+    res = asType(1, user_input);
+  }
+  catch :read {
+    print("That wasn't an integer!");
+    break :try;
+  }
+\end{spec}
+
+In this scenario, an attempt is being made to convert the user's
+input (string) to an integer; when the user's input does not
+represent a valid integer string, a @:read@ exception is thrown. This
+is then caught by the @catch@ and the user is notified of their
+mistake. The @break :try@ statement at the end is a special form of
+the @break@ statement that just repeats the @try..catch@, as this
+handle-user-input-repeat form is quite common.
+
+
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
 
