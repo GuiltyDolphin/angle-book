@@ -506,6 +506,10 @@ assignment or the @defun@ statement) it is referred to as a function.
 \subsubsection{Parameters}
 \label{ssub:parameters}
 
+\paragraph{Types of parameters}
+\label{par:types_of_parameters}
+
+
 Parameters (the variables that take on the values of arguments) in
 Angle come in two forms, each with optional modifiers.
 \\
@@ -519,6 +523,46 @@ that can be accessed normally as a list, or expanded within a
 function call to pass in the collected arguments. Catch parameters
 allow the implementation of variadic functions.
 
+\paragraph{Modifiers}
+\label{par:modifiers}
+
+As mentioned, parameters can have certain modifiers applied to them.
+These too come in two flavours: annotations and constraints.
+\\
+Annotations allow the programmer to quickly state whether the
+parameter should be a function, literal or any value. This makes it
+easier to reason about higher-order functions and quickly see where
+functions should be passed in - as well as having the function reject
+invalid arguments.
+\\
+Parameter constraints (also known as classes in Angle) are references
+to functions attached to a parameter. When an argument is passed to
+the function and the parameter in that position has a constraint, the
+argument is passed to the constraint function.
+\\
+The function then acts as a predicate, and should return true if the
+argument satisfies the constraint and false otherwise.
+\\
+There are two main restrictions on functions when used as parameter
+constraints: firstly, they must be able to accept at least one
+argument, but may accept more (if there are more positional
+parameters, then the constraint must be passed additional arguments).
+Secondly, the function \textbf{must} return a boolean value when
+passed the arguments. Of course, the function may happen to return a
+boolean when passed one value but not others - thus only functions
+intended to be used as predicates should be used as constraints.
+\\
+As there may be times when it would make sense for a function to act
+one way when used as a predicate, but in a different way when used
+otherwise (for instance, @int@ could determine whether the passed
+value is an integer \textit{or} attempt to convert the value to an
+integer), a builtin variable @as_class@ is provided that is true
+when the current execution context is as a constraint, and false
+otherwise; this allows a function to easily handle both use as a
+constraint and standard function.
+\\
+Additionally, when called with a prefix @@\@@, a function will be
+called in a class context.
 
 
 \paragraph{Relevant modules}
