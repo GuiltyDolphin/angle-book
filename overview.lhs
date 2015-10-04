@@ -298,8 +298,7 @@ incorrectly.\footnote{http://courses.cs.washington.edu/courses/cse341/04wi/lectu
 \\
 Statically-typed languages often require the programmer to annotate
 code, stating the types of variables and functions when they are
-declared. This being one of the main disadvantages when compared to a
-dynamically-typed language.
+declared; leading to increased verbosity.
 \\
 In a dynamically-typed language, types are checked at run-time, this
 means that type-correctness is not ensured and errors may occur as a
@@ -480,6 +479,47 @@ interpreter. This mode is how programs should usually be run.
 
 \part{Grammar and language features}
 \label{prt:grammar_and_language_features}
+
+\section{Language Features}
+\label{sec:language_features}
+
+As Angle is intended to be used as a general-purpose programming
+language, it is important that the features it provides can facilitate
+a variety of uses.
+\\
+Some features are outlined below, with more in-depth explanations in
+section~\ref{sec:defining_the_language_grammar} and the documentation.
+
+
+\subsection{Functions}
+\label{sub:functions}
+
+
+Functions and subroutines (when they don't have an explicit return
+value) are essentially blocks of code that can be reused. Angle
+supports functions in two forms: as bare lambdas (the actual block
+of code) and function-variables. There is no difference between the
+call-signature-body of a function and a lambda, but in general use,
+when a lambda has been given a name (through either explicit
+assignment or the @defun@ statement) it is referred to as a function.
+
+\subsubsection{Parameters}
+\label{ssub:parameters}
+
+Parameters (the variables that take on the values of arguments) in
+Angle come in two forms, each with optional modifiers.
+\\
+The first form is the standard parameter, these are position
+dependent and will take on the value of the argument placed at the
+equivalent position in a function call.
+\\
+The second form is a catch parameter; catch parameters, when defined,
+will collect any additional additonal arguments into a special list
+that can be accessed normally as a list, or expanded within a
+function call to pass in the collected arguments. Catch parameters
+allow the implementation of variadic functions.
+
+
 
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
@@ -678,13 +718,13 @@ for more information on how the operators work.
 \begin{spec}
 
 operation =     unop    expr
-          | `(' varop { expr } `)'        ;
+          | `(' varop { expr } `)'         ;
 
-unop      = `^' | `-'                     ;
+unop      = `^' | `-'                      ;
 
-varop     = `+' | `-'  | `/' | `*'
+varop     = `+' | `-'  | `/' | `**' | `*'
                 | `|'  | `&' | `>='
-                | `<=' | `>' | `<' | `==' ;
+                | `<=' | `>' | `<'  | `==' ;
 \end{spec}
 
 
@@ -726,6 +766,11 @@ list    = `[' { literal `,' }                                 `]' ;
 range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
 \end{spec}
 
+
+Note that although other values exist in the language (namely handles)
+and have a show syntax, they have no read syntax and can thus only be
+obtained through the use of builtin functions and language features.
+
 \subsubsection{Lists and ranges as expressions}
 \label{ssub:lists_and_ranges_as_expressions}
 
@@ -752,8 +797,11 @@ is returned implicitly from functions that would otherwise return
 nothing.
 
 \begin{spec}
-function_call = simple_ident `(' { expr `,' } `)' ;
+  function_call = [ `@'] simple_ident `(' { expr `,' } `)' ;
 \end{spec}
+
+The optional @@\@@ sign in front of the identifier indicates whether
+to call the function as a constraint or a regular function.
 
 \subsubsection{Identifiers}
 \label{ssub:identifiers}
@@ -763,13 +811,13 @@ they may be referred to elsewhere within the program.
 
 \begin{spec}
 
-alpha          = `a'..`Z'                       ;
-digit          = `0'..`9'                       ;
+alpha          = `a'..`Z'                              ;
+digit          = `0'..`9'                              ;
 
-identifier     = simple_ident  | function_ident ;
+identifier     = simple_ident  | function_ident        ;
 
-simple_ident   = (alpha | `_') { alpha | digit | `_' }        ;
-function_ident = `\$'    simple_ident           ;
+simple_ident   = (alpha | `_') { alpha | digit | `_' } ;
+function_ident = `\$' simple_ident                     ;
 \end{spec}
 % FIXME: Another $ that needs escaping in the source code.
 % unescape it for final document.
