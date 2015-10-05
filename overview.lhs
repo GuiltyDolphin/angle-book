@@ -193,9 +193,9 @@ this should be done.
 Common examples of declarative languages are database query languages such as SQL.
 \\
 \\
-\textit{The programmer specifies that the required action is retrieving a column from a row in a database. No indication of how to achieve this is given.}
+\textit{The programmer specifies that the required action is retrieving a column from a table in a database. No indication of how to achieve this is given.}
 \begin{spec}
-SELECT column FROM row WHERE condition
+SELECT column FROM table WHERE condition
 \end{spec}
 
 
