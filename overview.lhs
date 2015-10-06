@@ -565,6 +565,54 @@ Additionally, when called with a prefix @@\@@, a function will be
 called in a class context.
 
 
+\subsubsection{Closures}
+\label{ssub:closures}
+
+Closures are functions that contain a snapshot of the scope at the
+time of their creation.
+\\
+Closures in Angle are produced by returning a function (or lambda)
+from within a function.
+
+\begin{spec}
+  x = 7;
+  defun foo() {
+    defun bar(y) {
+      return (+ x y);
+    }
+    return \$bar;
+  }
+
+  fun = foo();
+
+  fun(1);
+  # > 8
+
+  x = 5;
+
+  fun(1);
+  # > 8
+
+  fun2 = foo();
+
+  fun2(1);
+  # > 6
+\end{spec}
+
+% TODO: Check this!
+In the above example, @foo@ returns a closure @bar@ which takes a
+single argument and returns the sum of its argument and the value of
+@x@ as it was when the closure was produced.
+\\
+When @fun@ is defined, the global value of @x@ is 7, thus in the
+scope of the closure, global @x@ will always equal 7.
+\\
+When @x@ is redefined later on, this does not affect the value of @x@
+that is used by the closure assigned to @fun@. But when @fun2@ is
+defined, as the scope that @bar@ captures is different, so will its
+value of @x@.
+
+
 \subsection{Exceptions and exception handling}
 \label{sub:exceptions_and_exception_handling}
 
@@ -687,6 +735,15 @@ well-formed value.
 For the @factorial@ function, the base case is when the argument
 equals 0, and the value being passed in is reduced by 1 each time.
 
+% FIXME: Check this (do you need to show tail recursion etc...?)
+\begin{spec}
+  defun sum(xs) {
+    if (== 0 length(xs)) then {
+      return 0;
+    } else return (+ index(0, xs) sum(index(1,-1, xs)));
+  }
+\end{spec}
+
 
 \subsubsection{Iteration}
 \label{ssub:iteration}
@@ -724,6 +781,94 @@ values, @while@ loops execute until some condition is met.
     age = (+ age 1);
   }
 \end{spec}
+
+
+\subsection{Input and Output}
+\label{sub:input_and_output}
+
+% FIXME: Want better wording for this.
+Although the logic of a program can be defined in terms of pure
+functions that do not interact with the outside world - a non-library
+program must perform some input-output operations in order to be
+useful.
+\\
+Angle provides several functions for IO operations.
+\\
+\subsubsection{Handles}
+\label{ssub:handles}
+
+Angle makes use of handles to perform IO operations. A handle is a
+reference to a resource on the system, such as a file descriptor which
+provides access to some IO resource for reading and/or writing.
+
+\paragraph{Standard streams}
+\label{par:standard_streams}
+
+On Unix systems there exist three standard file descriptors to access
+the three standard streams: @stdin@ is the input stream; @stdout@ is
+the output stream; and @stderr@ which is used for error messages.
+\\
+Angle provides handles to these three descriptors by default, in the
+form of the variables @stdin@, @stdout@ and @stderr@.
+
+\paragraph{Obtaining handles}
+\label{par:obtaining_handles}
+
+Angle provides the builtin @open@ function, which takes the form:
+@open(file_name, access_mode)@, and returns a handle providing
+access to the file @file_name@ in the specified @access_mode@.
+\\
+There are two main access modes in general: read and write.
+Write is further split into append and write (clobber).
+`Write (clobber)' is used when the contents of the shouldn't be
+preserved and will overwrite the contents of the file when writing.
+`Append' on the other hand will preserve the contents and add the
+new text to the end of the file.
+\\
+Angle provides four possible access modes for handles: read
+(represented by @"<"@), write (@">"@), append (@">>"@), and
+read-write (@"<>"@).
+
+\paragraph{Reading handles}
+\label{par:reading_handles}
+
+Angle's builtin @read@ function provides various means of reading
+from a handle's character stream. @read(handle)@ reads the entirety
+of the remaining text, @read(handle, int)@ will read @int@ lines,
+then the modifier @:char@ can be appended to the call to read
+individual characters.
+
+\paragraph{Writing to handles}
+\label{par:writing_to_handles}
+
+% TODO: Check the wording.
+As mentioned previously, there are two main write-modes that can be
+used with handles in Angle; these produced the stated effects when
+used with the @write@ function, which takes a handle and some text
+and writes the text to the handle.
+
+\paragraph{Closing handles}
+\label{par:closing_handles}
+
+When a handle is no longer in use it can be closed for reading and
+writing with the @close@ function. It is advisable to explicity close
+handles when they are no longer needed to free up file descriptors and
+allow them to be accessed by other operations later on.
+
+
+\subsubsection{Basic functions for user interaction}
+\label{ssub:basic_functions_for_user_interaction}
+
+A basic commandline program could easily get away with using just two
+of Angle's IO functions for user interaction: @print@ and @input@.
+\\
+\paragraph{Print}
+\label{par:print}
+
+The @print@ function takes some text and prints it to the @stdout@
+handle
+
+
 
 
 \paragraph{Relevant modules}
