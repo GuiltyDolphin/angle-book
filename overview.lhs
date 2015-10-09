@@ -30,6 +30,9 @@
   This document provides an overview of the design-process, usage and
   implementation of Angle - a general purpose programming language.
   \\
+  Additionally, this overview will provide a language reference,
+  describing each of Angle's features in detail.
+  \\
   The programming language `Haskell', along with standard tools such as
   Cabal and the Glasgow Haskell Compiler have been used for the
   implementation.
@@ -118,6 +121,15 @@ others standalone. Below are some of the packages I have used.
   \item[Criterion] - a benchmarking library for measuring the
     performance of code.\footnote{https://hackage.haskell.org/package/criterion}
 \end{description}
+
+
+\subsubsection{Git}
+\label{ssub:git}
+
+Git is an open source version control system that allows changes in a
+project to be staged, committed and tracked. This means that changes
+to the project can easily be undone and reviewed, and allows changes
+to be labeled for future reference.\footnote{https://git-scm.com/}
 
 
 \subsection{A brief overview of language implementation}
@@ -223,6 +235,7 @@ Inheritance is usually present in object-oriented languages, and
 allows a parent-child relationship between different objects.
 \\
 \\
+% FIXME: Don't like this... Choose a better example.
 \textit{A python3 example of class-based object-oriented programming.}
 \begin{spec}
 class Animal:
@@ -860,6 +873,7 @@ will pass over the contained values, assigning each element to a
 temporary variable for access in the body.
 \\
 \\
+% FIXME: Don't really like this, choose a better example.
 \textit{Welcoming several people with the use of a for loop.}
 \begin{spec}
 names = ["Jannet", "Harry", "Theo"];
@@ -882,6 +896,34 @@ values, @while@ loops execute until some condition is met.
     age = (+ age 1);
   }
 \end{spec}
+
+
+\subsubsection{Controling loops}
+\label{ssub:controling_loops}
+
+There are times at which it may be useful to exit a loop before it
+would naturally exit, or skip the rest of the current execution.
+\\
+% TODO: Better wording...
+The @break@ and @continue@ statements provide support for these cases
+respectively.
+
+
+\paragraph{Break}
+\label{par:break}
+
+The @break [val]@ statement ends the execution of the current looping
+structure, and sets the value produced to @val@, when supplied.
+% TODO: Maybe add link to the section where break :try is used (or
+% mention special cases of :break)
+
+
+\paragraph{Continue}
+\label{par:continue}
+
+@continue@ skips the rest of the current loop iteration, causing the
+looping structure to start its next cycle.
+
 
 
 \subsection{Input and Output}
