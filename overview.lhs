@@ -613,6 +613,97 @@ defined, as the scope that @bar@ captures is different, so will its
 value of @x@.
 
 
+\subsubsection{Accessing lambdas}
+\label{ssub:accessing_lambdas}
+
+As every variable in Angle can have both a function \textit{and}
+value definition, \textit{and} functions are first-class citizens,
+this means that occasionally the lambda associated with a variable
+may need to be retrieved.
+\\
+Angle provides the dollar operator (@\$@) that when used on an
+identifier, will return an expression representing the lambda stored
+in the variable.
+
+
+\begin{spec}
+defun foo() {
+  1;
+}
+
+foo = (() 1;);
+# Equivalent to above.
+
+foo = 2;
+
+
+foo;
+# 2
+
+foo();
+# 1
+
+\$foo;
+# (() 1;)
+\end{spec}
+
+
+@foo@ is defined as both a function (that just returns the integer 1)
+and a value (the integer 2).
+
+When using @foo@ as an expression, without calling it, it just
+returns the value definition. Likewise, when called as a function it
+returns the expected value 1. However, when the dollar operator is
+used, the function's definition is returned.
+
+
+\subsection{Variables}
+\label{sub:variables}
+
+Variables reference a location in memory that represents the data
+associated with them. In Angle, variables can have two sets of data:
+the first is a non-function value, such as an integer, string etc..;
+and the second is a lambda that represents the variable as a function
+ (see Section~\ref{ssub:accessing_lambdas} on how to access this
+ value).
+\\
+\\
+% TODO: Add scope stuff.
+Angle is lexically scoped - meaning that the location at which a
+variable is defined determines where it can be accessed.
+\\
+Any non-global region has access to two scopes: the local scope and
+the outer scope.
+
+When resolving variables, Angle first checks the current scope, then
+recursively searches through the parent scopes until either the
+global scope has been checked, and no definition for the identifier
+found, or a definition is found.
+
+
+% TODO: Check the phrasing of this section.
+\subsubsection{Assignment}
+\label{ssub:assignment}
+
+Angle supports three assignment operators: @=@, @|=@, and @||=@; which
+represent local assignment, nonlocal assignment and global assignment
+respectively.
+\\
+When assigning to the local scope, if a definition for the variable
+exists then it is overwritten, otherwise the variable is newly
+defined.
+\\
+When assigning to a nonlocal scope, first the given identifier is
+resolved in the local-most scope that is a parent of the current
+scope, then this variable is overwritten with the given value. If no
+nonlocal variable exists for the identifier, then the operation fails
+with an exception.
+\\
+When assigning to the global scope, the same process as for local
+assignment is performed, but in the global scope instead of the
+current scope.
+
+
 \subsection{Exceptions and exception handling}
 \label{sub:exceptions_and_exception_handling}
 
@@ -856,17 +947,17 @@ handles when they are no longer needed to free up file descriptors and
 allow them to be accessed by other operations later on.
 
 
-\subsubsection{Basic functions for user interaction}
-\label{ssub:basic_functions_for_user_interaction}
-
-A basic commandline program could easily get away with using just two
-of Angle's IO functions for user interaction: @print@ and @input@.
-\\
-\paragraph{Print}
-\label{par:print}
-
-The @print@ function takes some text and prints it to the @stdout@
-handle
+% \subsubsection{Basic functions for user interaction}
+% \label{ssub:basic_functions_for_user_interaction}
+%
+% A basic commandline program could easily get away with using just two
+% of Angle's IO functions for user interaction: @print@ and @input@.
+% \\
+% \paragraph{Print}
+% \label{par:print}
+%
+% The @print@ function takes some text and prints it to the @stdout@
+% handle
 
 
 
