@@ -626,6 +626,16 @@ identifier, will return an expression representing the lambda stored
 in the variable.
 
 
+\subsubsection{Producing values from functions}
+\label{ssub:producing_values_from_functions}
+
+% FIXME: Fix the phrasing.
+By default, when no return value is specified in a function, the last
+produced value will be returned. Otherwise, the @return@ statement can
+be used to exit early from the function and set the produced value to
+that specified.
+
+
 \begin{spec}
 defun foo() {
   1;
