@@ -625,6 +625,27 @@ that is used by the closure assigned to @fun@. But when @fun2@ is
 defined, as the scope that @bar@ captures is different, so will its
 value of @x@.
 
+\paragraph{Declaring closures}
+\label{par:declaring_closures}
+
+As mentioned above, closures can be obtained by returning a lambda
+from a function. There is another method; using the dollar operator
+before a bare lambda will declare the lambda to be a closure, and
+capture scope appropriately.
+\\
+Thus:
+\begin{spec}
+defun foo() {
+  return (() x;);
+}
+
+bar = foo();
+\end{spec}
+Is the same as
+\begin{spec}
+bar = \$(() x;);
+\end{spec}
+
 
 \subsubsection{Accessing lambdas}
 \label{ssub:accessing_lambdas}
@@ -872,7 +893,6 @@ For loops, when given a enumerable value such as a list or range,
 will pass over the contained values, assigning each element to a
 temporary variable for access in the body.
 \\
-\\
 % FIXME: Don't really like this, choose a better example.
 \textit{Welcoming several people with the use of a for loop.}
 \begin{spec}
@@ -936,7 +956,7 @@ program must perform some input-output operations in order to be
 useful.
 \\
 Angle provides several functions for IO operations.
-\\
+
 \subsubsection{Handles}
 \label{ssub:handles}
 
@@ -1084,7 +1104,6 @@ and division.
 
 As the above shows, the grouping is from left to right, thus
 @(- 1 2 3)@ becomes @((1 - 2) - 3)@
-
 \\
 
 Logical operators perform logical operations on booleans and are also
@@ -1095,8 +1114,6 @@ mostly variadic.
 (| false false true);
 # true
 \end{spec}
-
-\\
 
 Relational operators perform comparison between different types, all
 the relational operators are variadic.
@@ -1111,9 +1128,7 @@ the relational operators are variadic.
 
 There is a pair-wise grouping with relational operators, thus
 @(< 1 2 3)@ becomes @1 < 2 AND 2 < 3@, or @1 < 2 < 3@.
-
 \\
-
 Assignment operators are all infix binary, and the use-case is always
 the same; associate some data with an identifier. See
 section~\ref{ssub:assignment} for a more detailed explanation on how
