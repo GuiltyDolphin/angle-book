@@ -514,11 +514,14 @@ A program written using Angle is made up of statements: statements
 may in turn be made up of many more statements, a language structure
 or an expression.
 
-\subsubsection{Comments}
-\label{ssub:comments}
+\subsection{Comments}
+\label{sub:comments}
 
 Comments represent code that will be ignored by Angle. Comments start
 with a `\#' character and continue to the end of the line.
+
+\subsection{Identifiers and reserved words}
+\label{sub:identifiers_and_reserved_words}
 
 \subsubsection{Reserved words}
 \label{ssub:reserved_words}
@@ -534,6 +537,84 @@ do    & else  & false    & for      & if \\
 in    & null  & raise    & return   & then \\
 true  & try   & unless   & when     & while \\
 \end{tabular}
+
+
+\subsubsection{Reserved identifiers}
+\label{ssub:reserved_identifiers}
+
+Certain identifiers have predefined meanings in Angle, some of these
+may be overwritten, others may not.
+
+\begin{tabular}{ l c l }
+Name & Can be overwritten? & Use \\
+main & no & Whether the current program was invoked directly. \\
+\_it & yes & Holds the value of the last computation. \\
+\end{tabular}
+
+
+\subsection{Literals}
+\label{sub:literals}
+
+Literals allow the specification of constant values for some of
+Angle's built-in types.\footnote{https://www.cs.cf.ac.uk/Dave/Multimedia/node71.html}
+
+% Literals allow the programmer to specify exact values in Angle that
+% will remain constant through separate runs of the program, provided
+% the source code is not modified.\footnote{https://www.cs.cf.ac.uk/Dave/Multimedia/node71.html}
+
+
+\subsubsection{Strings}
+\label{ssub:strings}
+
+Two types of string literal are supported in Angle: backslash-escaped
+and non-backslash-escaped.
+
+By default, escape sequences in strings will be recognized (for
+example, `\textbackslash n' would be recognized as a newline), but the `e' prefix
+can be used to treat all backslashes literally (thus
+`\textbackslash n' would become a backslash followed by an `n').
+
+\begin{spec}
+string = [ `e' ] `"' { string\_char } `"' ;
+
+string\_char = <any character allowed in a Haskell String> ;
+\end{spec}
+
+Additionally, each character of a string may be represented as a
+literal.
+
+\begin{spec}
+char = `'' char\_char `'' ;
+
+char\_char = <any character allowed in a Haskell Char> ;
+\end{spec}
+
+Note that Angle uses the same character escaping as Haskell.\footnote{https://hackage.haskell.org/package/base-4.8.1.0/docs/Data-Char.html\#t:Char}
+
+\begin{spec}
+
+literal = number  | list | string | char | boolean | range        ;
+
+number  = integer | float                                         ;
+
+integer = [ `-' ] digit { digit }                                 ;
+float   = [ `-' ] digit { digit } `.' digit { digit }             ;
+
+boolean = `true'  | `false'                                       ;
+
+char    =         `''   char_char     `''                         ;
+string  = [ `e' ] `"' { string_char } `"'                         ;
+
+list    = `[' { literal `,' }                                 `]' ;
+range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
+\end{spec}
+
+
+Note that although other values exist in the language (namely handles)
+and have a show syntax, they have no read syntax and can thus only be
+obtained through the use of built-in functions and language features.
+
+
 
 \section{Language Features}
 \label{sec:language_features}
@@ -1382,49 +1463,6 @@ varop     = `+' | `-'  | `/' | `**' | `*'
                 | `<=' | `>' | `<'  | `==' ;
 \end{spec}
 
-
-\subsubsection{Literals}
-\label{ssub:literals}
-
-Literals allow the programmer to specify exact values in Angle that
-will remain constant through separate runs of the program, provided
-the source code is not modified.\footnote{https://www.cs.cf.ac.uk/Dave/Multimedia/node71.html}
-
-The following are referenced below but not defined:
-
-% TODO: Might want a citation - or a better way of linking to the
-% docs.
-\begin{description}
-  \item[string\_char] which is any character accepted in a Haskell
-    String. A special type of string exists (by prefixing `e') in
-    Angle that treats backslashes literally and thus will not
-    interpret escape characters.
-  \item[char\_char] which is any character accepted in a Haskell
-    Char.\footnote{https://hackage.haskell.org/package/base-4.8.1.0/docs/Data-Char.html\#t:Char}
-\end{description}
-
-\begin{spec}
-
-literal = number  | list | string | char | boolean | range        ;
-
-number  = integer | float                                         ;
-
-integer = [ `-' ] digit { digit }                                 ;
-float   = [ `-' ] digit { digit } `.' digit { digit }             ;
-
-boolean = `true'  | `false'                                       ;
-
-char    =         `''   char_char     `''                         ;
-string  = [ `e' ] `"' { string_char } `"'                         ;
-
-list    = `[' { literal `,' }                                 `]' ;
-range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
-\end{spec}
-
-
-Note that although other values exist in the language (namely handles)
-and have a show syntax, they have no read syntax and can thus only be
-obtained through the use of built-in functions and language features.
 
 \subsubsection{Lists and ranges as expressions}
 \label{ssub:lists_and_ranges_as_expressions}
