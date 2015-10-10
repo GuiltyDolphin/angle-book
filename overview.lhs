@@ -859,23 +859,13 @@ Angle.
 Recursion is achieved by a function self-calling with reduced
 arguments. A base case exists which when satisfied will return a
 well-formed value.
-
+\\
+\textit{For the @factorial@ function, the base case is when the argument
+equals 0, and the value being passed in is reduced by 1 each time.}
 \begin{spec}
   defun factorial(n) {
     if (== n 0) then return 1;
     return (* n factorial((- n 1)));
-  }
-\end{spec}
-
-For the @factorial@ function, the base case is when the argument
-equals 0, and the value being passed in is reduced by 1 each time.
-
-% FIXME: Check this (do you need to show tail recursion etc...?)
-\begin{spec}
-  defun sum(xs) {
-    if (== 0 length(xs)) then {
-      return 0;
-    } else return (+ index(0, xs) sum(index(1,-1, xs)));
   }
 \end{spec}
 
@@ -918,8 +908,8 @@ values, @while@ loops execute until some condition is met.
 \end{spec}
 
 
-\subsubsection{Controling loops}
-\label{ssub:controling_loops}
+\subsubsection{Controlling loops}
+\label{ssub:controlling_loops}
 
 There are times at which it may be useful to exit a loop before it
 would naturally exit, or skip the rest of the current execution.
@@ -956,6 +946,23 @@ program must perform some input-output operations in order to be
 useful.
 \\
 Angle provides several functions for IO operations.
+
+
+\subsubsection{Interactive with the terminal}
+\label{ssub:interactive_with_the_terminal}
+
+A common need in scripts written for use in the terminal is to be able
+to perform basic interaction with the user. Angle facilitates this
+with the builtin @print@ and @input@ functions.
+\\
+\begin{description}
+  \item[@print(string)@] prints the given string to @stdout@.
+  \item[@input(string)@] prints @string@ to @stdout@ before returning
+  the response from @stdin@.
+\end{description}
+
+A great deal of basic user interaction can be achieved just through
+the use of these two functions.
 
 \subsubsection{Handles}
 \label{ssub:handles}
