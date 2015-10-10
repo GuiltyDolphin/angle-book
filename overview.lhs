@@ -480,9 +480,60 @@ interpreter. This mode is how programs should usually be run.
 %   Operators & `LangOp' & section~\ref{ssub:operations} \\
 % \end{tabular}
 
+\part{Language Reference}
+\label{prt:language_reference}
 
-\part{Grammar and language features}
-\label{prt:grammar_and_language_features}
+\section{Introduction}
+\label{sec:introduction}
+
+% FIXME: Better phrasing please.
+The following reference describes the language features, grammar and
+methodology of Angle. Each section describes a feature or ideal of
+Angle, and sections describing syntax features will include a grammar
+in Extended Backus Naur form at the end.
+
+\subsubsection{Notation}
+\label{ssub:notation}
+
+\paragraph{Extended Backus Naur Form (EBNF)}
+\label{par:extended_backus_naur_form_ebnf_}
+
+EBNF is an extended version of Backus Naur Form, a notation that can be
+used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
+\\
+BNF can be used to describe context-free grammars,\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/}
+which are grammars that consist of names and expansions
+(the components), meaning that it may be used to express a grammar for
+Angle.
+
+
+\section{Program structure}
+\label{sec:program_structure}
+
+A program written using Angle is made up of statements: statements
+may in turn be made up of many more statements, a language structure
+or an expression.
+
+\subsubsection{Comments}
+\label{ssub:comments}
+
+Comments represent code that will be ignored by Angle. Comments start
+with a `\#' character and continue to the end of the line.
+
+\subsubsection{Reserved words}
+\label{ssub:reserved_words}
+
+Reserved words (or keywords) are reserved identifiers that may not be
+used for variable names.
+\\
+The following is a list of the reserved words in Angle:
+\\
+\begin{tabular}{ l c c c r }
+break & catch & continue & defclass & defun \\
+do    & else  & false    & for      & if \\
+in    & null  & raise    & return   & then \\
+true  & try   & unless   & when     & while \\
+\end{tabular}
 
 \section{Language Features}
 \label{sec:language_features}
@@ -1156,16 +1207,6 @@ an overview of some of the features Angle provides.
 \section{Defining the language grammar}
 \label{sec:defining_the_language_grammar}
 
-\paragraph{Extended Backus Naur Form (EBNF)}
-\label{par:extended_backus_naur_form_ebnf_}
-
-EBNF is an extended version of Backus Naur Form, a notation that can be
-used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
-\\
-BNF can be used to decribe context-free grammars,\footnote{http://matt.might.net/articles/grammars-bnf-ebnf/}
-which are grammars that consist of names and expansions
-(the components), meaning that it may be used to express a grammar for
-Angle.
 
 \subsection{Statements}
 \label{sub:statements}
