@@ -575,35 +575,43 @@ can be used to treat all backslashes literally (thus
 `\textbackslash n' would become a backslash followed by an `n').
 
 \begin{spec}
-string = [ `e' ] `"' { string\_char } `"' ;
+string = [ `e' ] `"' { string_char } `"' ;
 
-string\_char = <any character allowed in a Haskell String> ;
+string_char = <any character allowed in a Haskell String> ;
 \end{spec}
 
 Additionally, each character of a string may be represented as a
 literal.
 
 \begin{spec}
-char = `'' char\_char `'' ;
+char = `'' char_char `'' ;
 
-char\_char = <any character allowed in a Haskell Char> ;
+char_char = <any character allowed in a Haskell Char> ;
 \end{spec}
 
 Note that Angle uses the same character escaping as Haskell.\footnote{https://hackage.haskell.org/package/base-4.8.1.0/docs/Data-Char.html\#t:Char}
 
-\begin{spec}
 
-literal = number  | list | string | char | boolean | range        ;
+\subsubsection{Numeric literals}
+\label{ssub:numeric_literals}
+
+Two types of numeric are supported by Angle: floats (which should
+have at least the range and precision of the IEEE double-precision
+type),\footnote{http://hackage.haskell.org/package/base-4.8.1.0/docs/Prelude.html\#t:Double}
+ and integers.
+
+
+\begin{spec}
 
 number  = integer | float                                         ;
 
 integer = [ `-' ] digit { digit }                                 ;
 float   = [ `-' ] digit { digit } `.' digit { digit }             ;
 
-boolean = `true'  | `false'                                       ;
+\end{spec}
 
-char    =         `''   char_char     `''                         ;
-string  = [ `e' ] `"' { string_char } `"'                         ;
+\begin{spec}
+boolean = `true'  | `false'                                       ;
 
 list    = `[' { literal `,' }                                 `]' ;
 range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
