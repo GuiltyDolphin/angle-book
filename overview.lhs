@@ -1049,6 +1049,79 @@ the given filename happens to be a relative or absolute path
 checked.
 
 
+\subsection{Operations}
+\label{sub:operations}
+
+
+Operations (consisting of operators and operands) are the fundamental
+means of manipulating data in Angle.
+\\
+Angle supports three types of operator: infix binary, prefix unary
+and prefix variadic. The infix binary operators (such as @=@) take
+two operands, one on either side. The prefix unary operators take a
+single operand and are placed before this operand. The prefix variadic
+operators are used as the first symbol within parentheses, and take
+a non-set number of operands, separated by whitespace, until the
+closing parenthesis.
+
+\subsubsection{Operator types}
+\label{ssub:operator_types}
+
+Operators in Angle mainly come under four categories: arithmetical,
+logical, relational and assignment.
+\\
+Arithmetical operators, which are generally variadic, perform
+mathematical arithmetic operations such as addition, multiplication
+and division.
+
+\begin{spec}
+(+ 1 2 3);
+# 6
+
+(- 1 2 3);
+# -4
+\end{spec}
+
+As the above shows, the grouping is from left to right, thus
+@(- 1 2 3)@ becomes @((1 - 2) - 3)@
+
+\\
+
+Logical operators perform logical operations on booleans and are also
+mostly variadic.
+
+\textit{Logical OR}
+\begin{spec}
+(| false false true);
+# true
+\end{spec}
+
+\\
+
+Relational operators perform comparison between different types, all
+the relational operators are variadic.
+
+\begin{spec}
+(< 1 2 3);
+# true
+
+(>= 1 2 3);
+# false
+\end{spec}
+
+There is a pair-wise grouping with relational operators, thus
+@(< 1 2 3)@ becomes @1 < 2 AND 2 < 3@, or @1 < 2 < 3@.
+
+\\
+
+Assignment operators are all infix binary, and the use-case is always
+the same; associate some data with an identifier. See
+section~\ref{ssub:assignment} for a more detailed explanation on how
+assignment works.
+
+
+
+
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
 
