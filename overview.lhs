@@ -1011,7 +1011,42 @@ allow them to be accessed by other operations later on.
 % The @print@ function takes some text and prints it to the @stdout@
 % handle
 
+\subsection{Including code from other files}
+\label{sub:including_code_from_other_files}
 
+It is essential for code-reusability and the creation of libraries to
+be able to load code from other files in a program. The ability to
+do this means that sets of functions can be defined in one file, then
+used by many other programs such that the functions do not need to be
+written again.
+\\
+There are two main methods of achieving this in Angle:
+
+\subsubsection{Eval}
+\label{ssub:eval}
+
+% TODO: Want better phrasing.
+The @eval@ builtin function takes a string and attempts to parse it
+as code - this can be useful for loading small sections of source
+from a trusted location on the fly.
+\\
+There are a few issues with this - any use of @eval@ with user input
+is risky, as there is the potential for malicious code to be injected,
+instead the @asType@ builtin should be used for converting strings
+to other types.
+
+\subsubsection{Include}
+\label{ssub:include}
+
+The best method of loading entire files is the builtin @include@
+function. @include@ takes a filename (or handle) and attempts to
+execute the contained text. Syntax errors are handled by @include@.
+\\
+@include@, when passed a filename, will first check the standard Angle
+library locations for the specified file, then the relative path. If
+the given filename happens to be a relative or absolute path
+(starts with @.@, @/@ etc..) then the library locations will not be
+checked.
 
 
 \paragraph{Relevant modules}
