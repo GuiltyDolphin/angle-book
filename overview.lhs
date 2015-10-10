@@ -139,11 +139,11 @@ to be labeled for future reference.\footnote{https://git-scm.com/}
 \label{ssub:translator_software}
 
 % TODO: Get a link for this bit.
-Translator software is used to traslate a program written in one
+Translator software is used to translate a program written in one
 language to another language, without loosing any functionality.
 \\
 Although people often refer to languages as `compiled' or
-`interpereted', the translator software is distinct from the language
+`interpreted', the translator software is distinct from the language
 itself, and thus a language could be both interpreted \textit{and}
 compiled.\footnote{This is quite common with the more popular
 languages, for example: Python and Lisp both have compiler and
@@ -151,22 +151,12 @@ interpreter implementations.}
 % TODO: Not sure about that previous paragraph!
 
 
-% FIXME: Don't like this sentence.
-Compilers and interpreters are two very different methods for providing
-what is essentially the same result.
-\\
 \paragraph{Compilers}
 \label{par:compilers}
 A compiler is a piece of software that takes a file containing the
 source code for one language, and produces output in another language.
 The output language is often in a form that can be executed by the
 system's CPU - namely object code.
-\\
-% There are numerous advantages to having a compiler for a language:
-% compiled source is often faster than non-compiled source, as the
-% CPU doesn't have to perform
-Compilers can range from
-
 
 \paragraph{Interpreters}
 \label{par:interpreters}
@@ -178,7 +168,8 @@ similar compiled language.\footnote{http://www.vanguardsw.com/dphelp4/dph00296.h
 \\
 One of the main disadvantages of an interpreter is that it is
 required every time a program needs to be run. Source code is also
-more transparent, as the files are run directly by the interpreter.
+more transparent (which may or may not be a disadvantage), as the
+files are run directly by the interpreter.
 
 \subsubsection{Programming Paradigms}
 \label{ssub:programming_paradigms}
@@ -269,7 +260,7 @@ being created, thus @Duck.noise == 'quack'@, but also
 
 In functional languages, computations are treated as the evaluation
 of mathematical functions. Side-effects are usually low to
-non-existant as in a purely functional language functions should be
+non-existent as in a purely functional language functions should be
 referentially transparent (the same result should always arise with
 the same arguments).\footnote{https://wiki.haskell.org/Functional\_programming}
 \\
@@ -377,7 +368,7 @@ compile if any inconsistencies in types are noticed).
 Angle has weak typing as type information is not guaranteed to be
 preserved during run-time.\footnote{http://c2.com/cgi/wiki?WeaklyTyped}
 One example of this would be Angle's type coercion capabilities
-through one of the builtin functions. Using this function allows the
+through one of the built-in functions. Using this function allows the
 programmer to (for instance) convert an integer to a string or vice
 versa.
 
@@ -540,7 +531,7 @@ allow the implementation of variadic functions.
 \label{par:modifiers}
 
 As mentioned, parameters can have certain modifiers applied to them.
-These too come in two flavours: annotations and constraints.
+These too come in two flavors: annotations and constraints.
 \\
 Annotations allow the programmer to quickly state whether the
 parameter should be a function, literal or any value. This makes it
@@ -569,7 +560,7 @@ As there may be times when it would make sense for a function to act
 one way when used as a predicate, but in a different way when used
 otherwise (for instance, @int@ could determine whether the passed
 value is an integer \textit{or} attempt to convert the value to an
-integer), a builtin variable @as_class@ is provided that is true
+integer), a built-in variable @as_class@ is provided that is true
 when the current execution context is as a constraint, and false
 otherwise; this allows a function to easily handle both use as a
 constraint and standard function.
@@ -827,7 +818,7 @@ will just re-raise the same exception.
 Of course, @raise@ isn't just limited to existing exceptions, the
 programmer may specify their own exceptions instead, although as the
 user-exception system is rather limited, the only information
-availiable to those catching will be the name.
+available to those catching will be the name.
 
 \begin{spec}
   try {
@@ -953,7 +944,7 @@ Angle provides several functions for IO operations.
 
 A common need in scripts written for use in the terminal is to be able
 to perform basic interaction with the user. Angle facilitates this
-with the builtin @print@ and @input@ functions.
+with the built-in @print@ and @input@ functions.
 \\
 \begin{description}
   \item[@print(string)@] prints the given string to @stdout@.
@@ -984,7 +975,7 @@ form of the variables @stdin@, @stdout@ and @stderr@.
 \paragraph{Obtaining handles}
 \label{par:obtaining_handles}
 
-Angle provides the builtin @open@ function, which takes the form:
+Angle provides the built-in @open@ function, which takes the form:
 @open(file_name, access_mode)@, and returns a handle providing
 access to the file @file_name@ in the specified @access_mode@.
 \\
@@ -1002,7 +993,7 @@ read-write (@"<>"@).
 \paragraph{Reading handles}
 \label{par:reading_handles}
 
-Angle's builtin @read@ function provides various means of reading
+Angle's built-in @read@ function provides various means of reading
 from a handle's character stream. @read(handle)@ reads the entirety
 of the remaining text, @read(handle, int)@ will read @int@ lines,
 then the modifier @:char@ can be appended to the call to read
@@ -1021,7 +1012,7 @@ and writes the text to the handle.
 \label{par:closing_handles}
 
 When a handle is no longer in use it can be closed for reading and
-writing with the @close@ function. It is advisable to explicity close
+writing with the @close@ function. It is advisable to explicitly close
 handles when they are no longer needed to free up file descriptors and
 allow them to be accessed by other operations later on.
 
@@ -1053,19 +1044,19 @@ There are two main methods of achieving this in Angle:
 \label{ssub:eval}
 
 % TODO: Want better phrasing.
-The @eval@ builtin function takes a string and attempts to parse it
+The @eval@ built-in function takes a string and attempts to parse it
 as code - this can be useful for loading small sections of source
 from a trusted location on the fly.
 \\
 There are a few issues with this - any use of @eval@ with user input
 is risky, as there is the potential for malicious code to be injected,
-instead the @asType@ builtin should be used for converting strings
+instead the @asType@ built-in should be used for converting strings
 to other types.
 
 \subsubsection{Include}
 \label{ssub:include}
 
-The best method of loading entire files is the builtin @include@
+The best method of loading entire files is the built-in @include@
 function. @include@ takes a filename (or handle) and attempts to
 execute the contained text. Syntax errors are handled by @include@.
 \\
@@ -1392,7 +1383,7 @@ range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
 
 Note that although other values exist in the language (namely handles)
 and have a show syntax, they have no read syntax and can thus only be
-obtained through the use of builtin functions and language features.
+obtained through the use of built-in functions and language features.
 
 \subsubsection{Lists and ranges as expressions}
 \label{ssub:lists_and_ranges_as_expressions}
@@ -1764,12 +1755,12 @@ calls to shell commands, means that most use-cases should be handled
 directly.
 \\
 For larger projects, the ability to embed code from other files
-through builtin functions should encourage the use of multiple source
+through built-in functions should encourage the use of multiple source
 files in a single project, and the creation of libraries to reduce
 code duplication.
 \\
 Regarding the internal structure: the design of Angle allows for new
-syntax, builtin-functions, types and language structures to be defined
+syntax, built-in functions, types and language structures to be defined
 relatively easily. This extensibility means that creating new language
 features in the future is a definite possibility.
 % FIXME: ^ not sure about 'definite possibility'
@@ -1781,17 +1772,17 @@ user-friendly manner.
 The use of Cabal has greatly sped up development of Angle, as changes
 to directory structure need only be updated in the cabal file, and
 cabal's support for benchmarks and testing aided in the development
-workflow.
+work-flow.
 
 \section{Implementation}
 \label{sec:implementation_changes}
 
 As is often the case, with hindsight I am aware of areas of the
 implementation that may have been improved if certain knowledge was
-availiable at the beginning of the project.
+available at the beginning of the project.
 \\
 For example, Haskell supports Generalized Algebraic Datatypes - a
-system that allows you to explicity state types signatures of the
+system that allows you to explicitly state types signatures of the
 constructors of a type.\footnote{https://downloads.haskell.org/~ghc/6.6.1/docs/html/users\_guide/gadt.html}
 Knowledge of this when starting the project may have made it easier
 and cleaner to come up with a representation for the language
