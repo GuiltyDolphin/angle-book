@@ -8,6 +8,8 @@
 % \usepackage{underscore}
 
 % This provides a table of contents that okular can read.
+\usepackage{graphicx}
+\graphicspath{ {/home/ben/Documents/other/diagram_testing/angle/} }
 \usepackage{hyperref}
 \hypersetup{
   colorlinks,
@@ -1954,8 +1956,7 @@ I feel that Angle's error reporting system is satisfactory for the
 project level. Angle provides no separate debugging utilities, bar the
 interactive mode accessible through the software. In future projects
 I would encourage a more ingrained error system, with much more
-detailed messages (function calls that lead to the error, etc.,),
-especially at the parsing stage.
+detailed messages - especially at the parsing stage.
 
 \subsection{Type system}
 \label{sub:type_system}
