@@ -1206,7 +1206,7 @@ values, @while@ loops execute until some condition is met.
 \label{ssub:controlling_loops}
 
 There are times at which it may be useful to exit a loop before it
-would naturally exit, or skip the rest of the current execution.
+would naturally finish, or skip the rest of the current execution.
 \\
 % TODO: Better wording...
 The @break@ and @continue@ statements provide support for these cases
