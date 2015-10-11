@@ -623,6 +623,51 @@ and have a show syntax, they have no read syntax and can thus only be
 obtained through the use of built-in functions and language features.
 
 
+\section{Data}
+\label{sec:data}
+
+% FIXME: Better phrasing please!
+Fundamentally, the goal of a program is to process data in some way,
+producing new data, representing data or transforming old data. To
+accommodate working with data, Angle supports several types of data.
+
+\begin{tabular}{ l p{7cm} l }
+Datatype & Use & Example \\
+String   & Representing sets of Unicode characters & @"string"@ \\
+Integer  & Representing arbitrarily large integral values & @42@ \\
+Float    & Representing floating-point values & @12.15@ \\
+List     & Grouping values, lists in Angle are heterogeneous meaning
+that different types of data may be stored within a single list & @[1, "string", true]@ \\
+Boolean  & Representing truth values & @true@ \\
+Character & Representing individual Unicode characters & @'c'@ \\
+Range    & Representing an enumeration across values of a certain type & @(1..7)@ \\
+Null    & Special void value when a value must be returned but it doesn't make sense to return anything else & @null@ \\
+Lambda   & Representing function bodies & @(() 1;)@ \\
+Keyword  & Representing constant names without strings & @:keyword@ \\
+Handle   & Referencing file descriptors & @{handle: file}@ \\
+\end{tabular}
+
+More complex data structures can be built out of these basic types.
+For example, a conventional hash or dictionary could be represented
+by a list of lists, each of length two with a keyword as the key
+and any other data as the value.
+
+\begin{spec}
+hash = [[:key1, "value1"],
+        [:key2, 200]
+        [:key3, (() null;)]
+        ]
+\end{spec}
+
+Then, using parameter constraints (see Section~\ref{ssub:parameters})
+one could define a predicate that determines whether a list represents
+a hash, and then be used as a constraint on any functions that should
+only accept a hash.
+\\
+Of course this would not be nearly as efficient as the hash implementation
+in many languages, but the principle of being able to build more
+complex data from the standard set of types still holds.
+
 
 \section{Language Features}
 \label{sec:language_features}
@@ -976,6 +1021,36 @@ available to those catching will be the name.
 In this case the user exception is @:greaterThan5@, and is handled
 directly.
 
+\subsubsection{Grammar}
+\label{ssub:grammar}
+
+\begin{spec}
+stmt_raise = `raise ' litKeyword ;
+\end{spec}
+
+
+\subsubsection{Catching exceptions}
+\label{ssub:catching_exceptions}
+
+Angle provides a construct for handling exceptions. A statement is
+wrapped in @try@ and then any exceptions that occur during the
+execution of this statement are passed to the following @catch(s)@.
+\\
+Each @catch@ specifies either a single keyword or a list of keywords
+that represent the exceptions that should be handled by the
+accompanying statement. If the exception matches that of any of those
+that the @catch@ can handle, then the provided statement is executed
+and no further @catch(s)@ will be executed.
+
+
+\begin{spec}
+  stmt_try_catch = `try '   stmt catch_spec { catch_spec } ;
+
+  catch_spec     = `catch ' catch_keyword stmt             ;
+
+  catch_keyword  = litKeyword | `[' { litKeyword `,' } `]' ;
+\end{spec}
+
 
 \subsection{Looping Structures}
 \label{sub:looping_structures}
@@ -1271,6 +1346,28 @@ Assignment operators are all infix binary, and the use-case is always
 the same; associate some data with an identifier. See
 section~\ref{ssub:assignment} for a more detailed explanation on how
 assignment works.
+\\
+The arithmetical, logical and relational operators are all expression
+operators, meaning that they act upon expressions and produce
+expressions, without any side-effects. The assignment operators do
+produce side-effects however, namely changing the value that an
+identifier references, thus the assignment operators are statements,
+not expressions.
+
+\subsubsection{Grammar}
+\label{ssub:grammar}
+
+\begin{spec}
+
+operation =     unop    expr
+          | `(' varop { expr } `)'         ;
+
+unop      = `^' | `-'                      ;
+
+varop     = `+' | `-'  | `/' | `**' | `*'
+                | `|'  | `&' | `>='
+                | `<=' | `>' | `<'  | `==' ;
+\end{spec}
 
 
 
@@ -1393,41 +1490,6 @@ parameter    = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
 \end{spec}
 
 
-\subsubsection{Raising exceptions}
-\label{ssub:raising_exceptions}
-
-Angle provides the @raise@ statement to allow the user to throw
-exceptions. These can be used for control flow or to indicate the
-arisal of errors or unexpected scenarios occuring during run-time.
-
-\begin{spec}
-stmt_raise = `raise ' litKeyword ;
-\end{spec}
-
-Keywords are used to represent the exceptions.
-
-
-\subsubsection{Catching exceptions}
-\label{ssub:catching_exceptions}
-
-Angle provides a construct for handling exceptions. A statement is
-wrapped in @try@ and then any exceptions that occur during the
-execution of this statement are passed to the following @catch(s)@.
-\\
-Each @catch@ specifies either a single keyword or a list of keywords
-that represent the exceptions that should be handled by the
-accompanying statement. If the exception matches that of any of those
-that the @catch@ can handle, then the provided statement is executed
-and no further @catch(s)@ will be executed.
-
-
-\begin{spec}
-  stmt_try_catch = `try '   stmt catch_spec { catch_spec } ;
-
-  catch_spec     = `catch ' catch_keyword stmt             ;
-
-  catch_keyword  = litKeyword | `[' { litKeyword `,' } `]' ;
-\end{spec}
 
 
 \subsection{Expressions}
@@ -1447,29 +1509,6 @@ represented as literals in section~\ref{ssub:literals}.
 See section~\ref{ssub:lists_and_ranges_as_expressions} for more
 information.
 
-\subsubsection{Operations}
-\label{ssub:operations}
-
-Operations consist of operators and operands.
-The operator determine the type of operation to perform
-and the operands are the values to perform the operation on.
-\\
-Operators in Angle are split into two types: unary and variadic.
-The unary operators are prefix and take a single argument, whereas
-the variadic operators are prefix within parentheses and can take
-a variable number of arguments. See \texttt{Angle.Exec.Operations}
-for more information on how the operators work.
-\begin{spec}
-
-operation =     unop    expr
-          | `(' varop { expr } `)'         ;
-
-unop      = `^' | `-'                      ;
-
-varop     = `+' | `-'  | `/' | `**' | `*'
-                | `|'  | `&' | `>='
-                | `<=' | `>' | `<'  | `==' ;
-\end{spec}
 
 
 \subsubsection{Lists and ranges as expressions}
