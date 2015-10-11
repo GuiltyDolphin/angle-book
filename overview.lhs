@@ -514,11 +514,40 @@ A program written using Angle is made up of statements: statements
 may in turn be made up of many more statements, a language structure
 or an expression.
 
+\subsection{Grammar}
+\label{sub:grammar}
+
+The building blocks of Angle programs are statements; statements
+themselves being made of assignments, expressions and language
+constructs.
+
+\begin{spec}
+stmt        = single_stmt  | multi_stmt                    ;
+
+single_stmt = function_def | stmt_expr      | stmt_control
+            | stmt_loop    | stmt_condition | stmt_assign
+            | stmt_raise   | stmt_try_catch | stmt_comment ;
+
+multi_stmt  = `{' { stmt } `}'                             ;
+\end{spec}
+
 \subsection{Comments}
 \label{sub:comments}
 
 Comments represent code that will be ignored by Angle. Comments start
 with a `\#' character and continue to the end of the line.
+\\
+Comments should be used to document code or temporarily disable
+sections of code during development; Angle throws away comment
+contents before execution.
+
+\subsubsection{Grammar}
+\label{ssub:grammar}
+
+\begin{spec}
+stmt_comment = `\#' { <any character except newline> } newline ;
+\end{spec}
+
 
 \subsection{Identifiers and reserved words}
 \label{sub:identifiers_and_reserved_words}
@@ -964,6 +993,19 @@ When assigning to the global scope, the same process as for local
 assignment is performed, but in the global scope instead of the
 current scope.
 
+\paragraph{Grammar}
+\label{par:grammar}
+
+\begin{spec}
+stmt_assign     = local_assign
+                | nonlocal_assign
+                | global_assign           ;
+
+local_assign    = simple_ident `=' expr   ;
+nonlocal_assign = simple_ident `|=' expr  ;
+global_assign   = simple_ident `||=' expr ;
+\end{spec}
+
 
 \subsection{Exceptions and exception handling}
 \label{sub:exceptions_and_exception_handling}
@@ -1107,6 +1149,7 @@ Recursion is achieved by a function self-calling with reduced
 arguments. A base case exists which when satisfied will return a
 well-formed value.
 \\
+\\
 \textit{For the @factorial@ function, the base case is when the argument
 equals 0, and the value being passed in is reduced by 1 each time.}
 \begin{spec}
@@ -1115,6 +1158,10 @@ equals 0, and the value being passed in is reduced by 1 each time.}
     return (* n factorial((- n 1)));
   }
 \end{spec}
+
+Other recursive forms exist (such as tail-recursion), but Angle
+provides a while loop (see Section~\ref{ssub:iteration}) rendering
+such forms unnecessary.
 
 
 \subsubsection{Iteration}
@@ -1180,6 +1227,31 @@ structure, and sets the value produced to @val@, when supplied.
 
 @continue@ skips the rest of the current loop iteration, causing the
 looping structure to start its next cycle.
+
+\subsubsection{Grammar}
+\label{ssub:grammar}
+
+\paragraph{Looping structures}
+\label{par:looping_structures}
+
+\begin{spec}
+stmt_loop  = loop_for | loop_while             ;
+
+loop_for   = `for'   ident `in' expr `do' stmt ;
+loop_while = `while'            expr `do' stmt ;
+\end{spec}
+
+\paragraph{Loop control flow}
+\label{par:loop_control_flow}
+
+\begin{spec}
+
+loop_control     = control_break
+                 | control_continue    ;
+
+control_break    = `break'    [ expr ] ;
+control_continue = `continue'          ;
+\end{spec}
 
 
 
@@ -1456,63 +1528,11 @@ an overview of some of the features Angle provides.
 \label{sec:defining_the_language_grammar}
 
 
-\subsection{Statements}
-\label{sub:statements}
-
-The building blocks of Angle programs are statements; statements
-themselves being made of assignments, expressions and language
-constructs.
-
-\begin{spec}
-stmt        = single_stmt  | multi_stmt                    ;
-
-single_stmt = function_def | stmt_expr      | stmt_control
-            | stmt_loop    | stmt_condition | stmt_assign
-            | stmt_raise   | stmt_try_catch                ;
-
-multi_stmt  = `{' { stmt } `}'                             ;
-\end{spec}
-
-\subsubsection{Assignment}
-\label{ssub:assignment}
-
-Assignment binds the result of an expression to a name
-(the identifier).
-\begin{spec}
-stmt_assign = simple_ident `=' expr ;
-\end{spec}
-
-\subsubsection{Looping structures}
-\label{ssub:looping_structures}
-
-Looping structures allow iterating over certain values or until a
-condition is satisfied.
-
-\begin{spec}
-stmt_loop  = loop_for | loop_while             ;
-
-loop_for   = `for'   ident `in' expr `do' stmt ;
-loop_while = `while'            expr `do' stmt ;
-\end{spec}
 
 
 
-\subsubsection{Control statements}
-\label{ssub:control_statements}
 
-Control statements help the programmer to control the flow of a
-program via allowing code to be skipped when it would otherwise
-be executed.
 
-\begin{spec}
-stmt_control     = control_return
-                 | control_break
-                 | control_continue    ;
-
-control_return   = `return'   [ expr ] ;
-control_break    = `break'    [ expr ] ;
-control_continue = `continue'          ;
-\end{spec}
 
 
 
