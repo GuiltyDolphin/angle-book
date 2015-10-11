@@ -549,7 +549,25 @@ may be overwritten, others may not.
 Name & Can be overwritten? & Use \\
 main & no & Whether the current program was invoked directly. \\
 \_it & yes & Holds the value of the last computation. \\
+asClass & no & Whether the current function was called as a constraint. \\
 \end{tabular}
+
+\subsubsection{Grammar}
+\label{ssub:grammar}
+
+\begin{spec}
+
+alpha          = `a'..`Z'                              ;
+digit          = `0'..`9'                              ;
+
+identifier     = simple_ident  | function_ident        ;
+
+simple_ident   = (alpha | `_') { alpha | digit | `_' } ;
+function_ident = `\$' simple_ident                     ;
+\end{spec}
+% FIXME: Another $ that needs escaping in the source code.
+% unescape it for final document.
+
 
 
 \subsection{Literals}
@@ -632,19 +650,19 @@ producing new data, representing data or transforming old data. To
 accommodate working with data, Angle supports several types of data.
 
 \begin{tabular}{ l p{7cm} l }
-Datatype & Use & Example \\
-String   & Representing sets of Unicode characters & @"string"@ \\
-Integer  & Representing arbitrarily large integral values & @42@ \\
-Float    & Representing floating-point values & @12.15@ \\
-List     & Grouping values, lists in Angle are heterogeneous meaning
+Datatype  & Use & Example \\
+String    & Representing sets of Unicode characters & @"string"@ \\
+Integer   & Representing arbitrarily large integral values & @42@ \\
+Float     & Representing floating-point values & @12.15@ \\
+List      & Grouping values, lists in Angle are heterogeneous meaning
 that different types of data may be stored within a single list & @[1, "string", true]@ \\
-Boolean  & Representing truth values & @true@ \\
+Boolean   & Representing truth values & @true@ \\
 Character & Representing individual Unicode characters & @'c'@ \\
-Range    & Representing an enumeration across values of a certain type & @(1..7)@ \\
-Null    & Special void value when a value must be returned but it doesn't make sense to return anything else & @null@ \\
-Lambda   & Representing function bodies & @(() 1;)@ \\
-Keyword  & Representing constant names without strings & @:keyword@ \\
-Handle   & Referencing file descriptors & @{handle: file}@ \\
+Range     & Representing an enumeration across values of a certain type & @(1..7)@ \\
+Null      & Special void value when a value must be returned but it doesn't make sense to return anything else & @null@ \\
+Lambda    & Representing function bodies & @(() 1;)@ \\
+Keyword   & Representing constant names without strings & @:keyword@ \\
+Handle    & Referencing file descriptors & @{handle: file}@ \\
 \end{tabular}
 
 More complex data structures can be built out of these basic types.
@@ -875,6 +893,29 @@ When using @foo@ as an expression, without calling it, it just
 returns the value definition. Likewise, when called as a function it
 returns the expected value 1. However, when the dollar operator is
 used, the function's definition is returned.
+
+\subsubsection{Grammar}
+\label{ssub:grammar}
+
+\paragraph{Function calls}
+\label{par:function_calls}
+
+\begin{spec}
+  function_call = [ `@'] simple_ident `(' { expr `,' } `)' ;
+\end{spec}
+
+The optional @@\@@ sign in front of the identifier indicates whether
+to call the function as a constraint or a regular function.
+
+\paragraph{Function definition}
+\label{par:function_definition}
+
+
+\begin{spec}
+function_def = simple_ident `(' { parameter `,' } `)' stmt                  ;
+
+parameter    = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
+\end{spec}
 
 
 \subsection{Variables}
@@ -1370,6 +1411,27 @@ varop     = `+' | `-'  | `/' | `**' | `*'
 \end{spec}
 
 
+\subsection{Conditionals}
+\label{sub:conditionals}
+
+A common feature to almost all programming languages is a structure
+for conditionally evaluating code based on the result of an
+expression. The canonical example of this is the `if' conditional,
+that executes the accompanying body if the given expression evaluates
+to `true', an `else' form is also usually present.
+\\
+Angle is no exception to this trend and implements its own conditional
+statements: `if', and its counterpart `unless'.
+
+\subsubsection{Grammar}
+\label{ssub:grammar}
+
+\begin{spec}
+stmt_condition = cond_if | cond_unless                     ;
+
+cond_if        = `if'     expr `then' stmt [ `else' stmt ] ;
+cond_unless    = `unless' expr        stmt [ `else' stmt ] ;
+\end{spec}
 
 
 \paragraph{Relevant modules}
@@ -1433,18 +1495,6 @@ loop_for   = `for'   ident `in' expr `do' stmt ;
 loop_while = `while'            expr `do' stmt ;
 \end{spec}
 
-\subsubsection{Conditional constructs}
-\label{ssub:conditional_constructs}
-
-Conditionals allow the programmer to control which parts of code get
-executed based on the boolean result of expressions.
-
-\begin{spec}
-stmt_condition = cond_if | cond_unless                     ;
-
-cond_if        = `if'     expr `then' stmt [ `else' stmt ] ;
-cond_unless    = `unless' expr        stmt                 ;
-\end{spec}
 
 
 \subsubsection{Control statements}
@@ -1465,29 +1515,6 @@ control_continue = `continue'          ;
 \end{spec}
 
 
-\subsubsection{Function definitions}
-\label{ssub:function_definitions}
-
-Function definitions allow the programmer to assign a lambda to an
-identifier.
-
-\paragraph{Parameters}
-\label{par:parameters}
-
-Angle supports certain annotations to parameters when defining a
-function that allow the programmer to restrict the types of values
-that a function will accept.
-
-See \texttt{Angle.Types.Lang.ConstrRef} and \texttt{Angle.Types.Lang.AnnType} for
-more information.
-
-% FIXME: '$' character needs escaping to have correct syntax
-% highlighting - but this shows up in the pdf.
-\begin{spec}
-function_def = simple_ident `(' { parameter } `)' stmt                  ;
-
-parameter    = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
-\end{spec}
 
 
 
@@ -1530,37 +1557,6 @@ expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
 \end{spec}
 
 
-\subsubsection{Function calls}
-\label{ssub:function_calls}
-All functions in Angle produce values when executed. The `null' value
-is returned implicitly from functions that would otherwise return
-nothing.
-
-\begin{spec}
-  function_call = [ `@'] simple_ident `(' { expr `,' } `)' ;
-\end{spec}
-
-The optional @@\@@ sign in front of the identifier indicates whether
-to call the function as a constraint or a regular function.
-
-\subsubsection{Identifiers}
-\label{ssub:identifiers}
-
-Identifiers represent names given to functions and values so that
-they may be referred to elsewhere within the program.
-
-\begin{spec}
-
-alpha          = `a'..`Z'                              ;
-digit          = `0'..`9'                              ;
-
-identifier     = simple_ident  | function_ident        ;
-
-simple_ident   = (alpha | `_') { alpha | digit | `_' } ;
-function_ident = `\$' simple_ident                     ;
-\end{spec}
-% FIXME: Another $ that needs escaping in the source code.
-% unescape it for final document.
 
 \part{Creating Angle}
 \label{prt:creating_angle}
