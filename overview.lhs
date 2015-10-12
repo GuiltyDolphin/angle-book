@@ -1827,10 +1827,11 @@ of Angle syntax. Angle must be described in Haskell's type system
 and functions must be defined to parse each of the constructs.
 
 The parsing functions are defined through three modules.
-\texttt{Angle.Parse.Helpers} defines the most basic parsers for use in other
-modules. \texttt{Angle.Parse.Token} defines parsers that deal with very basic
-structures, such as strings and integers. \texttt{Angle.Parse.Parser} defines
-the parsers that read Angle syntax into Angle types.
+\texttt{Angle.Parse.Helpers} defines the most basic parsers for use in
+other modules. \texttt{Angle.Parse.Token} defines parsers that deal
+with very basic structures, such as strings and integers.
+\texttt{Angle.Parse.Parser} defines the parsers that read Angle syntax
+into Angle types.
 
 As an example of the process of defining a new Angle feature, I will
 use string literals.
