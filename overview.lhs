@@ -1480,7 +1480,7 @@ operation =     unop    expr
 unop      = `^' | `-'                      ;
 
 varop     = `+' | `-'  | `/' | `**' | `*'
-                | `|'  | `&' | `>='
+                | `|'  | `&' | `>=' | '++'
                 | `<=' | `>' | `<'  | `==' ;
 \end{spec}
 
@@ -1579,7 +1579,7 @@ expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
 \end{spec}
 
 
-
+% FIXME: Not really happy about this whole section.
 \part{Creating Angle}
 \label{prt:creating_angle}
 
