@@ -1602,7 +1602,7 @@ general structure the abstract syntax tree (AST) will take.
 \\
 The actual implementation is not described further, but the
 documentation for \texttt{Angle.Types.Lang} covers this in great
-detail. Additionally, section~\ref{part:language_reference} provides
+detail. Additionally, section~\ref{prt:language_reference} provides
 a higher-level overview.
 
 \subsubsection{Executable}
@@ -1666,13 +1666,23 @@ Within the project structure `the parser' mainly refers to two things:
 \section{Parser implementation}
 \label{sec:parser_implementation}
 
+\subsubsection{Overview}
+\label{ssub:overview}
+
 Angle builds its parser on top of the @Parser a@ monad - a custom
 monad that supports a combinatory parsing style.
-Angle builds its parser on a custom parser-combinator style parsing
-monad.
+% Angle builds its parser on a custom parser-combinator style parsing
+% monad.
+\\
+\\
+\textit{The parser-library components:}
+\begin{description}
+  \item[\texttt{Angle.Scanner}] defines the @Parser a@ monad and the
+fundamental functionality of the parser.
+  \item[\texttt{Angle.Parse.Helpers}] defines the functions to support
+  combinatory parsing.
+\end{description}
 
-
-The set of modules that define the parser-combinator
 \texttt{Angle.Scanner} defines the @Parser a@ monad and the
 fundamental functionality of the parser; \texttt{Angle.Parse.Helpers}
 defines the functions to support combinatory parsing.
