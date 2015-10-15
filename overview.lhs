@@ -1584,10 +1584,67 @@ expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
 \part{Implementation}
 \label{prt:implementation}
 
-\section{Components}
-\label{sec:components}
+This section provides an overview of the implementation of Angle, some
+important design choices and their ramifications and the overall
+layout of the project.
 
-The Angle implementation is split into three sections:
+\section{Project structure}
+\label{sec:project_structure}
+
+The Angle implementation is split into four sections:
+
+\subsection{Language representation}
+\label{sub:language_representation}
+
+This is the internal representation of Angle's language structures;
+it describes how the various types relate to each other and the
+general structure the abstract syntax tree (AST) will take.
+\\
+The actual implementation is not described further, but the
+documentation for \texttt{Angle.Types.Lang} covers this in great
+detail. Additionally, section~\ref{part:language_reference} provides
+a higher-level overview.
+
+\subsubsection{Executable}
+\label{ssub:executable}
+
+% TODO: Check this section.
+The executable is the tool that users will make use of in order to
+run software written in Angle.
+\\
+The software provided, called `angle' is command-line based and
+self-contained. Options provided by the executable can be found
+by running @angle --help@.
+
+\subsubsection{Parser}
+\label{ssub:parser}
+
+% TODO: Check the wording.
+The parser has the job of compiling the textual source code into
+an AST representation of Angle within Haskell.
+\\
+Within the module structure, the collection of modules \texttt{Angle.Parse.*}
+define the implementation of the parser.
+\\
+% TODO: This wording isn't very good.
+Within these modules, the @Parser a@ monad is used to define the
+computational ability of the parser itself.
+
+\subsubsection{Interpreter}
+\label{ssub:interpreter}
+
+The role of the interpreter is to execute the program according to
+the structure of the AST produced by the parser.
+\\
+% TODO: Huh... Do you need this?
+Within the implementation, the interpreter is the first stage that
+is able to interact via IO, all previous steps are pure-monadic.
+\\
+The advantage of having the parser execute purely in terms of pure
+functions means that any two source-texts that are the same produce
+the exact same abstract syntax tree - as they should.
+
+
 
 \begin{description}
   \item[executable] for running programs, the main interface for the
@@ -1603,20 +1660,30 @@ The Angle implementation is split into three sections:
 
 \section{Parser}
 \label{sec:parser}
-
-% TODO: Check the wording.
-The parser has the job of compiling the textual source code into
-an AST representation of Angle within Haskell.
-\\
 Within the project structure `the parser' mainly refers to two things:
 
-\begin{description}
-  \item[@Parser a@ monad] - which is a stack of monads which produces
-    a value of type @a@ from an input stream. See section~\ref{sub:defining_the_parser}.
-  \item[@Angle.Parse@ modules] - a collection of modules which use the
-    @Parser a@ monad to convert the input stream into an abstract
-    syntax tree representing an Angle program.
-\end{description}
+
+\section{Parser implementation}
+\label{sec:parser_implementation}
+
+Angle builds its parser on top of the @Parser a@ monad - a custom
+monad that supports a combinatory parsing style.
+Angle builds its parser on a custom parser-combinator style parsing
+monad.
+
+
+The set of modules that define the parser-combinator
+\texttt{Angle.Scanner} defines the @Parser a@ monad and the
+fundamental functionality of the parser; \texttt{Angle.Parse.Helpers}
+defines the functions to support combinatory parsing.
+
+\texttt{Angle.Parse.Token} uses the previously defined combinators to
+build parsers for the basic structures in Angle (strings, keywords,
+numerics). \texttt{Angle.Parse.Parser} uses combinators defined in
+\texttt{Angle.Parse.Helpers}, along with the parsers defined in
+\texttt{Angle.Parse.Token} to define the parsers for each of the
+language constructs, and the main parser that combines these in
+order to parse an entire Angle program.
 
 \subsection{Scanner}
 \label{sub:scanner}
