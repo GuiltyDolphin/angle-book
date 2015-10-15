@@ -1580,37 +1580,14 @@ expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
 
 
 % FIXME: Not really happy about this whole section.
-\part{Creating Angle}
-\label{prt:creating_angle}
 
-\section{How it should work}
-\label{sec:how_it_should_work}
+\part{Implementation}
+\label{prt:implementation}
 
-The basic sequence of executing a program in Angle should be as
-follows:
+\section{Components}
+\label{sec:components}
 
-\begin{enumerate}
-  \item The programmer writes a program using Angle syntax.
-  \item The source file is run using the `angle' program.
-    \begin{enumerate}
-      \item The source file is checked for syntax errors and read
-        into Haskell datatypes.
-        \begin{enumerate}
-          \item If any malformed structures exist, the program will
-            halt and alert the runner.
-        \end{enumerate}
-      \item The program is executed.
-        \begin{enumerate}
-          \item Run-time errors may be encountered; if run-time errors
-            occur then the program will halt and the runner will be
-            notified.
-        \end{enumerate}
-    \end{enumerate}
-  \item The program exits and memory is freed.
-\end{enumerate}
-
-To achieve this method of execution the project is split into
-three sections.
+The Angle implementation is split into three sections:
 
 \begin{description}
   \item[executable] for running programs, the main interface for the
@@ -1619,16 +1596,19 @@ three sections.
     an abstract syntax tree that represents the language.
   \item[interpreter] which executes the AST produced by the parser
     and performs IO actions.
+  % TODO: Check this.
+  \item[language representation] describes Angle in terms of Haskell,
+  and provides the form that the abstract syntax tree will take.
 \end{description}
 
 \section{Parser}
 \label{sec:parser}
 
-In Angle the parser does the job of converting source text into a
-format that can be executed by the interpreter. Part~\ref{prt:grammar}
-defines the form this source can take.
+% TODO: Check the wording.
+The parser has the job of compiling the textual source code into
+an AST representation of Angle within Haskell.
 \\
-`The parser' mainly refers to two things:
+Within the project structure `the parser' mainly refers to two things:
 
 \begin{description}
   \item[@Parser a@ monad] - which is a stack of monads which produces
@@ -1644,11 +1624,12 @@ defines the form this source can take.
 \paragraph{What is a Scanner?}
 \label{par:what_is_a_scanner_}
 
-A scanner is the component of a language that reads in characters
-from the source file one at a time and hands them to the lexer to be
+% TODO: Check the wording!
+The scanner reads in individual characters from source and passes
+them to other components (namely the parser and/or lexer) to be
 converted to tokens.\footnote{http://forums.devshed.com/programming-languages-139/interpreter-compiler-312483.html\#post1342279}
-The scanner is able to keep track of its current position in order to
-make it easier for the lexer to form these tokens.
+The scanner has to keep track of its position in source in order to
+be able to backtrack and/or provide contextual syntax errors.
 
 \paragraph{The basics}
 \label{par:the_basics}
@@ -1876,6 +1857,50 @@ litStr = liftM LitStr tokString
 
 Then this process is repeated for any other structures that need to
 be parsed.
+
+
+
+
+\part{Creating Angle}
+\label{prt:creating_angle}
+
+\section{How it should work}
+\label{sec:how_it_should_work}
+
+The basic sequence of executing a program in Angle should be as
+follows:
+
+\begin{enumerate}
+  \item The programmer writes a program using Angle syntax.
+  \item The source file is run using the `angle' program.
+    \begin{enumerate}
+      \item The source file is checked for syntax errors and read
+        into Haskell datatypes.
+        \begin{enumerate}
+          \item If any malformed structures exist, the program will
+            halt and alert the runner.
+        \end{enumerate}
+      \item The program is executed.
+        \begin{enumerate}
+          \item Run-time errors may be encountered; if run-time errors
+            occur then the program will halt and the runner will be
+            notified.
+        \end{enumerate}
+    \end{enumerate}
+  \item The program exits and memory is freed.
+\end{enumerate}
+
+To achieve this method of execution the project is split into
+three sections.
+
+\begin{description}
+  \item[executable] for running programs, the main interface for the
+    user. See section~\ref{sub:using_angle} for more information.
+  \item[parser] which will deal with translating source code into
+    an abstract syntax tree that represents the language.
+  \item[interpreter] which executes the AST produced by the parser
+    and performs IO actions.
+\end{description}
 
 \part{Conclusion}
 \label{prt:conclusion}
