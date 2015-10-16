@@ -1682,10 +1682,21 @@ fundamental functionality of the parser.
   \item[\texttt{Angle.Parse.Helpers}] defines the functions to support
   combinatory parsing.
 \end{description}
+%\texttt{Angle.Scanner} defines the @Parser a@ monad and the
+%fundamental functionality of the parser; \texttt{Angle.Parse.Helpers}
+%defines the functions to support combinatory parsing.
 
-\texttt{Angle.Scanner} defines the @Parser a@ monad and the
-fundamental functionality of the parser; \texttt{Angle.Parse.Helpers}
-defines the functions to support combinatory parsing.
+\textit{Parser implementation:}
+\begin{description}
+  \item[\texttt{Angle.Parse.Token}] uses the previously defined
+  combinators to build parsers for the basic structures in Angle
+  (strings, keywords, numerics).
+  \item[\texttt{Angle.Parse.Parser}] uses combinators defined in
+\texttt{Angle.Parse.Helpers}, along with the parsers defined in
+\texttt{Angle.Parse.Token} to define the parsers for each of the
+language constructs, and the main parser that combines these in order
+to parse an entire Angle program.
+\end{description}
 
 \texttt{Angle.Parse.Token} uses the previously defined combinators to
 build parsers for the basic structures in Angle (strings, keywords,
