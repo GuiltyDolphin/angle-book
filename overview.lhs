@@ -1969,50 +1969,6 @@ litStr = liftM LitStr tokString
 Then this process is repeated for any other structures that need to
 be parsed.
 
-
-
-
-\part{Creating Angle}
-\label{prt:creating_angle}
-
-\section{How it should work}
-\label{sec:how_it_should_work}
-
-The basic sequence of executing a program in Angle should be as
-follows:
-
-\begin{enumerate}
-  \item The programmer writes a program using Angle syntax.
-  \item The source file is run using the `angle' program.
-    \begin{enumerate}
-      \item The source file is checked for syntax errors and read
-        into Haskell datatypes.
-        \begin{enumerate}
-          \item If any malformed structures exist, the program will
-            halt and alert the runner.
-        \end{enumerate}
-      \item The program is executed.
-        \begin{enumerate}
-          \item Run-time errors may be encountered; if run-time errors
-            occur then the program will halt and the runner will be
-            notified.
-        \end{enumerate}
-    \end{enumerate}
-  \item The program exits and memory is freed.
-\end{enumerate}
-
-To achieve this method of execution the project is split into
-three sections.
-
-\begin{description}
-  \item[executable] for running programs, the main interface for the
-    user. See section~\ref{sub:using_angle} for more information.
-  \item[parser] which will deal with translating source code into
-    an abstract syntax tree that represents the language.
-  \item[interpreter] which executes the AST produced by the parser
-    and performs IO actions.
-\end{description}
-
 \part{Conclusion}
 \label{prt:conclusion}
 
