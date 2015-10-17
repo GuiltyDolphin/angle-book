@@ -1802,11 +1802,6 @@ the @MaybeT m a@ monad transformer.
 type FailAndState s a = MaybeT (State s) a
 \end{spec}
 
-Haskell provides a convenient means of doing this - via monad
-transformers.\footnote{https://hackage.haskell.org/package/transformers}
-Monad transformers allow the combination of different monads into
-a single monad that can access the functionality of each.\footnote{http://book.realworldhaskell.org/read/monad-transformers.html}\footnote{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
-
 \paragraph{What it should do}
 \label{par:what_it_should_do}
 
@@ -1848,7 +1843,8 @@ computations that can fail, but it is limited in that it can only
 indicate that the computation failed, not \textit{why}.
 \\
 For failure with additional information, the @Except e@ monad can
-be used.
+be used.\footnote{Initially `ErrorT' was used, but due to
+depreciation `ExceptT' was used instead - https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
 
 
 \paragraph{The monad stack}
@@ -1906,78 +1902,6 @@ actual definition.}
 \begin{spec}
 type Parser a = ExceptT SyntaxError (StateT Position (Reader Source)) a
 \end{spec}
-
-\subsubsection{The parser type}
-\label{ssub:the_parser_type}
-
-Having defined the scanner type to be synonymous with
-@State SourcePos@, and the knowledge that the scanner will be
-integrated with the parser to provide positional information, as well
-as access to characters from a stream, the parser type can start to be
-defined.
-
-\paragraph{Representing the parser}
-\label{par:representing_the_scanner}
-
-As the exact types of values that the parser will be expected to
-produce may vary, its type has to be polymorphic.
-\\ \\ \textit{The parser consisting of just the scanner component.}
-\begin{spec}
-type Parser a = State SourcePos a
-\end{spec}
-
-% TODO: I think we want a Reader in here (to pass string around)
-% thus, maybe a monad transformer? Reader and State
-
-There is one major issue with this type; after having created a few
-tokenizer functions in the `Parser' module, I noticed that I was
-having to pass strings (the source code) to many of the functions.
-\\ \\ \textit{Example: the `integer' function for parsing a single
-integer requires a string in order to perform its task}
-\begin{spec}
-integer :: String -> Parser Integer
-\end{spec}
-But the problem with the parser is still not solved, the SourceEnv
-and Parser need to be somehow merged together in order to allow the
-passing of both state and environment.
-\\
-Haskell provides a convenient means of doing this - via monad
-transformers.\footnote{https://hackage.haskell.org/package/transformers}
-Monad transformers allow the combination of different monads into
-a single monad that can access the functionality of each.\footnote{http://book.realworldhaskell.org/read/monad-transformers.html}\footnote{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
-\\
-This means that the use of a State Transformer with the Reader monad
-will allow the combination of persistent environment and state.
-\\ \\ \textit{Notice the scanner is still present in the stack, `StateT SourcePos'.}
-\begin{spec}
-type Parser = StateT SourcePos (Reader String)
-\end{spec}
-% TODO: Not sure about this bit!
-This is good, but leaves the implementation a little exposed, which
-can lead to issues later on.\footnote{http://book.realworldhaskell.org/read/programming-with-monads.html\#id646649}
-\\
-To hide the internals of the type, we can wrap the Parser in a
-newtype declaration.
-\begin{spec}
-newtype Parser a = Parser
-    { runParser :: StateT SourcePos (Reader String) a }
-\end{spec}
-`runParser' can be used to retrieve the monad stack from a Parser.
-\\
-One last thing to add is error handling, via the ExceptT monad
-transformer.\footnote{Initially `ErrorT' was used, but due to
-depreciation `ExceptT' was used instead - https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
-\\
-Thus the final type is:
-\\ \\ \textit{`ParseError' contains information about exceptions that occur during parsing.}
-\begin{spec}
-newtype Parser a = Parser
-    { runParser :: ExceptT ScanError (StateT SourcePos (Reader String)) a }
-\end{spec}
-
-Thus the base-most parser (scanner) can be represented as a
-single function with the type @scanChar :: Parser Char@.
-
 
 \subsection{Scanner}
 \label{sub:scanner}
