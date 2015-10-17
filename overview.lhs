@@ -1,4 +1,5 @@
-\documentclass[a4paper,11pt,oneside]{article}
+\documentclass[a4paper,11pt,oneside]{report}
+% TODO: Report and article both look pretty good, decide on one.
 
 %include lhs2TeX.fmt
 %include lhs2TeX.sty
@@ -59,6 +60,8 @@
 \end{abstract}
 
 \tableofcontents
+
+\newpage
 
 
 \section{Background}
