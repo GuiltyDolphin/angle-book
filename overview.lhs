@@ -1729,6 +1729,256 @@ numerics). \texttt{Angle.Parse.Parser} uses combinators defined in
 language constructs, and the main parser that combines these in
 order to parse an entire Angle program.
 
+
+\subsection{The Parser Monad}
+\label{sub:the_parser_monad}
+
+\subsubsection{What is a monad?}
+\label{ssub:what_is_a_monad_}
+
+In the context of a purely functional language such as Haskell, a
+monad is a structure that represents a certain type of computation
+and the rules associated with it. Monads are particularly useful
+because they allow the combination of effects whilst following the
+accompanying rules.
+
+\paragraph{The Maybe monad}
+\label{par:the_maybe_monad}
+
+An example of a monad in Haskell is the @Maybe a@ monad. @Maybe a@
+is often used to represent some computation that may fail.
+\\
+\\
+\textit{A @Maybe a@ data declaration}
+\begin{spec}
+data Maybe a = Just a | Nothing
+\end{spec}
+
+There are two operations associated with monads: `return' and `bind'.
+`return' allows a non-monadic value to be lifted into the monad, and
+`bind' allows the combination of monadic computations.
+\\
+For the @maybe a@ monad, `return' wraps the value in the @Just@
+constructor, and `bind' unwraps the value from the `Just' constructor
+and passes it to the next function, or produces `Nothing' if the
+first computation produces `Nothing' as well.
+
+\begin{spec}
+return a == Just a
+
+Nothing >>= _ == Nothing
+
+Just a >>= f == f a
+\end{spec}
+
+
+\subsubsection{The Parser Monad}
+\label{ssub:the_parser_monad}
+
+With the definition of a monad out of the way, it can be understood
+that the @Parser a@ monad should have the operations `bind' and
+`return'.
+\\
+The example of the @Maybe a@ monad given above is very simplistic,
+it does one thing and one thing only. The @Parser a@ monad will have
+to provide a lot more functionality if it is to be used for language
+parsing.
+
+\paragraph{Monad Transformers}
+\label{par:monad_transformers}
+
+Monad transformers are special structures that allow the combination
+of monads.\footnote{http://book.realworldhaskell.org/read/monad-transformers.html}\footnote{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
+\\
+Monad transformers must satisfy the standard monad laws, but possess
+an additional operation `lift' that promotes monadic computations
+to the combined monad of the transformer.\footnote{https://hackage.haskell.org/package/transformers}
+\\
+This effectively allows the stacking of monadic effects, for example,
+if a monad was required that could both keep state and fail, the
+@maybe a@ monad could be combined with the @state s a@ monad via
+the @MaybeT m a@ monad transformer.
+\begin{spec}
+type FailAndState s a = MaybeT (State s) a
+\end{spec}
+
+Haskell provides a convenient means of doing this - via monad
+transformers.\footnote{https://hackage.haskell.org/package/transformers}
+Monad transformers allow the combination of different monads into
+a single monad that can access the functionality of each.\footnote{http://book.realworldhaskell.org/read/monad-transformers.html}\footnote{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
+
+\paragraph{What it should do}
+\label{par:what_it_should_do}
+
+With monads and monad transformers in mind, all that needs to be done
+is to state the desired computational abilities, pick the correct
+monads and combine them to form the final monad.
+
+\paragraph{State}
+\label{par:state}
+
+% TODO: Better wording please.
+The @Parser a@ monad will obviously need to be able to keep track of
+its internal state. The parser will be running through a source file,
+making requests to the scanner and collecting characters to form the
+result.
+\\
+The @State s a@ monad was chosen to satisfy this as it provides a
+simple interface and all the required functionality without
+side-effects.
+
+\paragraph{Environment}
+\label{par:environment}
+
+The @Parser a@ monad will need access to a source string throughout
+its lifetime. In Haskell, the @Reader e a@ monad is used when a static
+`environment' of type @e@ should be passed along with computations
+without being altered.\footnote{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Reader.html}
+
+\paragraph{Failure}
+\label{par:failure}
+
+Although it would be nice to think that all input to the parser would
+be well-formed, it is likely that a string could not be parsed due
+to being syntactically incorrect. The @Parser a@ monadic should be
+able to fail, and describe \textit{why} it failed.
+\\
+The @Maybe a@ monad mentioned earlier can be used to represent
+computations that can fail, but it is limited in that it can only
+indicate that the computation failed, not \textit{why}.
+\\
+For failure with additional information, the @Except e@ monad can
+be used.
+
+
+\paragraph{The monad stack}
+\label{par:the_monad_stack}
+
+To combine these monads the used of monad transformers is required,
+as mentioned earlier.
+\\
+An important point to note is that combining monads is, in general,
+not commutative - meaning that the order of operations \textit{is}
+important.
+\\
+% TODO: Oh God... Please fix the phrasiiiinggg...
+An example of this would be @ExceptT e (State s) a@ versus
+@StateT s (Except e) a@. The former describes a monad that will
+either fail with type @e@, or run some state and succeed with type
+@a@; whereas the latter describes a monad that will produce
+\\
+\begin{spec}
+type ES a = ExceptT String (State Int) a
+type SE a = StateT Int (Except String) a
+
+message1 = return "hello" :: ES String
+message2 = return "hello" :: SE String
+
+runState (runExceptT message1) 1
+> (Right "hello", 1)
+
+runExcept (runStateT message2 1)
+> Right ("hello", 1)
+\end{spec}
+
+As the above example shows, the former monad is wrapping the inner
+value in exceptions, whereas the latter is wrapping the whole
+computation with potential failure.
+\\
+With this in mind, the ordering of the stack can be decided.
+\\
+Clearly an @ExceptT e m a@ transformer will have to sit on the top
+of the stack, as either the whole file can be parsed, or none
+of the file.
+\\
+Regarding the @Reader e a@ and @State s a@ monads, the ordering
+isn't particularly important; they both produce the same results
+(a reader that produces a stateful computation of type @State s a@ is
+the same as a stateful computation that produces a reader of type
+@Reader e (s, a)@ when fully evaluated - as the environment has no
+effect on the final result).
+\\
+Out of personal preference I put the @Reader e a@ monad on the bottom
+of the stack.\footnote{@SyntaxError@, @Position@ and @Source@ are not
+the actual names of the types used. See \textit{Angle.Scanner} for the
+actual definition.}
+\\
+\begin{spec}
+type Parser a = ExceptT SyntaxError (StateT Position (Reader Source)) a
+\end{spec}
+
+\subsubsection{The parser type}
+\label{ssub:the_parser_type}
+
+Having defined the scanner type to be synonymous with
+@State SourcePos@, and the knowledge that the scanner will be
+integrated with the parser to provide positional information, as well
+as access to characters from a stream, the parser type can start to be
+defined.
+
+\paragraph{Representing the parser}
+\label{par:representing_the_scanner}
+
+As the exact types of values that the parser will be expected to
+produce may vary, its type has to be polymorphic.
+\\ \\ \textit{The parser consisting of just the scanner component.}
+\begin{spec}
+type Parser a = State SourcePos a
+\end{spec}
+
+% TODO: I think we want a Reader in here (to pass string around)
+% thus, maybe a monad transformer? Reader and State
+
+There is one major issue with this type; after having created a few
+tokenizer functions in the `Parser' module, I noticed that I was
+having to pass strings (the source code) to many of the functions.
+\\ \\ \textit{Example: the `integer' function for parsing a single
+integer requires a string in order to perform its task}
+\begin{spec}
+integer :: String -> Parser Integer
+\end{spec}
+But the problem with the parser is still not solved, the SourceEnv
+and Parser need to be somehow merged together in order to allow the
+passing of both state and environment.
+\\
+Haskell provides a convenient means of doing this - via monad
+transformers.\footnote{https://hackage.haskell.org/package/transformers}
+Monad transformers allow the combination of different monads into
+a single monad that can access the functionality of each.\footnote{http://book.realworldhaskell.org/read/monad-transformers.html}\footnote{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
+\\
+This means that the use of a State Transformer with the Reader monad
+will allow the combination of persistent environment and state.
+\\ \\ \textit{Notice the scanner is still present in the stack, `StateT SourcePos'.}
+\begin{spec}
+type Parser = StateT SourcePos (Reader String)
+\end{spec}
+% TODO: Not sure about this bit!
+This is good, but leaves the implementation a little exposed, which
+can lead to issues later on.\footnote{http://book.realworldhaskell.org/read/programming-with-monads.html\#id646649}
+\\
+To hide the internals of the type, we can wrap the Parser in a
+newtype declaration.
+\begin{spec}
+newtype Parser a = Parser
+    { runParser :: StateT SourcePos (Reader String) a }
+\end{spec}
+`runParser' can be used to retrieve the monad stack from a Parser.
+\\
+One last thing to add is error handling, via the ExceptT monad
+transformer.\footnote{Initially `ErrorT' was used, but due to
+depreciation `ExceptT' was used instead - https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
+\\
+Thus the final type is:
+\\ \\ \textit{`ParseError' contains information about exceptions that occur during parsing.}
+\begin{spec}
+newtype Parser a = Parser
+    { runParser :: ExceptT ScanError (StateT SourcePos (Reader String)) a }
+\end{spec}
+
+Thus the base-most parser (scanner) can be represented as a
+single function with the type @scanChar :: Parser Char@.
+
+
 \subsection{Scanner}
 \label{sub:scanner}
 
@@ -1820,96 +2070,6 @@ type Scanner = State SourcePos
 \texttt{Angle.Parse.Helpers} and \texttt{Angle.Parse.Token} implement the parser
 functions. \texttt{Angle.Types.Lang} defines language structures in terms
 of Haskell types.
-
-\subsubsection{The parser type}
-\label{ssub:the_parser_type}
-
-Having defined the scanner type to be synonymous with
-@State SourcePos@, and the knowledge that the scanner will be
-integrated with the parser to provide positional information, as well
-as access to characters from a stream, the parser type can start to be
-defined.
-
-\paragraph{Representing the parser}
-\label{par:representing_the_scanner}
-
-As the exact types of values that the parser will be expected to
-produce may vary, its type has to be polymorphic.
-\\ \\ \textit{The parser consisting of just the scanner component.}
-\begin{spec}
-type Parser a = State SourcePos a
-\end{spec}
-
-% TODO: I think we want a Reader in here (to pass string around)
-% thus, maybe a monad transformer? Reader and State
-
-There is one major issue with this type; after having created a few
-tokenizer functions in the `Parser' module, I noticed that I was
-having to pass strings (the source code) to many of the functions.
-\\ \\ \textit{Example: the `integer' function for parsing a single
-integer requires a string in order to perform its task}
-\begin{spec}
-integer :: String -> Parser Integer
-\end{spec}
-The source code being passed in to these functions could be referred
-to as the `environment' - a static piece of information which they
-require access to in order to evaluate. Luckily, there exists a
-standard monad for representing computations to which an environment
-is passed - the Reader monad.\footnote{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Reader.html}
-\\
-The Reader monad has a type of:
-\\ \\ \textit{`runReader' takes an environment of type `e' and unwraps and
-evaluates the computation inside the Reader.}
-
-\begin{spec}
-newtype Reader e a = Reader { runReader :: e -> a }
-\end{spec}
-
-Which allows us to represent the source code environment by the
-type:
-\begin{spec}
-type SourceEnv = Reader String
-\end{spec}
-But the problem with the parser is still not solved, the SourceEnv
-and Parser need to be somehow merged together in order to allow the
-passing of both state and environment.
-\\
-Haskell provides a convenient means of doing this - via monad
-transformers.\footnote{https://hackage.haskell.org/package/transformers}
-Monad transformers allow the combination of different monads into
-a single monad that can access the functionality of each.\footnote{http://book.realworldhaskell.org/read/monad-transformers.html}\footnote{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
-\\
-This means that the use of a State Transformer with the Reader monad
-will allow the combination of persistent environment and state.
-\\ \\ \textit{Notice the scanner is still present in the stack, `StateT SourcePos'.}
-\begin{spec}
-type Parser = StateT SourcePos (Reader String)
-\end{spec}
-% TODO: Not sure about this bit!
-This is good, but leaves the implementation a little exposed, which
-can lead to issues later on.\footnote{http://book.realworldhaskell.org/read/programming-with-monads.html\#id646649}
-\\
-To hide the internals of the type, we can wrap the Parser in a
-newtype declaration.
-\begin{spec}
-newtype Parser a = Parser
-    { runParser :: StateT SourcePos (Reader String) a }
-\end{spec}
-`runParser' can be used to retrieve the monad stack from a Parser.
-\\
-One last thing to add is error handling, via the ExceptT monad
-transformer.\footnote{Initially `ErrorT' was used, but due to
-depreciation `ExceptT' was used instead - https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
-\\
-Thus the final type is:
-\\ \\ \textit{`ParseError' contains information about exceptions that occur during parsing.}
-\begin{spec}
-newtype Parser a = Parser
-    { runParser :: ExceptT ScanError (StateT SourcePos (Reader String)) a }
-\end{spec}
-
-Thus the base-most parser (scanner) can be represented as a
-single function with the type @scanChar :: Parser Char@.
 
 \subsubsection{Parsing Angle}
 \label{ssub:parsing_angle}
