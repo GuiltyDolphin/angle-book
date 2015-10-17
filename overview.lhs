@@ -1605,8 +1605,8 @@ documentation for \texttt{Angle.Types.Lang} covers this in great
 detail. Additionally, section~\ref{prt:language_reference} provides
 a higher-level overview.
 
-\subsubsection{Executable}
-\label{ssub:executable}
+\subsection{Executable}
+\label{sub:executable}
 
 % TODO: Check this section.
 The executable is the tool that users will make use of in order to
@@ -1616,8 +1616,8 @@ The software provided, called `angle' is command-line based and
 self-contained. Options provided by the executable can be found
 by running @angle --help@.
 
-\subsubsection{Parser}
-\label{ssub:parser}
+\subsection{Parser}
+\label{sub:parser}
 
 % TODO: Check the wording.
 The parser has the job of compiling the textual source code into
@@ -1630,8 +1630,8 @@ define the implementation of the parser.
 Within these modules, the @Parser a@ monad is used to define the
 computational ability of the parser itself.
 
-\subsubsection{Interpreter}
-\label{ssub:interpreter}
+\subsection{Interpreter}
+\label{sub:interpreter}
 
 The role of the interpreter is to execute the program according to
 the structure of the AST produced by the parser.
@@ -1643,6 +1643,34 @@ is able to interact via IO, all previous steps are pure-monadic.
 The advantage of having the parser execute purely in terms of pure
 functions means that any two source-texts that are the same produce
 the exact same abstract syntax tree - as they should.
+
+
+\subsection{Process}
+\label{sub:process}
+
+The four main components of the language roughly coincide with the
+execution method.
+
+\begin{enumerate}
+  \item \textit{User:} The programmer writes a program using Angle syntax.
+  \item \textit{Executable:} The source file is run using the `angle' program.
+    \begin{enumerate}
+      \item \textit{Parser:} An attempt is made to compile the source
+      to the abstract syntax tree based on the
+      \textit{language representation}.
+        \begin{enumerate}
+          \item If the syntax does not coincide with that expected,
+          the program will halt and alert the user.
+        \end{enumerate}
+      \item \textit{Interpreter:} The AST is executed.
+        \begin{enumerate}
+          \item Run-time errors are raised as exceptions that may
+          be caught by the user. If an exception makes it to the
+          top-level, the program will halt and alert the user.
+        \end{enumerate}
+    \end{enumerate}
+  \item \textit{Executable:} The program exits and memory is freed.
+\end{enumerate}
 
 
 
@@ -1658,16 +1686,11 @@ the exact same abstract syntax tree - as they should.
   and provides the form that the abstract syntax tree will take.
 \end{description}
 
-\section{Parser}
-\label{sec:parser}
-Within the project structure `the parser' mainly refers to two things:
-
-
 \section{Parser implementation}
 \label{sec:parser_implementation}
 
-\subsubsection{Overview}
-\label{ssub:overview}
+\subsection{Overview}
+\label{sub:overview}
 
 Angle builds its parser on top of the @Parser a@ monad - a custom
 monad that supports a combinatory parsing style.
@@ -1726,7 +1749,7 @@ There are two main requirements for the scanner:
 \begin{itemize}
   \item It is able to read characters from source.
   \item It is able to indicate the position at which these characters
-  were parsed.
+  were read.
 \end{itemize}
 
 \subsubsection{Scanner type}
