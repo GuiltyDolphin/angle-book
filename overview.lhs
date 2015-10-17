@@ -1722,7 +1722,7 @@ execution method.
 Haskell types.
 
 \subsection{Overview}
-\label{sub:overview}
+\label{sub:parser_overview}
 
 Angle builds its parser on top of the @Parser a@ monad - a custom
 monad that supports a combinatory parsing style.
@@ -2007,26 +2007,43 @@ This information is then used as the state for the @Parser a@ monad,
 and is updated by the scanner function @scanChar@ during parsing.
 
 
-\subsection{Defining the parser}
-\label{sub:defining_the_parser}
+\subsection{Parsing Angle}
+\label{sub:parsing_angle}
 
-\paragraph{Relevant modules}
-\label{par:relevant_modules}
+The @Parser a@ monad forms the basis of parsing in Angle, but with
+just the definition of the monad and the scanner, the only supported
+grammar is the most general one.
+\\
 
+\subsubsection{Layers}
+\label{ssub:layers}
 
-\subsubsection{Parsing Angle}
-\label{ssub:parsing_angle}
+As mentioned in Section~\ref{sub:parser_overview}, the parser is split over
+several modules.
 
+\begin{itemize}
+  \item \haskmodule{Angle.Scanner} defines the @Parser a@ monad and
+  the scanner functionality.
+  \item \haskmodule{Angle.Parse.Helpers} builds upon the functionality
+  provided by \haskmodule{Angle.Scanner} to create the set of
+  parser-combinator functions.
+  \item \haskmodule{Angle.Parse.Token} defines primitive parsers for
+  Angle's basic structures.
+  \item \haskmodule{Angle.Parse.Parser} defines the Angle parser.
+\end{itemize}
 Having a `Parser' type alone doesn't automatically allow the parsing
 of Angle syntax. Angle must be described in Haskell's type system
 and functions must be defined to parse each of the constructs.
 
-The parsing functions are defined through three modules.
-\haskmodule{Angle.Parse.Helpers} defines the most basic parsers for use in
-other modules. \haskmodule{Angle.Parse.Token} defines parsers that deal
-with very basic structures, such as strings and integers.
-\haskmodule{Angle.Parse.Parser} defines the parsers that read Angle syntax
-into Angle types.
+% The parsing functions are defined through three modules.
+% \haskmodule{Angle.Parse.Helpers} defines the most basic parsers for use in
+% other modules. \haskmodule{Angle.Parse.Token} defines parsers that deal
+% with very basic structures, such as strings and integers.
+% \haskmodule{Angle.Parse.Parser} defines the parsers that read Angle syntax
+% into Angle types.
+
+\subsubsection{Implementing strings - an example}
+\label{ssub:implementing_strings_an_example}
 
 As an example of the process of defining a new Angle feature, I will
 use string literals.
