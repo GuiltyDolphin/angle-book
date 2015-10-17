@@ -28,6 +28,7 @@
 \begin{document}
 
 \newcommand{\haskmodule}[1]{\texttt{#1}}
+\newcommand{\hasklib}[1]{\texttt{#1}}
 
 
 \maketitle
@@ -358,9 +359,9 @@ features will be made.
 
 \begin{tabular}{c c c}
  Element &  Example & Represents. \\
- Modules & \textit{Angle.Parse.Token} & Reference to a Haskell module. \\
+ Modules & \haskmodule{Angle.Parse.Token} & Reference to a Haskell module. \\
  Code    & @let x = 7@ & Source code of various types. \\
- Library & \textit{tasty} & Reference to a Haskell library. \\
+ Library & \hasklib{tasty} & Reference to a Haskell library. \\
 \end{tabular}
 
 
@@ -2186,9 +2187,9 @@ structures.
 In the early stages of the project there were some issues with the
 testing frameworks - the sizes of the test-cases that QuickCheck was
 generating were too large to be completed in a reasonable time. With
-\texttt{test-framework}, the initial testing framework, I had great
+\hasklib{test-framework}, the initial testing framework, I had great
 difficulty controlling the size of individual test-cases. After
-switching to \texttt{tasty} these issues were more easily dealt with.
+switching to \hasklib{tasty} these issues were more easily dealt with.
 \\
 For future projects I shall have to do more research into testing
 libraries to ensure they can cope with all my projects' needs before
