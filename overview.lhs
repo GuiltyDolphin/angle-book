@@ -1853,7 +1853,7 @@ result.
 \\
 The @State s a@ monad was chosen to satisfy this as it provides a
 simple interface and all the required functionality without
-side-effects.
+side-effects.\footnote{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-State-Lazy.html}
 
 \paragraph{Environment}
 \label{par:environment}
@@ -2005,61 +2005,6 @@ the previously traversed source text.
 \\
 This information is then used as the state for the @Parser a@ monad,
 and is updated by the scanner function @scanChar@ during parsing.
-
-\subsubsection{Scanner type}
-\label{ssub:scanner_type}
-
-\paragraph{Relevant modules}
-\label{par:relevant_modules}
-
-
-\paragraph{Source Position}
-\label{par:source_position}
-
-As stated previously, the scanner needs to be able to keep track
-of its current position in source. It is convenient to use a newtype
-wrapper of a triple of integers to provide a solid type to hold this
-information.
-\\
-The reason for having three integers is that it is more useful
-to refer to the line and column (first two values) numbers in
-error messages and debugging. For practical reasons, the total
-character index is recorded as the third element.
-\begin{spec}
-newtype SourcePos = SourcePos
-    { getSourcePos :: (Int, Int, Int) }
-\end{spec}
-
-\paragraph{Tracking position}
-\label{par:tracking_position}
-
-This is not enough to be able to advance position whilst yielding
-characters however, thus the scanner must have a type similar to:
-
-\begin{spec}
-SourcePos -> (v, SourcePos)
-\end{spec}
-
-That is, providing it with a new position in source allows it to
-determine a new value and advance position. \\
-This type signature actually represents a stateful computation -
-something that can be represented more usefully by using the
-existing State monad.\footnote{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-State-Lazy.html}\\
-The State monad has a type signature\footnote{This is actually
-incorrect - the State Monad is infact a StateT using Identity as the
-base monad (but for the purpose of this document it is safe to treat
-State as a newtype wrapper) https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-State-Lazy.html\#t:State} of:
-
-\begin{spec}
-newtype State s a = State { runState :: s -> (a, s) }
-\end{spec}
-
-And from the signature for the scanner, we could then replace the `s'
-with `SourcePos' and produce:
-
-\begin{spec}
-type Scanner = State SourcePos
-\end{spec}
 
 
 \subsection{Defining the parser}
