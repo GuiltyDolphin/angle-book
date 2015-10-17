@@ -2002,6 +2002,48 @@ There are two main requirements for the scanner:
   were read.
 \end{itemize}
 
+\subsubsection{The implementation}
+\label{ssub:the_implementation}
+
+I decided to implement the scanner as two parts: a type representing
+the information that the scanner would require to run, which would
+be embedded into the @Parser a@ monad; and the base-most function
+for the parser-combinator functionality.
+
+\paragraph{As a function}
+\label{par:as_a_function}
+
+As a function, the scanner is represented by @scanChar@, defined in
+\textit{Angle.Scanner}. @scanChar@ has the simple type @Parser Char@,
+it is a parser that either produces a character as the result, or
+fails. Another description of @scanChar@ might be:
+\textit{`the parser for a grammar in which any character is valid,
+with the only invalid token being the empty string'}. This is very
+useful as it provides the most simple grammar on top of which all the
+other parsing functions can be built, by refining the grammar from
+`any character' to a set of characters in sequence.
+\\
+% TODO: This feels a bit incomplete, like it is leading somewhere?
+The @scanChar@ function does have a couple of other duties, such as
+explicitly updating the state (See below), and checking for special
+characters such as newlines.
+
+\paragraph{As a type}
+\label{par:as_a_type}
+
+The @ScanState@ datatype defined in \textit{Angle.Scanner} represents
+the information required for the scanner to look ahead, backtrack
+and present positional information.
+\\
+a @ScanState@ consists of three attributes: @sourcePos@, which is
+the current position in source;\footnote{See the @SourcePos@ type in
+\textit{Angle.Scanner}.} @sourceRemaining@, which is the source text
+that has not yet been traversed; and @sourceScanned@, which represents
+the previously traversed source text.
+\\
+This information is then used as the state for the @Parser a@ monad,
+and is updated by the scanner function @scanChar@ during parsing.
+
 \subsubsection{Scanner type}
 \label{ssub:scanner_type}
 
