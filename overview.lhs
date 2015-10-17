@@ -7,9 +7,11 @@
 % \usepackage[nounderscore]{syntax}
 % \usepackage{underscore}
 
-% This provides a table of contents that okular can read.
+
 \usepackage{graphicx}
 \graphicspath{ {/home/ben/Documents/other/diagram_testing/angle/} }
+
+% This provides a table of contents that okular can read.
 \usepackage{hyperref}
 \hypersetup{
   colorlinks,
@@ -1689,6 +1691,15 @@ execution method.
 \section{Parser implementation}
 \label{sec:parser_implementation}
 
+\subsection{Relevant Modules}
+\label{sub:relevant_modules}
+
+\texttt{Angle.Scanner} defines the parser type.
+\texttt{Angle.Parse.Parser}, \texttt{Angle.Parse.Helpers} and
+\texttt{Angle.Parse.Token} implement the parser functions.
+\texttt{Angle.Types.Lang} defines language structures in terms of
+Haskell types.
+
 \subsection{Overview}
 \label{sub:overview}
 
@@ -1788,7 +1799,8 @@ parsing.
 \label{par:monad_transformers}
 
 Monad transformers are special structures that allow the combination
-of monads.\footnote{http://book.realworldhaskell.org/read/monad-transformers.html}\footnote{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
+of monads.\footnote{http://book.realworldhaskell.org/read/monad-transformers.html}
+\footnote{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
 \\
 Monad transformers must satisfy the standard monad laws, but possess
 an additional operation `lift' that promotes monadic computations
@@ -1906,8 +1918,13 @@ type Parser a = ExceptT SyntaxError (StateT Position (Reader Source)) a
 \subsection{Scanner}
 \label{sub:scanner}
 
-\paragraph{What is a Scanner?}
-\label{par:what_is_a_scanner_}
+\subsubsection{Relevant modules}
+\label{ssub:relevant_modules}
+
+\texttt{Angle.Scanner} defines the scanner.
+
+\subsubsection{What is a Scanner?}
+\label{ssub:what_is_a_scanner_}
 
 % TODO: Check the wording!
 The scanner reads in individual characters from source and passes
@@ -1916,8 +1933,8 @@ converted to tokens.\footnote{http://forums.devshed.com/programming-languages-13
 The scanner has to keep track of its position in source in order to
 be able to backtrack and/or provide contextual syntax errors.
 
-\paragraph{The basics}
-\label{par:the_basics}
+\subsubsection{The basics}
+\label{ssub:the_basics}
 
 There are two main requirements for the scanner:
 \begin{itemize}
@@ -1973,8 +1990,6 @@ and is updated by the scanner function @scanChar@ during parsing.
 
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
-
-\texttt{Angle.Scanner} defines the scanner.
 
 
 \paragraph{Source Position}
@@ -2032,10 +2047,6 @@ type Scanner = State SourcePos
 \paragraph{Relevant modules}
 \label{par:relevant_modules}
 
-\texttt{Angle.Scanner} defines the parser type. \texttt{Angle.Parse.Parser},
-\texttt{Angle.Parse.Helpers} and \texttt{Angle.Parse.Token} implement the parser
-functions. \texttt{Angle.Types.Lang} defines language structures in terms
-of Haskell types.
 
 \subsubsection{Parsing Angle}
 \label{ssub:parsing_angle}
