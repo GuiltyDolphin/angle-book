@@ -2095,24 +2095,14 @@ be parsed.
 \part{Conclusion}
 \label{prt:conclusion}
 
-% TODO: Update conclusion to reflect the addition of basic exception
-% handling and file io (also maybe mention import through eval?)
-% Also has the shell function.
-
 Angle satisfies its initial design requirement as a general-purpose
 programming language. It supports most major language features,
 including subroutines, variables, looping and conditional structures,
 exception handling and file IO.
 \\
-% Angle satisfies many of the initial design requirements; it supports
-% most major language features (with the exception of imports):
-% subroutines, variables, looping and conditional structures, file IO,
-% and exception handling.
-I believe that Angle is fit for purpose as a general-purpose
-programming language. For small projects, the standard structures,
-along with the support for input and output to files, as well as direct
-calls to shell commands, means that most use-cases should be handled
-directly.
+For small projects, the standard structures, along with the support
+for input and output to files, as well as direct calls to shell
+commands, means that most use-cases should be handled directly.
 \\
 For larger projects, the ability to embed code from other files
 through built-in functions should encourage the use of multiple source
