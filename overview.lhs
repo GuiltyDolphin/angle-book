@@ -1586,23 +1586,6 @@ information.
 
 
 
-\subsubsection{Lists and ranges as expressions}
-\label{ssub:lists_and_ranges_as_expressions}
-
-The reason for having lists and ranges defined as both literals and
-expressions is to enable lists and ranges that have indeterminate
-contents at run-time. Angle first attempts to parse a literal list
-or range, meaning that if the programmer hard-codes a list containing
-only literals, it will be treated as a literal when the file is being
-lexed. If any part of the list or range is not a literal value, and
-thus has no definite value, Angle will treat it as an expression
-rather than a literal so that the contents are only known when the
-list or range is evaluated.
-
-\begin{spec}
-expr_list    = `[' { expr `,' }                           `]' ;
-expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
-\end{spec}
 
 
 % FIXME: Not really happy about this whole section.
@@ -1674,6 +1657,8 @@ the exact same abstract syntax tree - as they should.
 \subsection{Process}
 \label{sub:process}
 
+% TODO: Change wording, make it clearer that this is the execution
+% method, and that the components are mentioned above.
 The four main components of the language roughly coincide with the
 execution method.
 
@@ -2091,6 +2076,58 @@ litStr = liftM LitStr tokString
 
 Then this process is repeated for any other structures that need to
 be parsed.
+
+\subsection{Design choices}
+\label{sub:design_choices}
+
+This section outlines certain design choices, why they were made
+and their impact upon the language.
+
+\subsubsection{Lists as both expressions and literals}
+\label{ssub:lists_and_ranges_as_expressions}
+
+% TODO: Better phrasing wanted!
+Internally, lists are represented both as expressions and
+as literals.
+There are two important considerations that lead to this choice:
+firstly, lists should be able to contain references to variables
+and expressions themselves. This means that a list must be an
+expression itself; second, literals are fully evaluated at the end
+of parsing (bar the expansion of ranges).
+Lists are perhaps the best structure for storing large amounts of
+data in Angle, thus it is very possible to want to store this data
+in files in the form of lists.
+\\
+If lists were just expressions, then in re-parsing a list from a file,
+each component of the list would be wrapped as an expression - meaning
+that when the list needs to be evaluated, each of the components must
+also be evaluated.
+\\
+Due to the nature of literals being fully evaluated at the end of the
+parsing stage - and the only allowed contents of literals are also
+literals, no additional wrapping would need to be done if a list
+were represented as a literal.
+\\
+Thus the decision was made to optimize data storage and reduce
+overhead when reading fully-evaluated lists.
+
+
+% The reason for this is that it is quite likely that a programmer would
+% want to store data in a
+% The reason for having lists and ranges defined as both literals and
+% expressions is to enable lists and ranges that have indeterminate
+% contents at run-time. Angle first attempts to parse a literal list
+% or range, meaning that if the programmer hard-codes a list containing
+% only literals, it will be treated as a literal when the file is being
+% lexed. If any part of the list or range is not a literal value, and
+% thus has no definite value, Angle will treat it as an expression
+% rather than a literal so that the contents are only known when the
+% list or range is evaluated.
+
+% \begin{spec}
+% expr_list    = `[' { expr `,' }                           `]' ;
+% expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
+% \end{spec}
 
 \part{Conclusion}
 \label{prt:conclusion}
