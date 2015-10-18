@@ -2077,14 +2077,14 @@ litStr = liftM LitStr tokString
 Then this process is repeated for any other structures that need to
 be parsed.
 
-\subsection{Design choices}
-\label{sub:design_choices}
+\section{Design choices}
+\label{sec:design_choices}
 
 This section outlines certain design choices, why they were made
 and their impact upon the language.
 
-\subsubsection{Lists as both expressions and literals}
-\label{ssub:lists_and_ranges_as_expressions}
+\subsection{Lists as both expressions and literals}
+\label{sub:lists_as_both_expressions_and_literals}
 
 % TODO: Better phrasing wanted!
 Internally, lists are represented both as expressions and
@@ -2128,6 +2128,59 @@ overhead when reading fully-evaluated lists.
 % expr_list    = `[' { expr `,' }                           `]' ;
 % expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
 % \end{spec}
+
+\subsection{Variadic operators}
+\label{sub:variadic_operators}
+
+Angle's prefix variadic operators are quite unconventional. They are
+based upon a Lisp style, but are very different from operators in
+most languages.
+\\
+Initially I intended to implement binary infix operators, the same
+as many other languages. I soon encountered the issue of precedence
+with my parsing library and all the workarounds for this were ugly
+and verbose.
+\\
+The solution was to have the programmer explicitly state the order
+in which operations would be executed.
+\\
+% TODO: Better phrasing please.
+For example: with binary operators, @1 + 2 * 5 / 7@ becomes
+@1 + (2 * 5 / 7)@, which then becomes @(1 + (2 * (5 / 7)))@ because
+even though multiplication and division generally have the same
+precedence, they are often defined to have left or right associativity
+that determine how equal precedence is resolved (left in this case).
+However, in Angle, an equal statement would be @(+ 1 (* 2 (/ 5 7)))@,
+thus there cannot be precedence clashes due to each layer needing to
+be evaluated before the higher layers.
+
+% TODO: I think this should be moved to the language reference.
+\subsubsection{Variadic operators are versatile}
+\label{ssub:variadic_operators_are_versatile}
+
+Although not my initial choice for operators, the variadic operators
+has proved to be very powerful.
+
+\paragraph{Flat operations}
+\label{par:flat_operations}
+
+Conventional binary operators only have two operands, thus when an
+operations needs to be applied to a set of values, one might have to
+do this: @a + b + c + ... + x + y + z@, this is inconvenient, and due
+to most of Angle's operators being variadic, all these operations
+could be combined into one: @(+ a b c ... x y z)@.
+
+\paragraph{List expansion}
+\label{par:list_expansion}
+
+Another feature of Angle's operators is that most of them are highly
+overloaded - meaning that they work differently on different types.
+\\
+A special case of this is when a single list is passed into (some of)
+the operators. When this occurs, the list is expanded and the operator
+acts upon the contents of the list, thus @(+ [a,b,c,...,x,y,z])@
+becomes @(+ a b c ... x y z)@.
+
 
 \part{Conclusion}
 \label{prt:conclusion}
