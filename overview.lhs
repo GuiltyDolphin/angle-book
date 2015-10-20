@@ -702,9 +702,12 @@ obtained through the use of built-in functions and language features.
 \label{sec:data}
 
 % FIXME: Better phrasing please!
-Fundamentally, the goal of a program is to process data in some way,
-producing new data, representing data or transforming old data. To
-accommodate working with data, Angle supports several types of data.
+Within a program it is important to be able to acquire, process, and
+output data. From a low level perspective, data is just represented
+in binary form, but this is very inconvenient for a programmer to
+work with. Thus many programming languages include what are called
+`data-structures', which accommodate working with this data. Angle
+is no exception and provides several data-structures, outlined below.
 
 \begin{tabular}{ l p{7cm} l }
 Datatype  & Use & Example \\
