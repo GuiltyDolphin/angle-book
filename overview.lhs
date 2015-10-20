@@ -1203,13 +1203,12 @@ For loops, when given a enumerable value such as a list or range,
 will pass over the contained values, assigning each element to a
 temporary variable for access in the body.
 \\
-% FIXME: Don't really like this, choose a better example.
-\textit{Welcoming several people with the use of a for loop.}
+\textit{Welcoming several users with the use of a for loop.}
 \begin{spec}
-names = ["Jannet", "Harry", "Theo"];
+users = ["Jannet", "Harry", "Theo"];
 
-for name in names do {
-  print("Welcome ", name);
+for user in users do {
+  print("Welcome ", user);
 }
 \end{spec}
 
