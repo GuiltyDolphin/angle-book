@@ -256,7 +256,8 @@ class Admin(User):
 
 sam = Admin("Sam")
 \end{spec}
-
+% TODO: This example seems a bit redundant, make sure it is clear
+% why inheritance is useful.
 In the above example, it could be said that @sam@ is an @Admin@ called
 @Sam@, and that a @Admin@ is a type of @User@.
 \\
@@ -364,7 +365,7 @@ features will be made.
  Modules & \haskmodule{Angle.Parse.Token} & Reference to a Haskell module. \\
  Code    & @let x = 7@ & Source code of various types. \\
  Library & \hasklib{tasty} & Reference to a Haskell library. \\
- Command &
+ Command & @angle --help@ & Command that can be entered at a terminal. \\
 \end{tabular}
 
 
