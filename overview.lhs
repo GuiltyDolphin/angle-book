@@ -36,6 +36,7 @@
 
 \begin{abstract}
   % TODO: Not sure about the 'design-process' bit.
+  % NOTE(1): There is a section on design choices now.
   This document provides an overview of the design-process, usage and
   implementation of Angle - a general purpose programming language.
   \\
@@ -237,33 +238,31 @@ Inheritance is usually present in object-oriented languages, and
 allows a parent-child relationship between different objects.
 \\
 \\
-% FIXME: Don't like this... Choose a better example.
 \textit{A python3 example of class-based object-oriented programming.}
 \begin{spec}
-class Animal:
-    noise = "roar"
+class User:
+    access = "restricted"
 
     def __init__(self, name):
         self.name = name
 
 
-class Duck(Animal):
-    noise = "quack"
+class Admin(User):
+    access = "unrestricted"
 
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, name):
+        super().__init__(name)
 
 
-sam = Duck("Sam")
+sam = Admin("Sam")
 \end{spec}
 
-
-In the above example, it could be said that @sam@ is a @Duck@ called
-@Sam@, and that a @Duck@ is a type of @Animal@.
+In the above example, it could be said that @sam@ is an @Admin@ called
+@Sam@, and that a @Admin@ is a type of @User@.
 \\
-@noise@ is a class variable, and does not rely on an instance (@sam@)
-being created, thus @Duck.noise == 'quack'@, but also
-@sam.noise == 'quack'@.
+@access@ is a class variable, and does not rely on an instance (@sam@)
+being created, thus @Admin.access == 'unrestricted'@, but also
+@sam.access == 'unrestricted'@.
 
 
 \paragraph{Functional}
