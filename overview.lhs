@@ -202,7 +202,7 @@ paradigms.\footnote{http://cs.lmu.edu/~ray/notes/paradigms/}
 \label{par:declarative}
 
 The declarative paradigm is one in which programs describe what
-actions should be performed, but don't explicity state \textit{how}
+actions should be performed, but don't explicitly state \textit{how}
 this should be done.
 \\
 Common examples of declarative languages are database query languages such as SQL.
@@ -219,7 +219,7 @@ SELECT column FROM table WHERE condition
 
 In the opposite spectrum of paradigms to declarative is imperative.
 In imperative languages the programmer specifies how to perform
-computations via a sequence of sep-by-step instructions.\footnote{https://msdn.microsoft.com/en-gb/library/bb669144.aspx}
+computations via a sequence of step-by-step instructions.\footnote{https://msdn.microsoft.com/en-gb/library/bb669144.aspx}
 Contrary to declarative languages, the order of execution in
 imperative languages can greatly affect the outcome of the program.
 
@@ -364,7 +364,7 @@ features will be made.
  Modules & \haskmodule{Angle.Parse.Token} & Reference to a Haskell module. \\
  Code    & @let x = 7@ & Source code of various types. \\
  Library & \hasklib{tasty} & Reference to a Haskell library. \\
- Command & @angle --help@ & Command that can be entered in a terminal. \\
+ Command &
 \end{tabular}
 
 
@@ -781,7 +781,7 @@ dependent and will take on the value of the argument placed at the
 equivalent position in a function call.
 \\
 The second form is a catch parameter; catch parameters, when defined,
-will collect any additional additonal arguments into a special list
+will collect any additional additional arguments into a special list
 that can be accessed normally as a list, or expanded within a
 function call to pass in the collected arguments. Catch parameters
 allow the implementation of variadic functions.
