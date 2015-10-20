@@ -364,6 +364,7 @@ features will be made.
  Modules & \haskmodule{Angle.Parse.Token} & Reference to a Haskell module. \\
  Code    & @let x = 7@ & Source code of various types. \\
  Library & \hasklib{tasty} & Reference to a Haskell library. \\
+ Command & @angle --help@ & Command that can be entered in a terminal. \\
 \end{tabular}
 
 
