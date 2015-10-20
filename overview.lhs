@@ -587,11 +587,10 @@ used for variable names.
 \\
 The following is a list of the reserved words in Angle:
 \\
-\begin{tabular}{ l c c c r }
-break & catch & continue & defclass & defun \\
-do    & else  & false    & for      & if \\
-in    & null  & raise    & return   & then \\
-true  & try   & unless   & when     & while \\
+\begin{tabular}{ l c c c c r }
+break    & catch & continue & defun & do     & else  \\
+false    & for   & if       & in    & null   & raise \\
+return   & then  & true     & try   & unless & while \\
 \end{tabular}
 
 
