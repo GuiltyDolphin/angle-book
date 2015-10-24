@@ -1,5 +1,6 @@
-\documentclass[a4paper,11pt,oneside]{report}
+\documentclass[a4paper,11pt,oneside]{article}
 % TODO: Report and article both look pretty good, decide on one.
+% Report doesn't seem to recognize subsubsections?
 
 %include lhs2TeX.fmt
 %include lhs2TeX.sty
@@ -8,9 +9,6 @@
 % \usepackage[nounderscore]{syntax}
 % \usepackage{underscore}
 
-
-\usepackage{graphicx}
-\graphicspath{ {/home/ben/Documents/other/diagram_testing/angle/} }
 
 % This provides a table of contents that okular can read.
 \usepackage{hyperref}
@@ -521,11 +519,11 @@ methodology of Angle. Each section describes a feature or ideal of
 Angle, and sections describing syntax features will include a grammar
 in Extended Backus Naur form at the end.
 
-\subsubsection{Notation}
-\label{ssub:notation}
+\subsection{Notation}
+\label{sub:notation}
 
-\paragraph{Extended Backus Naur Form (EBNF)}
-\label{par:extended_backus_naur_form_ebnf_}
+\subsubsection{Extended Backus Naur Form (EBNF)}
+\label{ssub:extended_backus_naur_form_ebnf_}
 
 EBNF is an extended version of Backus Naur Form, a notation that can be
 used to express the grammar of formal languages.\footnote{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
@@ -1535,39 +1533,7 @@ cond_unless    = `unless' expr        stmt [ `else' stmt ] ;
 \end{spec}
 
 
-\paragraph{Relevant modules}
-\label{par:relevant_modules}
-
-\haskmodule{Angle.Types.Lang} and \haskmodule{Angle.Parse.Parser.Internal} implement the
-language grammar in terms of Haskell types and functions.
-
-\paragraph{Overview}
-\label{par:overview}
-
-% The following provides a brief outline of a simple language grammar
-% intended to represent some of the features of Angle. The grammar is
-% not complete and is only intended to give an overview of Angle's
-% syntax.
-
-The following provides a brief outline of Angle's language grammar,
-written in a slightly modified Extended Backus Naur form, along with
-an overview of some of the features Angle provides.
-
-\section{Defining the language grammar}
-\label{sec:defining_the_language_grammar}
-
-
-
-
-
-
-
-
-
-
-
-
-
+% TODO: Check this bit
 \subsection{Expressions}
 \label{sub:expressions}
 
