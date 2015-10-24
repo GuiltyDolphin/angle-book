@@ -735,7 +735,7 @@ hash = [[:key1, "value1"],
         ]
 \end{spec}
 
-Then, using parameter constraints (see Section~\ref{ssub:parameters})
+Then, using parameter constraints (see Section~\ref{sub:parameters})
 one could define a predicate that determines whether a list represents
 a hash, and then be used as a constraint on any functions that should
 only accept a hash.
@@ -776,18 +776,9 @@ that can be accessed normally as a list, or expanded within a
 function call to pass in the collected arguments. Catch parameters
 allow the implementation of variadic functions.
 
-\subsubsection{Modifiers}
-\label{ssub:modifiers}
+\subsubsection{Parameter Constraints}
+\label{ssub:parameter_constraints}
 
-As mentioned, parameters can have certain modifiers applied to them.
-These too come in two flavors: annotations and constraints.
-\\
-Annotations allow the programmer to quickly state whether the
-parameter should be a function, literal or any value. This makes it
-easier to reason about higher-order functions and quickly see where
-functions should be passed in - as well as having the function reject
-invalid arguments.
-\\
 Parameter constraints (also known as classes in Angle) are references
 to functions attached to a parameter. When an argument is passed to
 the function and the parameter in that position has a constraint, the
@@ -795,7 +786,31 @@ argument is passed to the constraint function.
 \\
 The function then acts as a predicate, and should return true if the
 argument satisfies the constraint and false otherwise.
-\\
+
+\paragraph{Restrictions}
+\label{par:restrictions}
+
+Not just any function can be used as a constraint; for the successful
+use of a function as a constraint it must follow certain rules for
+the constraint call:
+\begin{itemize}
+  \item The function must be able to take a single argument after
+  any additional arguments are supplied. See
+  table~\ref{tab:calling_constraints} for some examples of valid
+  and non-valid constraint calls.
+\end{itemize}
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{c c c}
+    Constraint parameters & Call form    & Valid call \\
+    @foo(x, y, z)@        & @x:@@foo@    & no \\
+    @foo(x)@              & @x:@@foo@    & yes \\
+    @foo(x, ..xs)@        & @x:@@foo@    & yes \\
+    @foo(x, y)@           & @x:@@foo(1)@ & yes \\
+    @foo(x, ..xs)@        & @x:@@foo(1)@ & yes \\
+  \end{tabular}
+  \caption{Calling constraints}\label{tab:calling_constraints}
+\end{table}
 There are two main restrictions on functions when used as parameter
 constraints: firstly, they must be able to accept at least one
 argument, but may accept more (if there are more positional
@@ -813,9 +828,79 @@ integer), a built-in variable @as_class@ is provided that is true
 when the current execution context is as a constraint, and false
 otherwise; this allows a function to easily handle both use as a
 constraint and standard function.
+
+\paragraph{Constraints with arguments}
+\label{par:constraints_with_arguments}
+
+When used as a constraint in a parameter list, the first argument
+to the function will be the current argument (e.g, in @(x:\@foo)@,
+the first argument to @foo@ will be @x@). In this form the calling
+parentheses can be omitted.
 \\
+Constraints can be called with more arguments, allowing great
+flexibility in how constraints are used.
+
+Given a function @foo@ with parameters @(par1, par2, par3, ..., parn)@,
+the constraint call should look like
+@(x:\@foo(arg2, arg3, ..., argn))@, where @argN@ will bind with
+@parN@. Note that there is no @arg1@, the current argument (@x@) will
+still be passed as the implicit first argument.
+
+
+\begin{spec}
+# x is bigger than n?
+defun larger_than(x, n) {
+  (> x n);
+}
+
+defun increment_large(x:@larger_than(100)) {
+  (+ x 1);
+}
+\end{spec}
+
+
+\begin{spec}
+defun int(x) {
+  if as_class then {
+    return (== x asType(1, x));
+  }
+  asType(1, x);
+}
+\end{spec}
 Additionally, when called with a prefix @@\@@, a function will be
 called in a class context.
+
+\begin{spec}
+int(2.0);
+# 2
+
+@int(2.0);
+# false
+\end{spec}
+
+\begin{spec}
+# A simple predicate function, it will always return true or false.
+defun nonzero(x) {
+  ^(== x 0);
+}
+
+defun divide(x, y:@nonzero) {
+  (/ x y);
+}
+\end{spec}
+
+\subsubsection{Modifiers}
+\label{ssub:modifiers}
+
+As mentioned, parameters can have certain modifiers applied to them.
+These too come in two flavors: annotations and constraints.
+\\
+Annotations allow the programmer to quickly state whether the
+parameter should be a function, literal or any value. This makes it
+easier to reason about higher-order functions and quickly see where
+functions should be passed in - as well as having the function reject
+invalid arguments.
+\\
 
 \subsection{Closures}
 \label{sub:closures}
@@ -918,7 +1003,6 @@ foo = (() 1;);
 # Equivalent to above.
 
 foo = 2;
-
 
 foo;
 # 2
