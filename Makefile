@@ -1,2 +1,3 @@
 overview :
-	lhs2TeX --verb overview.lhs -o overview.tex && pdflatex overview.tex && okular overview.pdf
+	sed 's/\\\$$/$$/' < overview.lhs > overview.bk
+	lhs2TeX --verb overview.bk -o overview.tex && pdflatex overview.tex && okular overview.pdf

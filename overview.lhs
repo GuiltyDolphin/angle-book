@@ -562,7 +562,7 @@ multi_stmt  = `{' { stmt } `}'                             ;
 \label{sub:comments}
 
 Comments represent code that will be ignored by Angle. Comments start
-with a `\#' character and continue to the end of the line.
+with a @#@ character and continue to the end of the line.
 \\
 Comments should be used to document code or temporarily disable
 sections of code during development; Angle throws away comment
@@ -572,7 +572,7 @@ contents before execution.
 \label{ssub:grammar}
 
 \begin{spec}
-stmt_comment = `\#' { <any character except newline> } newline ;
+stmt_comment = @#@ { <any character except newline> } newline ;
 \end{spec}
 
 
@@ -882,7 +882,7 @@ int(2.0);
 \label{par:constraints_with_arguments}
 
 When used as a constraint in a parameter list, the first argument
-to the function will be the current argument (e.g, in @(x:\@foo)@,
+to the function will be the current argument (e.g, in @(x:@@foo)@,
 the first argument to @foo@ will be @x@). In this form the calling
 parentheses can be omitted.
 \\
@@ -891,7 +891,7 @@ flexibility in how constraints are used.
 
 Given a function @foo@ with parameters @(par1, par2, par3, ..., parn)@,
 the constraint call should look like
-@(x:\@foo(arg2, arg3, ..., argn))@, where @argN@ will bind with
+@(x:@@foo(arg2, arg3, ..., argn))@, where @argN@ will bind with
 @parN@. Note that there is no @arg1@, the current argument (@x@) will
 still be passed as the implicit first argument.
 
@@ -910,18 +910,43 @@ defun increment_large(x:@larger_than(100)) {
 
 
 
+\subsubsection{Annotations}
+\label{ssub:annotations}
+
+Annotations allow the programmer to restrict the types of arguments
+that are passed into a function.
+\\
+There are three possible annotations:
+\begin{description}
+  \item[@\$x@] Requires the argument to be a lambda.
+  \item[@!x@] Requires the argument to be a non-lambda.
+  \item[@x@] Imposes no restriction on the argument.
+\end{description}
+
+Annotations make it easy to define higher-order functions.
+\begin{spec}
+defun map(\$f, xs) {
+
+}
+\end{spec}
+Annotations allow the programmer to quickly state whether the
+parameter should be a function, literal or any value. This makes it
+easier to reason about higher-order functions and quickly see where
+functions should be passed in - as well as having the function reject
+invalid arguments.
 \subsubsection{Modifiers}
 \label{ssub:modifiers}
 
 As mentioned, parameters can have certain modifiers applied to them.
 These too come in two flavors: annotations and constraints.
 \\
-Annotations allow the programmer to quickly state whether the
-parameter should be a function, literal or any value. This makes it
-easier to reason about higher-order functions and quickly see where
-functions should be passed in - as well as having the function reject
-invalid arguments.
 \\
+
+\begin{spec}
+defun foo(\$x, !y, z) {
+  x(y, z);
+}
+\end{spec}
 
 \subsection{Closures}
 \label{sub:closures}
