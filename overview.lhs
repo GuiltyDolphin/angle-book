@@ -786,6 +786,21 @@ argument is passed to the constraint function.
 \\
 The function then acts as a predicate, and should return true if the
 argument satisfies the constraint and false otherwise.
+\\
+\\
+\textit{Example of using a parameter constraint to prevent division by
+zero}
+\begin{spec}
+# A simple predicate function, it will always return true or false.
+defun nonzero(x) {
+  ^(== x 0);
+}
+
+# This function won't accept a zero divisor.
+defun divide(x, y:@nonzero) {
+  (/ x y);
+}
+\end{spec}
 
 \paragraph{Restrictions}
 \label{par:restrictions}
@@ -798,7 +813,15 @@ the constraint call:
   any additional arguments are supplied. See
   table~\ref{tab:calling_constraints} for some examples of valid
   and non-valid constraint calls.
+  \item For the given call, the constraint \textbf{must} return a
+  boolean value.
 \end{itemize}
+
+Note that Angle won't check that a function will \textit{always}
+behave well as a constraint - so a function may sometimes return
+a boolean, sometimes not, but still be a valid constraint for
+certain use cases.
+
 \begin{table}[ht]
   \centering
   \begin{tabular}{c c c}
@@ -811,23 +834,49 @@ the constraint call:
   \end{tabular}
   \caption{Calling constraints}\label{tab:calling_constraints}
 \end{table}
-There are two main restrictions on functions when used as parameter
-constraints: firstly, they must be able to accept at least one
-argument, but may accept more (if there are more positional
-parameters, then the constraint must be passed additional arguments).
-Secondly, the function \textbf{must} return a boolean value when
-passed the arguments. Of course, the function may happen to return a
-boolean when passed one value but not others - thus only functions
-intended to be used as predicates should be used as constraints.
+
+\paragraph{Multi-purpose functions}
+\label{par:multi_purpose_functions}
+
+Quite often it would make sense to have a function act one way when
+called as a constraint, and another way when called normally.
 \\
-As there may be times when it would make sense for a function to act
-one way when used as a predicate, but in a different way when used
-otherwise (for instance, @int@ could determine whether the passed
-value is an integer \textit{or} attempt to convert the value to an
-integer), a built-in variable @as_class@ is provided that is true
-when the current execution context is as a constraint, and false
-otherwise; this allows a function to easily handle both use as a
-constraint and standard function.
+Angle supports this behavior by providing the @as_class@ variable.
+@as_class@ is a special variable that holds a boolean value which
+is @true@ if the current context is a constraint call, and @false@
+otherwise.
+\\
+As an example, @int@, defined below, will determine whether the passed
+value is an integer or not when used as a constraint, but will attempt
+to convert the given value to an integer when called normally.
+
+\begin{spec}
+defun int(x) {
+  if as_class then {
+    return (== x asType(1, x));
+  }
+  asType(1, x);
+}
+\end{spec}
+
+\paragraph{Constraints outside of parameters}
+\label{par:constraints_outside_of_parameters}
+
+% FIXME: Bit of repetition here? Each paragraph says the same thing?
+As constraints represent a very useful family of predicate functions,
+Angle allows the programmer to call them outside of parameter lists.
+\\
+When called with a prefix @@\@@, a function will be called as if
+it were called as a constraint in a parameter list - with the
+exception of there being no implicit first argument.
+
+\begin{spec}
+int(2.0);
+# 2
+
+@int(2.0);
+# false
+\end{spec}
 
 \paragraph{Constraints with arguments}
 \label{par:constraints_with_arguments}
@@ -859,35 +908,7 @@ defun increment_large(x:@larger_than(100)) {
 \end{spec}
 
 
-\begin{spec}
-defun int(x) {
-  if as_class then {
-    return (== x asType(1, x));
-  }
-  asType(1, x);
-}
-\end{spec}
-Additionally, when called with a prefix @@\@@, a function will be
-called in a class context.
 
-\begin{spec}
-int(2.0);
-# 2
-
-@int(2.0);
-# false
-\end{spec}
-
-\begin{spec}
-# A simple predicate function, it will always return true or false.
-defun nonzero(x) {
-  ^(== x 0);
-}
-
-defun divide(x, y:@nonzero) {
-  (/ x y);
-}
-\end{spec}
 
 \subsubsection{Modifiers}
 \label{ssub:modifiers}
