@@ -746,21 +746,8 @@ Of course this would not be nearly as efficient as the hash implementation
 in many languages, but the principle of being able to build more
 complex data from the standard set of types still holds.
 
-
-\section{Language Features}
-\label{sec:language_features}
-
-As Angle is intended to be used as a general-purpose programming
-language, it is important that the features it provides can facilitate
-a variety of uses.
-\\
-Some features are outlined below, with more in-depth explanations in
-section~\ref{sec:defining_the_language_grammar} and the documentation.
-
-
-\subsection{Functions}
-\label{sub:functions}
-
+\section{Functions}
+\label{sec:functions}
 
 Functions and subroutines (when they don't have an explicit return
 value) are essentially blocks of code that can be reused. Angle
@@ -770,11 +757,12 @@ call-signature-body of a function and a lambda, but in general use,
 when a lambda has been given a name (through either explicit
 assignment or the @defun@ statement) it is referred to as a function.
 
-\subsubsection{Parameters}
-\label{ssub:parameters}
+\subsection{Parameters}
+\label{sub:parameters}
 
-\paragraph{Types of parameters}
-\label{par:types_of_parameters}
+
+\subsubsection{Types of parameter}
+\label{ssub:types_of_parameter}
 
 
 Parameters (the variables that take on the values of arguments) in
@@ -790,8 +778,8 @@ that can be accessed normally as a list, or expanded within a
 function call to pass in the collected arguments. Catch parameters
 allow the implementation of variadic functions.
 
-\paragraph{Modifiers}
-\label{par:modifiers}
+\subsubsection{Modifiers}
+\label{ssub:modifiers}
 
 As mentioned, parameters can have certain modifiers applied to them.
 These too come in two flavors: annotations and constraints.
@@ -831,9 +819,8 @@ constraint and standard function.
 Additionally, when called with a prefix @@\@@, a function will be
 called in a class context.
 
-
-\subsubsection{Closures}
-\label{ssub:closures}
+\subsection{Closures}
+\label{sub:closures}
 
 Closures are functions that contain a snapshot of the scope at the
 time of their creation.
@@ -879,8 +866,8 @@ that is used by the closure assigned to @fun@. But when @fun2@ is
 defined, as the scope that @bar@ captures is different, so will its
 value of @x@.
 
-\paragraph{Declaring closures}
-\label{par:declaring_closures}
+\subsubsection{Declaring closures}
+\label{ssub:declaring_closures}
 
 As mentioned above, closures can be obtained by returning a lambda
 from a function. There is another method; using the dollar operator
@@ -901,8 +888,8 @@ bar = \$(() x;);
 \end{spec}
 
 
-\subsubsection{Accessing lambdas}
-\label{ssub:accessing_lambdas}
+\subsection{Accessing lambdas}
+\label{sub:accessing_lambdas}
 
 As every variable in Angle can have both a function \textit{and}
 value definition, \textit{and} functions are first-class citizens,
@@ -977,9 +964,21 @@ function_def = simple_ident `(' { parameter `,' } `)' stmt                  ;
 parameter    = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
 \end{spec}
 
+\section{Language Features}
+\label{sec:language_features}
 
-\subsection{Variables}
-\label{sub:variables}
+As Angle is intended to be used as a general-purpose programming
+language, it is important that the features it provides can facilitate
+a variety of uses.
+\\
+Some features are outlined below, with more in-depth explanations in
+section~\ref{sec:defining_the_language_grammar} and the documentation.
+
+
+
+
+\section{Variables}
+\label{sec:variables}
 
 Variables reference a location in memory that represents the data
 associated with them. In Angle, variables can have two sets of data:
@@ -1003,8 +1002,8 @@ found, or a definition is found.
 
 
 % TODO: Check the phrasing of this section.
-\subsubsection{Assignment}
-\label{ssub:assignment}
+\subsection{Assignment}
+\label{sub:assignment}
 
 Angle supports three assignment operators: @=@, @|=@, and @||=@; which
 represent local assignment, nonlocal assignment and global assignment
@@ -1024,8 +1023,8 @@ When assigning to the global scope, the same process as for local
 assignment is performed, but in the global scope instead of the
 current scope.
 
-\paragraph{Grammar}
-\label{par:grammar}
+\subsubsection{Grammar}
+\label{ssub:grammar}
 
 \begin{spec}
 stmt_assign     = local_assign
@@ -1038,12 +1037,12 @@ global_assign   = simple_ident `||=' expr ;
 \end{spec}
 
 
-\subsection{Exceptions and exception handling}
-\label{sub:exceptions_and_exception_handling}
+\section{Exceptions and exception handling}
+\label{sec:exceptions_and_exception_handling}
 
 
-\paragraph{Handling exceptions}
-\label{par:handling_exceptions}
+\subsection{Handling exceptions}
+\label{sub:handling_exceptions}
 
 
 Exceptions arise as a result of any of a number of things going
@@ -1087,13 +1086,13 @@ input (string) to an integer; when the user's input does not
 represent a valid integer string, a @:read@ exception is thrown. This
 is then caught by the @catch@ and the user is notified of their
 mistake. The @break :try@ statement at the end is a special form of
-the @break@ statement (see section~\ref{sub:looping_structures}) that
+the @break@ statement (see section~\ref{sec:looping_structures}) that
 just repeats the @try..catch@, as this handle-user-input-repeat form
 is quite common.
 
 
-\paragraph{User exceptions and re-raising}
-\label{par:user_exceptions_and_re_raising}
+\subsection{User exceptions and re-raising}
+\label{sub:user_exceptions_and_re_raising}
 
 Although catching exceptions is very useful itself, sometimes it may
 be useful to throw the exceptions.
@@ -1135,16 +1134,16 @@ available to those catching will be the name.
 In this case the user exception is @:greaterThan5@, and is handled
 directly.
 
-\subsubsection{Grammar}
-\label{ssub:grammar}
+\subsection{Grammar}
+\label{sub:grammar}
 
 \begin{spec}
 stmt_raise = `raise ' litKeyword ;
 \end{spec}
 
 
-\subsubsection{Catching exceptions}
-\label{ssub:catching_exceptions}
+\subsection{Catching exceptions}
+\label{sub:catching_exceptions}
 
 Angle provides a construct for handling exceptions. A statement is
 wrapped in @try@ and then any exceptions that occur during the
@@ -1166,15 +1165,15 @@ and no further @catch(s)@ will be executed.
 \end{spec}
 
 
-\subsection{Looping Structures}
-\label{sub:looping_structures}
+\section{Looping Structures}
+\label{sec:looping_structures}
 
 Repeated execution of a block of code can generally be achieved by
 two methods: recursion and iteration, both of which are supported in
 Angle.
 
-\subsubsection{Recursion}
-\label{ssub:recursion}
+\subsection{Recursion}
+\label{sub:recursion}
 
 Recursion is achieved by a function self-calling with reduced
 arguments. A base case exists which when satisfied will return a
@@ -1191,18 +1190,18 @@ equals 0, and the value being passed in is reduced by 1 each time.}
 \end{spec}
 
 Other recursive forms exist (such as tail-recursion), but Angle
-provides a while loop (see Section~\ref{ssub:iteration}) rendering
+provides a while loop (see Section~\ref{sub:iteration}) rendering
 such forms unnecessary.
 
 
-\subsubsection{Iteration}
-\label{ssub:iteration}
+\subsection{Iteration}
+\label{sub:iteration}
 
 Angle supports two constructs for iteration: @for@ loops and @while@
 loops.
 \\
-\paragraph{For loops}
-\label{par:for_loops}
+\subsubsection{For loops}
+\label{ssub:for_loops}
 
 For loops, when given a enumerable value such as a list or range,
 will pass over the contained values, assigning each element to a
@@ -1217,8 +1216,8 @@ for user in users do {
 }
 \end{spec}
 
-\paragraph{While loops}
-\label{par:while_loops}
+\subsubsection{While loops}
+\label{ssub:while_loops}
 
 Unlike their @for@ loop counterparts, which traverse a series of
 values, @while@ loops execute until some condition is met.
@@ -1232,8 +1231,8 @@ values, @while@ loops execute until some condition is met.
 \end{spec}
 
 
-\subsubsection{Controlling loops}
-\label{ssub:controlling_loops}
+\subsection{Controlling loops}
+\label{sub:controlling_loops}
 
 There are times at which it may be useful to exit a loop before it
 would naturally finish, or skip the rest of the current execution.
@@ -1243,8 +1242,8 @@ The @break@ and @continue@ statements provide support for these cases
 respectively.
 
 
-\paragraph{Break}
-\label{par:break}
+\subsubsection{Break}
+\label{ssub:break}
 
 The @break [val]@ statement ends the execution of the current looping
 structure, and sets the value produced to @val@, when supplied.
@@ -1252,17 +1251,17 @@ structure, and sets the value produced to @val@, when supplied.
 % mention special cases of :break)
 
 
-\paragraph{Continue}
-\label{par:continue}
+\subsubsection{Continue}
+\label{ssub:continue}
 
 @continue@ skips the rest of the current loop iteration, causing the
 looping structure to start its next cycle.
 
-\subsubsection{Grammar}
-\label{ssub:grammar}
+\subsection{Grammar}
+\label{sub:grammar}
 
-\paragraph{Looping structures}
-\label{par:looping_structures}
+\subsubsection{Looping structures}
+\label{ssub:looping_structures}
 
 \begin{spec}
 stmt_loop  = loop_for | loop_while             ;
@@ -1271,8 +1270,8 @@ loop_for   = `for'   ident `in' expr `do' stmt ;
 loop_while = `while'            expr `do' stmt ;
 \end{spec}
 
-\paragraph{Loop control flow}
-\label{par:loop_control_flow}
+\subsubsection{Loop control flow}
+\label{ssub:loop_control_flow}
 
 \begin{spec}
 
@@ -1285,8 +1284,8 @@ control_continue = `continue'          ;
 
 
 
-\subsection{Input and Output}
-\label{sub:input_and_output}
+\section{Input and Output}
+\label{sec:input_and_output}
 
 % FIXME: Want better wording for this.
 Although the logic of a program can be defined in terms of pure
@@ -1297,8 +1296,8 @@ useful.
 Angle provides several functions for IO operations.
 
 
-\subsubsection{Interactive with the terminal}
-\label{ssub:interactive_with_the_terminal}
+\subsection{Interactive with the terminal}
+\label{sub:interactive_with_the_terminal}
 
 A common need in scripts written for use in the terminal is to be able
 to perform basic interaction with the user. Angle facilitates this
@@ -1313,15 +1312,15 @@ with the built-in @print@ and @input@ functions.
 A great deal of basic user interaction can be achieved just through
 the use of these two functions.
 
-\subsubsection{Handles}
-\label{ssub:handles}
+\subsection{Handles}
+\label{sub:handles}
 
 Angle makes use of handles to perform IO operations. A handle is a
 reference to a resource on the system, such as a file descriptor which
 provides access to some IO resource for reading and/or writing.
 
-\paragraph{Standard streams}
-\label{par:standard_streams}
+\subsubsection{Standard streams}
+\label{ssub:standard_streams}
 
 On Unix systems there exist three standard file descriptors to access
 the three standard streams: @stdin@ is the input stream; @stdout@ is
@@ -1330,8 +1329,8 @@ the output stream; and @stderr@ which is used for error messages.
 Angle provides handles to these three descriptors by default, in the
 form of the variables @stdin@, @stdout@ and @stderr@.
 
-\paragraph{Obtaining handles}
-\label{par:obtaining_handles}
+\subsubsection{Obtaining handles}
+\label{ssub:obtaining_handles}
 
 Angle provides the built-in @open@ function, which takes the form:
 @open(file_name, access_mode)@, and returns a handle providing
@@ -1348,8 +1347,8 @@ Angle provides four possible access modes for handles: read
 (represented by @"<"@), write (@">"@), append (@">>"@), and
 read-write (@"<>"@).
 
-\paragraph{Reading handles}
-\label{par:reading_handles}
+\subsubsection{Reading handles}
+\label{ssub:reading_handles}
 
 Angle's built-in @read@ function provides various means of reading
 from a handle's character stream. @read(handle)@ reads the entirety
@@ -1357,8 +1356,8 @@ of the remaining text, @read(handle, int)@ will read @int@ lines,
 then the modifier @:char@ can be appended to the call to read
 individual characters.
 
-\paragraph{Writing to handles}
-\label{par:writing_to_handles}
+\subsubsection{Writing to handles}
+\label{ssub:writing_to_handles}
 
 % TODO: Check the wording.
 As mentioned previously, there are two main write-modes that can be
@@ -1366,8 +1365,8 @@ used with handles in Angle; these produced the stated effects when
 used with the @write@ function, which takes a handle and some text
 and writes the text to the handle.
 
-\paragraph{Closing handles}
-\label{par:closing_handles}
+\subsubsection{Closing handles}
+\label{ssub:closing_handles}
 
 When a handle is no longer in use it can be closed for reading and
 writing with the @close@ function. It is advisable to explicitly close
@@ -1387,8 +1386,8 @@ allow them to be accessed by other operations later on.
 % The @print@ function takes some text and prints it to the @stdout@
 % handle
 
-\subsection{Including code from other files}
-\label{sub:including_code_from_other_files}
+\section{Including code from other files}
+\label{sec:including_code_from_other_files}
 
 It is essential for code-reusability and the creation of libraries to
 be able to load code from other files in a program. The ability to
@@ -1398,8 +1397,8 @@ written again.
 \\
 There are two main methods of achieving this in Angle:
 
-\subsubsection{Eval}
-\label{ssub:eval}
+\subsection{Eval}
+\label{sub:eval}
 
 % TODO: Want better phrasing.
 The @eval@ built-in function takes a string and attempts to parse it
@@ -1411,8 +1410,8 @@ is risky, as there is the potential for malicious code to be injected,
 instead the @asType@ built-in should be used for converting strings
 to other types.
 
-\subsubsection{Include}
-\label{ssub:include}
+\subsection{Include}
+\label{sub:include}
 
 The best method of loading entire files is the built-in @include@
 function. @include@ takes a filename (or handle) and attempts to
@@ -1425,8 +1424,8 @@ the given filename happens to be a relative or absolute path
 checked.
 
 
-\subsection{Operations}
-\label{sub:operations}
+\section{Operations}
+\label{sec:operations}
 
 
 Operations (consisting of operators and operands) are the fundamental
@@ -1440,8 +1439,8 @@ operators are used as the first symbol within parentheses, and take
 a non-set number of operands, separated by whitespace, until the
 closing parenthesis.
 
-\subsubsection{Operator types}
-\label{ssub:operator_types}
+\subsection{Operator types}
+\label{sub:operator_types}
 
 Operators in Angle mainly come under four categories: arithmetical,
 logical, relational and assignment.
@@ -1487,7 +1486,7 @@ There is a pair-wise grouping with relational operators, thus
 \\
 Assignment operators are all infix binary, and the use-case is always
 the same; associate some data with an identifier. See
-section~\ref{ssub:assignment} for a more detailed explanation on how
+section~\ref{sub:assignment} for a more detailed explanation on how
 assignment works.
 \\
 The arithmetical, logical and relational operators are all expression
@@ -1497,8 +1496,8 @@ produce side-effects however, namely changing the value that an
 identifier references, thus the assignment operators are statements,
 not expressions.
 
-\subsubsection{Grammar}
-\label{ssub:grammar}
+\subsection{Grammar}
+\label{sub:grammar}
 
 \begin{spec}
 
@@ -1513,8 +1512,8 @@ varop     = `+' | `-'  | `/' | `**' | `*'
 \end{spec}
 
 
-\subsection{Conditionals}
-\label{sub:conditionals}
+\section{Conditionals}
+\label{sec:conditionals}
 
 A common feature to almost all programming languages is a structure
 for conditionally evaluating code based on the result of an
@@ -1525,8 +1524,8 @@ to `true', an `else' form is also usually present.
 Angle is no exception to this trend and implements its own conditional
 statements: `if', and its counterpart `unless'.
 
-\subsubsection{Grammar}
-\label{ssub:grammar}
+\subsection{Grammar}
+\label{sub:grammar}
 
 \begin{spec}
 stmt_condition = cond_if | cond_unless                     ;
