@@ -1334,6 +1334,14 @@ for user in users do {
 }
 \end{spec}
 
+\paragraph{For loop result}
+\label{par:for_loop_result}
+
+A special feature of for loops is that they will collect the final
+value of each iteration into a list that is then returned as the
+result at the end of the loop (providing there are no breaks).
+Thus @for i in (1..5) do i;@ results in the list @[1, 2, 3, 4, 5]@.
+
 \subsubsection{While loops}
 \label{ssub:while_loops}
 
@@ -1341,13 +1349,12 @@ Unlike their @for@ loop counterparts, which traverse a series of
 values, @while@ loops execute until some condition is met.
 
 \begin{spec}
-  age = 7;
-  while (< age 18) do {
-    print("Not an adult yet!");
-    age = (+ age 1);
+  count = 1;
+  while (< count 10) do {
+    print("Count is less than 10!");
+    count = (+ count 1);
   }
 \end{spec}
-
 
 \subsection{Controlling loops}
 \label{sub:controlling_loops}
@@ -1368,12 +1375,34 @@ structure, and sets the value produced to @val@, when supplied.
 % TODO: Maybe add link to the section where break :try is used (or
 % mention special cases of :break)
 
+\begin{spec}
+nom = 0;
+denom = 10;
+while true do {
+  try {
+    print((/ nom denom));
+  } catch :divideByZero {
+    print("Oops!");
+    break; # Stop the loop!
+  }
+  nom = (+ nom 1);
+  denom = (- denom 1);
+}
+\end{spec}
+
 
 \subsubsection{Continue}
 \label{ssub:continue}
 
 @continue@ skips the rest of the current loop iteration, causing the
 looping structure to start its next cycle.
+
+\begin{spec}
+for i in (1..5) do {
+  if (== i 3) then continue; # Won't print for 3
+  print(i);
+}
+\end{spec}
 
 \subsection{Grammar}
 \label{sub:grammar}
