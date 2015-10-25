@@ -1573,6 +1573,10 @@ closing parenthesis.
 Operators in Angle mainly come under four categories: arithmetical,
 logical, relational and assignment.
 \\
+
+\subsubsection{Arithmetical Operators}
+\label{ssub:arithmetical_operators}
+
 Arithmetical operators, which are generally variadic, perform
 mathematical arithmetic operations such as addition, multiplication
 and division.
@@ -1589,6 +1593,10 @@ As the above shows, the grouping is from left to right, thus
 @(- 1 2 3)@ becomes @((1 - 2) - 3)@
 \\
 
+
+\subsubsection{Logical Operators}
+\label{ssub:logical_operators}
+
 Logical operators perform logical operations on booleans and are also
 mostly variadic.
 
@@ -1597,6 +1605,9 @@ mostly variadic.
 (| false false true);
 # true
 \end{spec}
+
+\subsubsection{Relational Operators}
+\label{ssub:relational_operators}
 
 Relational operators perform comparison between different types, all
 the relational operators are variadic.
@@ -1611,12 +1622,16 @@ the relational operators are variadic.
 
 There is a pair-wise grouping with relational operators, thus
 @(< 1 2 3)@ becomes @1 < 2 AND 2 < 3@, or @1 < 2 < 3@.
-\\
+
+\subsubsection{Assignment Operators}
+\label{ssub:assignment_operators}
+
 Assignment operators are all infix binary, and the use-case is always
 the same; associate some data with an identifier. See
 section~\ref{sub:assignment} for a more detailed explanation on how
 assignment works.
 \\
+% TODO: This should be in separate section?
 The arithmetical, logical and relational operators are all expression
 operators, meaning that they act upon expressions and produce
 expressions, without any side-effects. The assignment operators do
