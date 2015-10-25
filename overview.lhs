@@ -9,6 +9,9 @@
 % \usepackage[nounderscore]{syntax}
 % \usepackage{underscore}
 
+% For table positioning
+% \usepackage{float}
+% \restylefloat{table}
 
 % This provides a table of contents that okular can read.
 \usepackage{hyperref}
@@ -1572,7 +1575,6 @@ closing parenthesis.
 
 Operators in Angle mainly come under four categories: arithmetical,
 logical, relational and assignment.
-\\
 
 \subsubsection{Arithmetical Operators}
 \label{ssub:arithmetical_operators}
@@ -1581,17 +1583,18 @@ Arithmetical operators, which are generally variadic, perform
 mathematical arithmetic operations such as addition, multiplication
 and division.
 
-\begin{spec}
-(+ 1 2 3);
-# 6
-
-(- 1 2 3);
-# -4
-\end{spec}
-
-As the above shows, the grouping is from left to right, thus
-@(- 1 2 3)@ becomes @((1 - 2) - 3)@
-\\
+\begin{table}[h!]
+  \begin{tabular}{l c c c}
+  Operation      & Symbol & Example       & Result \\
+  Addition       & @+@    & @(+ 1 2 3)@   & @6@ \\
+  Subtraction    & @-@    & @(- 1 2 3)@   & @-4@ \\
+  Multiplication & @*@    & @(* 1 2 3)@   & @6@ \\
+  Division       & @/@    & @(/ 1.0 2 3)@ & @0.1666666...@ \\
+  Exponentiation & @**@   & @(** 2 4)@    & @16@ \\
+  Negation       & @-@    & @-x@          & @5@ (if @x = 5@)\\
+  \end{tabular}
+  \caption{Arithmetical Operators}\label{tab:arithmetical_operators}
+\end{table}
 
 
 \subsubsection{Logical Operators}
@@ -1600,11 +1603,15 @@ As the above shows, the grouping is from left to right, thus
 Logical operators perform logical operations on booleans and are also
 mostly variadic.
 
-\textit{Logical OR}
-\begin{spec}
-(| false false true);
-# true
-\end{spec}
+\begin{table}[h!]
+  \begin{tabular}{l c c c}
+  Operation & Symbol & Example    & Result \\
+  OR        & @|@    & @(| false false true)@ & @true@ \\
+  AND       & @&@    & @(& true true false)@  & @false@ \\
+  NOT       & @^@    & @^(& true true false)@  & @true@ \\
+  \end{tabular}
+  \caption{Logical Operators}\label{tab:logical_operators}
+\end{table}
 
 \subsubsection{Relational Operators}
 \label{ssub:relational_operators}
@@ -1612,16 +1619,20 @@ mostly variadic.
 Relational operators perform comparison between different types, all
 the relational operators are variadic.
 
-\begin{spec}
-(< 1 2 3);
-# true
-
-(>= 1 2 3);
-# false
-\end{spec}
-
 There is a pair-wise grouping with relational operators, thus
 @(< 1 2 3)@ becomes @1 < 2 AND 2 < 3@, or @1 < 2 < 3@.
+
+\begin{table}[h!]
+  \begin{tabular}{l c c c}
+  Operation             & Symbol & Example    & Result \\
+  Equality              & @==@   & @(== 1 2)@ & @false@ \\
+  Less than             & @<@    & @(< 1 2)@  & @true@ \\
+  Greater than          & @>@    & @(> 1 2)@  & @false@ \\
+  Greater than or equal & @>=@   & @(>= 1 2)@ & @false@ \\
+  Less than or equal    & @<=@   & @(<= 1 2)@ & @true@ \\
+  \end{tabular}
+  \caption{Relational Operators}\label{tab:relational_operators}
+\end{table}
 
 \subsubsection{Assignment Operators}
 \label{ssub:assignment_operators}
@@ -1630,7 +1641,18 @@ Assignment operators are all infix binary, and the use-case is always
 the same; associate some data with an identifier. See
 section~\ref{sub:assignment} for a more detailed explanation on how
 assignment works.
-\\
+
+\begin{table}[h!]
+  \centering{In a new non-global scope.} \\
+  \begin{tabular}{l c c c}
+  Operation           & Symbol & Example   & Result \\
+  Local assignment    & @=@    & @x = 1@   & Local @x = 1@ \\
+  Nonlocal assignment & @|=@   & @x |= 1@  & Error \\
+  Global assignment   & @||=@  & @x ||= 1@ & Global @x = 1@ \\
+  \end{tabular}
+  \caption{Assignment Operators}\label{tab:assignment_operators}
+\end{table}
+
 % TODO: This should be in separate section?
 The arithmetical, logical and relational operators are all expression
 operators, meaning that they act upon expressions and produce
