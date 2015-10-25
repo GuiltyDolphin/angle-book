@@ -720,7 +720,7 @@ that different types of data may be stored within a single list & @[1, "string",
 Boolean   & Representing truth values & @true@ \\
 Character & Representing individual Unicode characters & @'c'@ \\
 Range     & Representing an enumeration across values of a certain type & @(1..7)@ \\
-Null      & Special void value when a value must be returned but it doesn't make sense to return anything else & @null@ \\
+Null      & Special void value for when a value must be returned but it doesn't make sense to return anything else & @null@ \\
 Lambda    & Representing function bodies & @(() 1;)@ \\
 Keyword   & Representing constant names without strings & @:keyword@ \\
 Handle    & Referencing file descriptors & @{handle: file}@ \\
@@ -1095,19 +1095,6 @@ function_def = simple_ident `(' { parameter `,' } `)' stmt                  ;
 parameter    = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
 \end{spec}
 
-\section{Language Features}
-\label{sec:language_features}
-
-As Angle is intended to be used as a general-purpose programming
-language, it is important that the features it provides can facilitate
-a variety of uses.
-\\
-Some features are outlined below, with more in-depth explanations in
-section~\ref{sec:defining_the_language_grammar} and the documentation.
-
-
-
-
 \section{Variables}
 \label{sec:variables}
 
@@ -1115,7 +1102,7 @@ Variables reference a location in memory that represents the data
 associated with them. In Angle, variables can have two sets of data:
 the first is a non-function value, such as an integer, string etc..;
 and the second is a lambda that represents the variable as a function
- (see Section~\ref{ssub:accessing_lambdas} on how to access this
+ (see Section~\ref{sub:accessing_lambdas} on how to access this
  value).
 \\
 \\
@@ -1700,23 +1687,23 @@ cond_unless    = `unless' expr        stmt [ `else' stmt ] ;
 \end{spec}
 
 
-% TODO: Check this bit
-\subsection{Expressions}
-\label{sub:expressions}
-
-Expressions are blocks of code that can be evaluated
-to produce some value.\footnote{https://msdn.microsoft.com/en-us/library/ms173144.aspx}
-
-\begin{spec}
-expr = operation  | literal   | function_call
-     | identifier | expr_list | expr_range    ;
-\end{spec}
-
-Note the inclusion of @expr_list@ and @expr_range@ which are
-represented as literals in section~\ref{ssub:literals}.
-
-See section~\ref{ssub:lists_and_ranges_as_expressions} for more
-information.
+% % TODO: Check this bit
+% \subsection{Expressions}
+% \label{sub:expressions}
+%
+% Expressions are blocks of code that can be evaluated
+% to produce some value.\footnote{https://msdn.microsoft.com/en-us/library/ms173144.aspx}
+%
+% \begin{spec}
+% expr = operation  | literal   | function_call
+%      | identifier | expr_list | expr_range    ;
+% \end{spec}
+%
+% Note the inclusion of @expr_list@ and @expr_range@ which are
+% represented as literals in section~\ref{ssub:literals}.
+%
+% See section~\ref{ssub:lists_and_ranges_as_expressions} for more
+% information.
 
 
 
