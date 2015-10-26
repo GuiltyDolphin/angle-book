@@ -66,6 +66,8 @@
 
 \newpage
 
+\part{Introduction}
+\label{prt:introduction}
 
 \section{Background}
 \label{sec:background}
@@ -382,12 +384,15 @@ Angle does provide some functions for type coercion such as the
 built-in `asType' function that allows the programmer to, for instance,
 convert a string to a list of characters.
 
-\subsection{Summary}
-\label{sub:summary}
+\section{Angle Summary}
+\label{sec:angle_summary}
 
-To summarize the information previously stated: Angle is intended to
-be a strong and dynamically typed, functional, interpreted,
-general-purpose programming language.
+Using the terms defined in
+Section~\ref{sub:a_brief_overview_of_language_implementation},
+Angle can be summarized as the following:
+\\
+Angle is intended to be a strong and dynamically typed, functional,
+interpreted, general-purpose programming language.
 
 \begin{description}
   \item[Strong] generally types are preserved unless explicitly
@@ -401,20 +406,6 @@ general-purpose programming language.
   developing Angle, as such it is intended to be able to cope with the
   implementation of a variety of different types of software.
 \end{description}
-% \subparagraph{Dynamic}
-% \label{par:dynamic}
-%
-% Being dynamically typed means that type-checking in Angle is
-% performed at run-time,\footnote{http://c2.com/cgi/wiki?DynamicTyping}
-% thus programs are not guaranteed to be type-correct
-% (unlike in Haskell, where the compiler ensures that programs do not
-% compile if any inconsistencies in types are noticed).
-
-
-
-
-\part{Introduction}
-\label{prt:introduction}
 
 \section{Reading this document}
 \label{sec:reading_this_document}
@@ -453,30 +444,38 @@ features will be made.
 \section{Project Overview}
 \label{sec:project_overview}
 
-\subsection{Components}
-\label{sub:components}
+This project aims to provide the following:
 
-Angle is contained within a cabal package which consists of the
-library, tests, benchmarks and executable.
+\begin{description}
+  \item[Angle (the library)] A collection of Haskell modules that
+  define Angle's internal structure.
+  \item[angle (the software)] An interpreter built upon the Angle
+  library that allows programs written in Angle to be executed.
+  \item[The Angle Reference] This document - outlines Angle and its
+  various features.
+\end{description}
 
-The library contains the necessary source code to build Angle's
-internals, which are then used to build the executable.
+\subsection{The library}
+\label{sub:the_library}
 
-The executable is a program that can be used to run scripts written
-using Angle's syntax. See section~\ref{sub:using_angle} `Using Angle'
-for information on how this is used.
+The library defines all of Angle's features
+(See part~\ref{prt:languge_reference}); the scanner, parser and
+language representation.\footnote{See part~\ref{prt:implementation}
+for an overview of how the library was implemented.}
+\\
+The library is independent of the interpreter, and thus it would be
+possible to write a stand-alone compiler for Angle built upon the
+library directly.
 
 
-% TODO: Maybe a Readme that has usage information and this links to
-% that?
-\subsection{Using Angle}
-\label{sub:using_angle}
+\subsection{The software}
+\label{sub:the_software}
 
 The `angle' program supports two main modes of execution: interactive
 and non-interactive.
 
-\paragraph{Interactive Angle}
-\label{par:interactive_angle}
+\subsubsection{Interactive Angle}
+\label{ssub:interactive_angle}
 
 When Angle runs in interactive mode, the user is presented with a
 prompt at which they may enter one or more lines of code which can then
@@ -484,8 +483,8 @@ be executed. This mode allows a programmer to debug code, test short
 snippets and ensure code has the correct syntax before using it in a
 program.
 
-\paragraph{Non-Interactive}
-\label{par:non_interactive}
+\subsubsection{Non-Interactive}
+\label{ssub:non_interactive}
 
 When Angle runs in non-interactive mode, achieved by passing a file
 to be executed, a source file is read and run by the Angle
@@ -1819,7 +1818,7 @@ execution method.
 
 \begin{description}
   \item[executable] for running programs, the main interface for the
-    user. See section~\ref{sub:using_angle} for more information.
+    user. See section~\ref{sub:the_software} for more information.
   \item[parser] which will deal with translating source code into
     an abstract syntax tree that represents the language.
   \item[interpreter] which executes the AST produced by the parser
