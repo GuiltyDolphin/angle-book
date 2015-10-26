@@ -346,7 +346,7 @@ Angle is dynamically typed. I chose this system for a few reasons:
 firstly, it can be very difficult and time-consuming to write a type
 checker, and due to time constraints this would not be feasible;
 secondly, one of the more prominent features of Angle -
-parameter constraints (Section~\ref{sub:parameter_constraints})
+parameter constraints (Section~\ref{ssub:parameter_constraints})
 allows the programmer to ensure that only certain types of values can
 be passed into functions they define - thus allowing them to still
 reason about their code in a manner similar to if a static type system
@@ -459,7 +459,7 @@ This project aims to provide the following:
 \label{sub:the_library}
 
 The library defines all of Angle's features
-(See part~\ref{prt:languge_reference}); the scanner, parser and
+(See part~\ref{prt:language_reference}); the scanner, parser and
 language representation.\footnote{See part~\ref{prt:implementation}
 for an overview of how the library was implemented.}
 \\
