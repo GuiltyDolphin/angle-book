@@ -31,6 +31,7 @@
 
 \newcommand{\haskmodule}[1]{\texttt{#1}}
 \newcommand{\hasklib}[1]{\texttt{#1}}
+\newcommand{\clcmd}[1]{\texttt{#1}}
 
 
 \maketitle
@@ -184,6 +185,14 @@ required every time a program needs to be run. Source code is also
 more transparent (which may or may not be a disadvantage), as the
 files are run directly by the interpreter.
 
+\paragraph{Angle}
+\label{par:angle}
+
+Angle is an interpreted language and this project develops the
+\clcmd{angle} command-line interpreter for executing Angle source
+files.
+
+
 \subsubsection{Programming Paradigms}
 \label{ssub:programming_paradigms}
 
@@ -291,36 +300,107 @@ Several features are prominent in functional languages:
 
 Haskell is an example of a purely-functional programming language.
 
-% Functions in Angle are treated as first-class citizens; they can be
-% passed as values (via lambdas) just like any other data (integers,
-% strings etc.). Functions can also be higher-order, meaning that they
-% can accept other functions as arguments and call these functions
-% with another set of arguments. Due to these capabilities, Angle is
-% a functional language, albeit an impure one.\footnote{https://wiki.haskell.org/Functional\_programming}
+\paragraph{Angle}
+\label{par:angle}
 
+Angle is intended to be primarily a functional language. To support
+this Angle provides first-class citizen functions and higher-order
+functions. Angle is not intended to be a purely functional language
+(like Haskell), and thus imposes no restrictions on where
+side-effecting code can be performed.
 
 \subsubsection{Type systems}
 \label{ssub:type_systems}
 
-\paragraph{Static and dynamic type checking}
-\label{par:static_and_dynamic_type_checking}
+Type systems broadly fall under two categories based on when type
+checking is performed.
 
-% FIXME: Not happy with this paragraph
+\paragraph{Static type systems}
+\label{par:static_type_systems}
 
-In a statically-typed language, certain type-related criterion must
-be met before a program can be executed. These criterion can ensure
-a program will have well-typed operations and that types are not used
+In static type systems, certain type-related criterion must be met
+before a program can be executed. These criterion can ensure a
+program will have well-typed operations and that types are not used
 incorrectly.\footnote{http://courses.cs.washington.edu/courses/cse341/04wi/lectures/13-dynamic-vs-static-types.html}
 \\
 Statically-typed languages often require the programmer to annotate
 code, stating the types of variables and functions when they are
 declared; leading to increased verbosity.
-\\
+\footnote{Java and C, for example.}
+
+\paragraph{Dynamic type systems}
+\label{par:dynamic_type_systems}
+
 In a dynamically-typed language, types are checked at run-time, this
 means that type-correctness is not ensured and errors may occur as a
-result of types being used in places for which they are not valid.\footnote{http://c2.com/cgi/wiki?DynamicTyping}
+result of types being used in places for which they are not valid.
+\footnote{http://c2.com/cgi/wiki?DynamicTyping}
 
+\paragraph{Angle}
+\label{par:angle}
 
+% TODO: Don't like this paragraph, especially the last sentence.
+Angle is dynamically typed. I chose this system for a few reasons:
+firstly, it can be very difficult and time-consuming to write a type
+checker, and due to time constraints this would not be feasible;
+secondly, one of the more prominent features of Angle -
+parameter constraints (Section~\ref{sub:parameter_constraints})
+allows the programmer to ensure that only certain types of values can
+be passed into functions they define - thus allowing them to still
+reason about their code in a manner similar to if a static type system
+were in place.
+
+\subsubsection{Typing}
+\label{ssub:typing}
+
+There are two main types of type-system that are determined by the
+stage in which type-checking is performed; to accompany this, there
+are two main types of typing, strong and weak. These terms are not
+well-defined but an outline is provided below.
+
+\paragraph{Strong}
+\label{par:strong}
+
+A strong type system is unlikely to perform any type conversions or
+coercions and is likely to be quite strict about which types can be
+used in different operations.
+
+\paragraph{Weak}
+\label{par:weak}
+
+Weakly-typed languages are likely to perform type conversions or
+coercions and provide a lesser distinction between the different
+types.\footnote{http://c2.com/cgi/wiki?WeaklyTyped}
+\paragraph{Angle}
+\label{par:angle}
+
+Angle is, in general, strongly typed; implicit coercion of types is
+rarely performed and the types of variables will never be changed
+without explicit instruction to do so.
+\\
+Angle does provide some functions for type coercion such as the
+built-in `asType' function that allows the programmer to, for instance,
+convert a string to a list of characters.
+
+\subsection{Summary}
+\label{sub:summary}
+
+To summarize the information previously stated: Angle is intended to
+be a strong and dynamically typed, functional, interpreted,
+general-purpose programming language.
+
+\begin{description}
+  \item[Strong] generally types are preserved unless explicitly
+  changed.
+  \item[Dynamic] type checking is performed at run-time.
+  \item[Functional] Angle supports functions as first class citizens
+  as well as higher-order functions.
+  \item[Interpreted] Source files are executed directly using the
+  \clcmd{angle} command-line interpreter.
+  \item[General-purpose] There was no specific use-case in mind when
+  developing Angle, as such it is intended to be able to cope with the
+  implementation of a variety of different types of software.
+\end{description}
 % \subparagraph{Dynamic}
 % \label{par:dynamic}
 %
