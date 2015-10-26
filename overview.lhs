@@ -477,39 +477,6 @@ to be executed, a source file is read and run by the Angle
 interpreter. This mode is how programs should usually be run.
 
 
-% \section{Features}
-% \label{sec:features}
-%
-% Angle supports many features, such as looping and support for
-% functional programming, along with some more obscure features such as
-% parameter constraints.
-%
-% % TODO: Update this to reflect the addition of exception handling,
-% % file io and the possibility for imports through eval.
-% Angle also has a lot of potential for more big features to be
-% implemented, some of which are largely essential to a good programming
-% environment - exception handling and imports. The way in which Angle
-% has been implemented and refined means that adding new features
-% requires modifying as little of the existing code as possible, and
-% instead promotes constructive modification.
-%
-% Some features and where to find the respective information is shown
-% in the table below.
-%
-% `Types' refers to a type defined in \texttt{Angle.Types.Lang} that provides
-% more information on the feature.
-%
-% \begin{tabular}{l c r}
-%   Feature & Types & Sections \\
-%   \hline
-%   Conditionals & `LangStruct' & section~\ref{ssub:conditional_constructs} \\
-%   Parameter constraints & `ConstrRef' & section~\ref{ssub:function_definitions} \\
-%   Parameter annotations & `AnnType' & section~\ref{ssub:function_definitions} \\
-%   Looping structures & `LangStruct' & section~\ref{ssub:looping_structures} \\
-%   Functions & `Lambda' & section~\ref{ssub:function_definitions} \\
-%   Operators & `LangOp' & section~\ref{ssub:operations} \\
-% \end{tabular}
-
 \part{Language Reference}
 \label{prt:language_reference}
 
@@ -607,7 +574,7 @@ may be overwritten, others may not.
 Name & Can be overwritten? & Use \\
 main & no & Whether the current program was invoked directly. \\
 \_it & yes & Holds the value of the last computation. \\
-asClass & no & Whether the current function was called as a constraint. \\
+as\_constr & no & Whether the current function was called as a constraint. \\
 \end{tabular}
 
 \subsubsection{Grammar}
@@ -782,7 +749,7 @@ allow the implementation of variadic functions.
 \subsubsection{Parameter Constraints}
 \label{ssub:parameter_constraints}
 
-Parameter constraints (also known as classes in Angle) are references
+Parameter constraints are references
 to functions attached to a parameter. When an argument is passed to
 the function and the parameter in that position has a constraint, the
 argument is passed to the constraint function.
@@ -844,8 +811,8 @@ certain use cases.
 Quite often it would make sense to have a function act one way when
 called as a constraint, and another way when called normally.
 \\
-Angle supports this behavior by providing the @as_class@ variable.
-@as_class@ is a special variable that holds a boolean value which
+Angle supports this behavior by providing the @as_constr@ variable.
+@as_constr@ is a special variable that holds a boolean value which
 is @true@ if the current context is a constraint call, and @false@
 otherwise.
 \\
@@ -855,7 +822,7 @@ to convert the given value to an integer when called normally.
 
 \begin{spec}
 defun int(x) {
-  if as_class then {
+  if as_constr then {
     return (== x asType(1, x));
   }
   asType(1, x);
