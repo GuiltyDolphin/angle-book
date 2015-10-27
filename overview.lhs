@@ -1794,18 +1794,19 @@ the structure of the AST produced by the parser.
 Within the implementation, the interpreter is the first stage that
 is able to interact via IO, all previous steps are pure-monadic.
 \\
+% TODO: Don't think this feels quite right...
 The advantage of having the parser execute purely in terms of pure
 functions means that any two source-texts that are the same produce
 the exact same abstract syntax tree - as they should.
 
 
-\subsection{Process}
-\label{sub:process}
+\section{Process}
+\label{sec:process}
 
-% TODO: Change wording, make it clearer that this is the execution
-% method, and that the components are mentioned above.
-The four main components of the language roughly coincide with the
-execution method.
+% TODO: Still not happy with this...
+The four main components of Angle mentioned in
+section~\ref{sec:project_structure} interact to form the following
+execution method:
 
 \begin{enumerate}
   \item \textit{User:} The programmer writes a program using Angle syntax.
@@ -1830,17 +1831,17 @@ execution method.
 
 
 
-\begin{description}
-  \item[executable] for running programs, the main interface for the
-    user. See section~\ref{sub:the_software} for more information.
-  \item[parser] which will deal with translating source code into
-    an abstract syntax tree that represents the language.
-  \item[interpreter] which executes the AST produced by the parser
-    and performs IO actions.
-  % TODO: Check this.
-  \item[language representation] describes Angle in terms of Haskell,
-  and provides the form that the abstract syntax tree will take.
-\end{description}
+% \begin{description}
+%   \item[executable] for running programs, the main interface for the
+%     user. See section~\ref{sub:the_software} for more information.
+%   \item[parser] which will deal with translating source code into
+%     an abstract syntax tree that represents the language.
+%   \item[interpreter] which executes the AST produced by the parser
+%     and performs IO actions.
+%   % TODO: Check this.
+%   \item[language representation] describes Angle in terms of Haskell,
+%   and provides the form that the abstract syntax tree will take.
+% \end{description}
 
 \section{Parser implementation}
 \label{sec:parser_implementation}
@@ -1864,27 +1865,27 @@ monad that supports a combinatory parsing style.
 \\
 \\
 \textit{The parser-library components:}
-\begin{description}
-  \item[\haskmodule{Angle.Scanner}] defines the @Parser a@ monad and the
+\begin{itemize}
+  \item \haskmodule{Angle.Scanner} defines the @Parser a@ monad and the
 fundamental functionality of the parser.
-  \item[\haskmodule{Angle.Parse.Helpers}] defines the functions to support
+  \item \haskmodule{Angle.Parse.Helpers} defines the functions to support
   combinatory parsing.
-\end{description}
+\end{itemize}
 %\haskmodule{Angle.Scanner} defines the @Parser a@ monad and the
 %fundamental functionality of the parser; \haskmodule{Angle.Parse.Helpers}
 %defines the functions to support combinatory parsing.
 
 \textit{Parser implementation:}
-\begin{description}
-  \item[\haskmodule{Angle.Parse.Token}] uses the previously defined
+\begin{itemize}
+  \item \haskmodule{Angle.Parse.Token} uses the previously defined
   combinators to build parsers for the basic structures in Angle
   (strings, keywords, numerics).
-  \item[\haskmodule{Angle.Parse.Parser}] uses combinators defined in
+  \item \haskmodule{Angle.Parse.Parser} uses combinators defined in
 \haskmodule{Angle.Parse.Helpers}, along with the parsers defined in
 \haskmodule{Angle.Parse.Token} to define the parsers for each of the
 language constructs, and the main parser that combines these in order
 to parse an entire Angle program.
-\end{description}
+\end{itemize}
 
 \haskmodule{Angle.Parse.Token} uses the previously defined combinators to
 build parsers for the basic structures in Angle (strings, keywords,
@@ -2025,9 +2026,9 @@ important.
 \\
 % TODO: Oh God... Please fix the phrasiiiinggg...
 An example of this would be @ExceptT e (State s) a@ versus
-@StateT s (Except e) a@. The former describes a monad that will
-either fail with type @e@, or run some state and succeed with type
-@a@; whereas the latter describes a monad that will produce
+@StateT s (Except e) a@. The former describes a monad in which it is possible for the result
+of each computation to be a failure, whereas the latter describes
+a monad in which the entire computation can fail.
 \\
 \begin{spec}
 type ES a = ExceptT String (State Int) a
@@ -2038,9 +2039,12 @@ message2 = return "hello" :: SE String
 
 runState (runExceptT message1) 1
 > (Right "hello", 1)
+# The result (first part of the tuple) is wrapped in the
+# Either e a monad.
 
 runExcept (runStateT message2 1)
 > Right ("hello", 1)
+# The entire computation is wrapped in the Either e a monad.
 \end{spec}
 
 As the above example shows, the former monad is wrapping the inner
