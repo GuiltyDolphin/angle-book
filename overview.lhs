@@ -1189,33 +1189,79 @@ global_assign   = simple_ident `||=' expr ;
 \section{Exceptions and exception handling}
 \label{sec:exceptions_and_exception_handling}
 
+A number of unexpected things can go awry during runtime, things such
+as types being used incorrectly, functions being called with the
+wrong number of arguments, requesting files that don't exist, and
+attempting to access closed handles, to name a few.
+\\
+Angle attempts to anticipate many of these issues, and when they occur
+it wraps them up, along with their critical information, and throws
+them as exceptions.
+\\
+Once thrown, an exception will propagate up the stack (function calls)
+until it either reaches the top level, where it will be displayed
+as an error to the user, or it is caught in a @try...catch@ statement.
 
 \subsection{Handling exceptions}
 \label{sub:handling_exceptions}
 
+The @try...catch@ statement allows the programmer to handle exceptions
+that are raised during execution.
 
-Exceptions arise as a result of any of a number of things going
-unexpectedly in a program; these can range from types being used in
-incorrect places and functions being called with the wrong number of
-arguments, to a requested file not being found on the filesystem or
-attempting to access a closed handle.
+\subsubsection{Try}
+\label{ssub:try}
+
+The @try@ keyword initializes a @try...catch@ statement. Any code
+wrapped in the @try@ section is executed sequentially until it either
+finishes normally, or an exception is raised.
 \\
-The above exceptions are examples of those that can be raised by the
-interpreter during run-time; there is an issue with this system of
-exceptions however, the program would crash every single time an
-error occurred.
+If the code finishes normally, then the rest of the @try...catch@
+statement is skipped and the next statement is executed.
 \\
-To stop these exceptions reaching the user, Angle provides a
-@try...catch@ structure that allows the programmer to wrap a body of
-code with the @try@, and any exceptions that occur while executing
-that code are passed to the @catch@ for processing.
+If the code results in an exception, then the rest of the body will
+be skipped and the @catch@ component will be passed the exception
+for handling.
+
+\subsubsection{Catch}
+\label{ssub:catch}
+
+The catch component of a @try...catch@ consists of one or more
+@catch@ keywords, each followed by the exceptions they handle, and
+the code that should be executed when they are handling an exception.
+
+\paragraph{Exceptions}
+\label{par:exceptions}
+
+Each @catch@ clause takes either a single keyword, or a list of
+keywords that name the types of exceptions they can handle.
 \\
-Just after @catch@, the programmer specifies which categories of
-exceptions can be caught by the supplied body, allowing only certain
-types of exception to be stopped and others to be allowed to
-propagate upwards.
+When an exception is passed to the @catch@ block, each @catch@ clause
+is tried, from top to bottom, until either a @catch@ matches the
+current exception, or there are no more @catch@ clauses.
 \\
-An common example of @try..catch@ usage is with handling user input;
+In the case that the exception is matched by one of the clauses, the
+accompanying body of code is executed, then the @try...catch@
+statement is exited.
+\\
+If none of the @catch@ clauses matched the exception, then it is
+re-raised and will continue its propagation.
+
+\paragraph{Break}
+\label{par:break}
+
+A special form of the @break@ statement can be used in the body of a
+@catch@ clause.\footnote{See Section~\ref{ssub:break} for other uses
+of @break@.}
+\\
+@break :try@ will exit the current @catch@ clause, and repeat the
+@try...catch@ statement from the beginning of the @try@. This removes
+the need for wrapping a @try...catch@ in a @while@ loop for repeated
+user input, as demonstrated below.
+
+\subsubsection{Example of handling exceptions}
+\label{ssub:example_of_handling_exceptions}
+
+A common example of @try..catch@ usage is with handling user input;
 this is usually a case that shouldn't crash the program, so it makes
 sense to handle it.
 
@@ -1234,38 +1280,68 @@ In this scenario, an attempt is being made to convert the user's
 input (string) to an integer; when the user's input does not
 represent a valid integer string, a @:read@ exception is thrown. This
 is then caught by the @catch@ and the user is notified of their
-mistake. The @break :try@ statement at the end is a special form of
-the @break@ statement (see section~\ref{sec:looping_structures}) that
-just repeats the @try..catch@, as this handle-user-input-repeat form
-is quite common.
+mistake before being asked to enter another integer.
 
+\subsubsection{Grammar}
+\label{ssub:grammar}
 
-\subsection{User exceptions and re-raising}
-\label{sub:user_exceptions_and_re_raising}
+\begin{spec}
+  stmt_try_catch = `try '   stmt catch_spec { catch_spec } ;
 
-Although catching exceptions is very useful itself, sometimes it may
-be useful to throw the exceptions.
+  catch_spec     = `catch ' catch_keyword stmt             ;
+
+  catch_keyword  = litKeyword | `[' { litKeyword `,' } `]' ;
+\end{spec}
+
+\subsection{Raising exceptions}
+\label{sub:raising_exceptions}
+
+Angle allows the user to throw new exceptions or re-raise exceptions
+being handled.
 \\
-For example, what about the scenario where the `no such file'
-exception \textit{should} be fatal, but some cleanup should be
-performed before the program exits? Well, Angle provides the @raise@
-statement, which, when used with the currently-handled exception,
-will just re-raise the same exception.
+The @raise@ statement takes a single keyword and either raises a new
+exception (that can be caught by using the same keyword) or re-raises
+an exception, based on the circumstances.
+
+\subsubsection{Re-raising exceptions}
+\label{ssub:re_raising_exceptions}
+
+% FIXME: I have a case of the *cough* bad *cough* *cough* wording...
+When the @raise@ statement is used within the body of a @catch@
+clause, and the exception being handled matches the exception being
+raised, then the old exception will be re-raised with all the
+original information.
+
+\paragraph{Example}
+\label{par:example}
+
+% FIXME: I too *cough* *splutter* have a case of the *gasp* bad
+% phrasing.
+An example of when a programmer may wish to re-raise exceptions is
+when some operations are to be performed on a resource which must
+be closed when it is finished with.
+\\
+In the example below, the @catch@ clause ensures that the handle
+gets closed should any exceptions arise in the @try@ block.
 
 \begin{spec}
   try {
     my_handle = open("some_file.txt", "<");
-  }
-  catch :noSuchFile {
-    ... cleanup ...
-    raise :noSuchFile;
+    ...some code...
+    close(my_handle);
+  } catch :error {
+    close(my_handle);
+    raise :error;
   }
 \end{spec}
 
-Of course, @raise@ isn't just limited to existing exceptions, the
-programmer may specify their own exceptions instead, although as the
-user-exception system is rather limited, the only information
-available to those catching will be the name.
+\subsubsection{Raising new exceptions}
+\label{ssub:raising_new_exceptions}
+
+When using @raise@ in a scenario that doesn't fulfill the criteria
+required in Section~\ref{ssub:re_raising_exceptions}, a new exception
+is created. User exceptions are limited to a single keyword name,
+but are otherwise treated the same as regular exceptions.
 
 \begin{spec}
   try {
@@ -1283,34 +1359,11 @@ available to those catching will be the name.
 In this case the user exception is @:greaterThan5@, and is handled
 directly.
 
-\subsection{Grammar}
-\label{sub:grammar}
+\subsubsection{Grammar}
+\label{ssub:grammar}
 
 \begin{spec}
 stmt_raise = `raise ' litKeyword ;
-\end{spec}
-
-
-\subsection{Catching exceptions}
-\label{sub:catching_exceptions}
-
-Angle provides a construct for handling exceptions. A statement is
-wrapped in @try@ and then any exceptions that occur during the
-execution of this statement are passed to the following @catch(s)@.
-\\
-Each @catch@ specifies either a single keyword or a list of keywords
-that represent the exceptions that should be handled by the
-accompanying statement. If the exception matches that of any of those
-that the @catch@ can handle, then the provided statement is executed
-and no further @catch(s)@ will be executed.
-
-
-\begin{spec}
-  stmt_try_catch = `try '   stmt catch_spec { catch_spec } ;
-
-  catch_spec     = `catch ' catch_keyword stmt             ;
-
-  catch_keyword  = litKeyword | `[' { litKeyword `,' } `]' ;
 \end{spec}
 
 
