@@ -1367,6 +1367,163 @@ stmt_raise = `raise ' litKeyword ;
 \end{spec}
 
 
+\subsection{Built-in exceptions}
+\label{sub:built_in_exceptions}
+
+The following is a comprehensive list of the exceptions that are
+built into Angle.
+
+\subsubsection{Special exceptions}
+\label{ssub:special_exceptions}
+
+The @:error@ keyword can be used to catch all exceptions.
+\\
+The @:user@ keyword can be used to catch user exceptions.
+
+\subsubsection{Type exceptions}
+\label{ssub:type_exceptions}
+
+Raised when issues arise with parameter constraints or types are used
+incorrectly. Can be caught with @:typeError@.
+\\
+
+\begin{tabular}{l p{7cm}}
+ Keyword & When thrown \\
+ @:typeMismatch@ & If two types should be the same but aren't. \\
+ @:typeUnexpected@ & If a type was used in a place where another was
+ expected. \\
+ @:typeNotValid@ & The type used is not valid in the current
+ situation. \\
+ @:typeCast@ & There is no possible conversion from one type to
+ another when attempting a type conversion. \\
+ @:typeMismatchOp@ & Wrong types are used in an operation. \\
+ @:typeExpectConstr@ & A constraint returns false for a given value
+ (in the function head). \\
+ @:typeConstrWrongReturn@ & A constraint returned a non boolean
+ value. \\
+ @:typeAnnWrong@ & A value doesn't satisfy a parameter annotation. \\
+\end{tabular}
+
+
+\subsubsection{Name exceptions}
+\label{ssub:name_exceptions}
+
+Raised when issues arise with the naming of things. Can be caught with
+@:nameError@.
+\\
+
+\begin{tabular}{l p{7cm}}
+ Keyword & When thrown \\
+ @:nameNotDefined@ & An identifier cannot be resolved. \\
+ @:nameNotDefinedFun@ & There is no lambda definition for a
+ variable. \\
+ @:nameNotDefinedLit@ & There is no value definition for a
+ variable. \\
+ @:nameNotOp@ & Not a valid operator. \\
+ @:assignToBuiltin@ & An attempt was made to assign to a
+ non-overwritable built-in. \\
+\end{tabular}
+
+\subsubsection{Call exceptions}
+\label{ssub:call_exceptions}
+
+Raised when issues arise when calling functions. Can be caught with
+@:callError@.
+\\
+
+\begin{tabular}{l p{7cm}}
+ Keyword & When thrown \\
+ @:wrongNumberOfArguments@ & Function called with the wrong number of
+ arguments. \\
+ @:builtin@ & An issue occurred when calling a built-in function. \\
+ @:malformedSignature@ & Bad operation call. \\
+\end{tabular}
+
+\subsubsection{Keyword exceptions}
+\label{ssub:keyword_exceptions}
+
+Raised when keywords are used incorrectly. Can be caught with
+@:keywordError@.
+\\
+
+\begin{tabular}{l p{7cm}}
+ Keyword & When thrown \\
+ @:returnFromGlobal@ & @return@ was used in the global scope.
+\end{tabular}
+
+\subsubsection{Value exceptions}
+\label{ssub:value_exceptions}
+
+Raised when Angle's types are used incorrectly. Can be caught with
+@:valueError@.
+\\
+
+\begin{tabular}{l p{7cm}}
+ Keyword & When thrown \\
+ @:indexOutOfBounds@ & Attempting to access a non-existent index
+ of a list. \\
+ @:badRange@ & The types used in a range don't match up. \\
+ @:infiniteRange@ & Attempting to fully evaluate a range that would
+ produce an infinite (or extremely large) set of values. \\
+ @:nonEnum@ & An enumerable type was expected but not received. \\
+ @:divideByZero@ & Zero was used as the denominator in an
+ expression. \\
+\end{tabular}
+
+
+\subsubsection{IO exceptions}
+\label{ssub:io_exceptions}
+
+Raised when issues arise whilst performing IO. Can be caught with
+@:ioError@.
+\\
+
+\begin{tabular}{l p{7cm}}
+ Keyword & When thrown \\
+ @:alreadyExists@ & One of the arguments in an IO operation already
+ exists. \\
+ @:doesNotExist@ & One of the arguments in an IO operation does
+ not exist. \\
+ @:alreadyInUse@ & One of the arguments in an IO operation is a
+ single-use resource and is already being used. \\
+ @:deviceFull@ & The device is full. \\
+ @:eof@ & End of file has been reached. \\
+ @:illegalOperation@ & Operation was not possible. \\
+ @:permission@ & User does not have sufficient privileges to perform
+ the operation. \\
+\end{tabular}
+\\
+
+These closely follow the errors outlined in the Haskell's IO error
+system.\footnote{http://hackage.haskell.org/package/base-4.8.1.0/docs/System-IO-Error.html}
+
+\subsubsection{Syntax exceptions}
+\label{ssub:syntax_exceptions}
+
+Raised when issues arise with reading code at runtime. Can be caught
+with @:syntaxError@.
+\\
+
+\begin{tabular}{l p{7cm}}
+ Keyword & When thrown \\
+ @:syntax@ & Invalid syntax. \\
+ @:read@ & String does not represent a literal. \\
+\end{tabular}
+
+\subsubsection{Include exceptions}
+\label{ssub:include_exceptions}
+
+Raised when issues arise when including other files. Can be caught
+with @:include@.
+\\
+
+\begin{tabular}{l p{7cm}}
+ Keyword & When thrown \\
+ @:doesNotExist@ & Attempting to include a non-existent file. \\
+ @:syntax@ & File contains invalid syntax. \\
+\end{tabular}
+
+
 \section{Looping Structures}
 \label{sec:looping_structures}
 
