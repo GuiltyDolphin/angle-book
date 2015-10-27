@@ -1113,19 +1113,32 @@ the first is a non-function value, such as an integer, string etc..;
 and the second is a lambda that represents the variable as a function
  (see Section~\ref{sub:accessing_lambdas} on how to access this
  value).
-\\
-\\
+
+\subsection{Resolving variables}
+\label{sub:resolving_variables}
+
 % TODO: Add scope stuff.
 Angle is lexically scoped - meaning that the location at which a
 variable is defined determines where it can be accessed.
 \\
-Any non-global region has access to two scopes: the local scope and
-the outer scope.
+Angle's standard method of resolving variables is to first check
+the current scope, then recursively check the outer scopes until
+the global scope has been checked or a definition for the variable
+has been found.
+\\
+When no value is found an exception is raised.
 
-When resolving variables, Angle first checks the current scope, then
-recursively searches through the parent scopes until either the
-global scope has been checked, and no definition for the identifier
-found, or a definition is found.
+\subsubsection{Different methods of resolving variables}
+\label{ssub:different_methods_of_resolving_variables}
+
+On top of the standard resolution method, Angle provides two built-in
+functions for resolving variables differently:
+
+\begin{itemize}
+  \item @nonlocal@ - will do the same as standard resolution, but
+  starting from the parent scope instead.
+  \item @global@ - will only check the global scope.
+\end{itemize}
 
 
 % TODO: Check the phrasing of this section.
@@ -1135,17 +1148,26 @@ found, or a definition is found.
 Angle supports three assignment operators: @=@, @|=@, and @||=@; which
 represent local assignment, nonlocal assignment and global assignment
 respectively.
-\\
+
+\subsubsection{Local assignment}
+\label{ssub:local_assignment}
+
 When assigning to the local scope, if a definition for the variable
 exists then it is overwritten, otherwise the variable is newly
 defined.
-\\
+
+\subsubsection{Nonlocal assignment}
+\label{ssub:nonlocal_assignment}
+
 When assigning to a nonlocal scope, first the given identifier is
 resolved in the local-most scope that is a parent of the current
 scope, then this variable is overwritten with the given value. If no
 nonlocal variable exists for the identifier, then the operation fails
 with an exception.
-\\
+
+\subsubsection{Global assignment}
+\label{ssub:global_assignment}
+
 When assigning to the global scope, the same process as for local
 assignment is performed, but in the global scope instead of the
 current scope.
