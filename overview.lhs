@@ -937,28 +937,51 @@ easier to reason about higher-order functions and quickly see where
 functions should be passed in - as well as having the function reject
 invalid arguments.
 
-\subsubsection{Modifiers}
-\label{ssub:modifiers}
-
-As mentioned, parameters can have certain modifiers applied to them.
-These too come in two flavors: annotations and constraints.
-\\
-\\
-
-\begin{spec}
-defun foo(\$x, !y, z) {
-  x(y, z);
-}
-\end{spec}
-
 \subsection{Closures}
 \label{sub:closures}
 
-Closures are functions that contain a snapshot of the scope at the
-time of their creation.
+Closures are special lambdas that carry a snapshot of the scope at
+the time of their creation.
 \\
-Closures in Angle are produced by returning a function (or lambda)
-from within a function.
+
+\subsubsection{Declaring closures}
+\label{ssub:declaring_closures}
+
+There are two methods of defining closures in Angle:
+
+\paragraph{Using Return}
+\label{par:using_return}
+
+When using the @return@ statement with a function or lambda,
+a closure is returned instead, using the current scope.
+\\
+If the value being returned is already a closure (already has an
+associated scope), then the current scope will be super-imposed onto
+the global scope of the closure - i.e, the current scope becomes the
+parent scope of the old global scope of the closure, and the current
+global scope becomes the new global scope of the closure.
+
+\paragraph{Using the Dollar Operator}
+\label{par:using_the_dollar_operator}
+
+Using the dollar operator before a bare lambda will declare the lambda
+to be a closure, and capture scope appropriately.
+\\
+Thus:
+\begin{spec}
+defun foo() {
+  return (() x;);
+}
+
+bar = foo();
+\end{spec}
+Is the same as
+\begin{spec}
+bar = \$(() x;);
+\end{spec}
+
+\subsubsection{Closure Example}
+\label{ssub:closure_example}
 
 \begin{spec}
   x = 7;
@@ -998,26 +1021,6 @@ that is used by the closure assigned to @fun@. But when @fun2@ is
 defined, as the scope that @bar@ captures is different, so will its
 value of @x@.
 
-\subsubsection{Declaring closures}
-\label{ssub:declaring_closures}
-
-As mentioned above, closures can be obtained by returning a lambda
-from a function. There is another method; using the dollar operator
-before a bare lambda will declare the lambda to be a closure, and
-capture scope appropriately.
-\\
-Thus:
-\begin{spec}
-defun foo() {
-  return (() x;);
-}
-
-bar = foo();
-\end{spec}
-Is the same as
-\begin{spec}
-bar = \$(() x;);
-\end{spec}
 
 
 \subsection{Accessing lambdas}
@@ -1079,20 +1082,26 @@ used, the function's definition is returned.
 \label{par:function_calls}
 
 \begin{spec}
-  function_call = [ `@'] simple_ident `(' { expr `,' } `)' ;
+
+arglist       = `(' { expr `,' } `)'         ;
+
+function_call = [ `@' ] simple_ident arglist ;
 \end{spec}
 
 The optional @@\@@ sign in front of the identifier indicates whether
 to call the function as a constraint or a regular function.
+\footnote{See Section~\ref{ssub:parameter_constraints}}
 
 \paragraph{Function definition}
 \label{par:function_definition}
 
 
 \begin{spec}
-function_def = simple_ident `(' { parameter `,' } `)' stmt                  ;
+function_def = simple_ident `(' { parameter `,' } `)' stmt ;
 
-parameter    = [ `!' | `\$' | `..' ] simple_ident [ `:@' simple_ident ] ;
+parameter    = [ `!' | `\$' | `..' ]
+               simple_ident
+               [ `:@' simple_ident [ arglist ] ]           ;
 \end{spec}
 
 \section{Variables}
