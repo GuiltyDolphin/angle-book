@@ -908,9 +908,6 @@ defun increment_large(x:@larger_than(100)) {
 }
 \end{spec}
 
-
-
-
 \subsubsection{Annotations}
 \label{ssub:annotations}
 
@@ -918,6 +915,7 @@ Annotations allow the programmer to restrict the types of arguments
 that are passed into a function.
 \\
 There are three possible annotations:
+
 \begin{description}
   \item[@\$x@] Requires the argument to be a lambda.
   \item[@!x@] Requires the argument to be a non-lambda.
@@ -927,14 +925,18 @@ There are three possible annotations:
 Annotations make it easy to define higher-order functions.
 \begin{spec}
 defun map(\$f, xs) {
-
+  for x in xs do {
+    f(x);
+  }
 }
 \end{spec}
+
 Annotations allow the programmer to quickly state whether the
 parameter should be a function, literal or any value. This makes it
 easier to reason about higher-order functions and quickly see where
 functions should be passed in - as well as having the function reject
 invalid arguments.
+
 \subsubsection{Modifiers}
 \label{ssub:modifiers}
 
