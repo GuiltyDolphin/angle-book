@@ -50,12 +50,13 @@
   implementation.
   \\
   % FIXME: Not sure about the colon after including.
-  Angle takes inspiration from many programming languages, including:
-  Perl, Lisp, Python, Ruby, and Haskell itself.
+  Angle takes inspiration from many programming languages, including
+  Perl, Lisp, Python, Ruby, and Haskell.
   \\
   The end product is twofold: the language itself, its grammar,
-  implementation details and semantics; and the software that can be
-  used to execute source either interactively or non-interactively.
+  implementation details and semantics; and the interpreter software
+  that can be used to execute source either interactively or
+  non-interactively.
   % The end product is a piece of software that can be used to run
   % syntactically correct source files either interactively or
   % non-interactively.
