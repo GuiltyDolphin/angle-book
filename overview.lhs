@@ -2215,7 +2215,7 @@ defined in \haskmodule{Angle.Types.Lang}, a parser can be implemented in
 \haskmodule{Angle.Parse.Parser} for wrapping a Haskell string in an Angle string.
 
 \begin{spec}
-litStr :: Scanner LangLit
+litStr :: Parser LangLit
 litStr = liftM LitStr tokString
 \end{spec}
 
