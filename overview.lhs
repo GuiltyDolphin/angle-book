@@ -319,8 +319,8 @@ In the above example, it could be said that @sam@ is an @Admin@ called
 @Sam@, and that a @Admin@ is a type of @User@.
 \\
 @access@ is a class variable, and does not rely on an instance (@sam@)
-being created, thus @Admin.access == 'unrestricted'@, but also
-@sam.access == 'unrestricted'@.
+being created, thus @Admin.access == `unrestricted'@, but also
+@sam.access == `unrestricted'@.
 
 
 \subsubsection{Functional}
@@ -570,7 +570,7 @@ contents before execution.
 \label{ssub:grammar}
 
 \begin{spec}
-stmt_comment = @#@ { <any character except newline> } newline ;
+stmt_comment = `#' { <any character except newline> } newline ;
 \end{spec}
 
 
@@ -674,9 +674,8 @@ type),\footnote{http://hackage.haskell.org/package/base-4.8.1.0/docs/Prelude.htm
 
 \begin{spec}
 
-number  = integer | float                                         ;
-
 integer = [ `-' ] digit { digit }                                 ;
+
 float   = [ `-' ] digit { digit } `.' digit { digit }             ;
 
 \end{spec}
@@ -709,11 +708,11 @@ is no exception and provides several data-structures, outlined below.
 Datatype  & Use & Example \\
 String    & Representing sets of Unicode characters & @"string"@ \\
 Integer   & Representing arbitrarily large integral values & @42@ \\
-Float     & Representing floating-point values & @12.15@ \\
+Float     & Representing floating-point values & @3.14@ \\
 List      & Grouping values, lists in Angle are heterogeneous meaning
 that different types of data may be stored within a single list & @[1, "string", true]@ \\
 Boolean   & Representing truth values & @true@ \\
-Character & Representing individual Unicode characters & @'c'@ \\
+Character & Representing individual Unicode characters & @`c'@ \\
 Range     & Representing an enumeration across values of a certain type & @(1..7)@ \\
 Null      & Special void value for when a value must be returned but it doesn't make sense to return anything else & @null@ \\
 Lambda    & Representing function bodies & @(() 1;)@ \\
@@ -2047,10 +2046,14 @@ runExcept (runStateT message2 1)
 # The entire computation is wrapped in the Either e a monad.
 \end{spec}
 
+% FIXME: Uhmm... Repetition?
 As the above example shows, the former monad is wrapping the inner
 value in exceptions, whereas the latter is wrapping the whole
 computation with potential failure.
-\\
+
+\paragraph{Ordering}
+\label{par:ordering}
+
 With this in mind, the ordering of the stack can be decided.
 \\
 Clearly an @ExceptT e m a@ transformer will have to sit on the top
@@ -2126,6 +2129,7 @@ other parsing functions can be built, by refining the grammar from
 The @scanChar@ function does have a couple of other duties, such as
 explicitly updating the state (See below), and checking for special
 characters such as newlines.
+% FIXME: What below?
 
 \paragraph{As a type}
 \label{par:as_a_type}
