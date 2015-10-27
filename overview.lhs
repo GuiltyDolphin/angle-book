@@ -850,7 +850,11 @@ to convert the given value to an integer when called normally.
 \begin{spec}
 defun int(x) {
   if as_constr then {
-    return (== x asType(1, x));
+    try {
+      return (== x asType(1, x));
+    } catch :typeCast {
+      return false;
+    }
   }
   asType(1, x);
 }
