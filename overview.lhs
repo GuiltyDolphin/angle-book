@@ -1770,6 +1770,17 @@ from a handle's character stream. @read(handle)@ reads the entirety
 of the remaining text, @read(handle, int)@ will read @int@ lines,
 then the modifier @:char@ can be appended to the call to read
 individual characters.
+\\
+\\
+% TODO: Check this (and the above paragraph)
+\begin{tabular}{l p{7cm}}
+ Form & Meaning \\
+ @read(handle)@ & Reads from @handle@ until it hits the end of the
+ stream. \\
+ @read(handle, int)@ & Reads @int@ lines from @handle@. \\
+ @read(:char, handle)@ & Reads a single character from @handle@. \\
+ @read(:char, handle, int)@ & Reads @int@ characters from @handle@. \\
+\end{tabular}
 
 \subsubsection{Writing to handles}
 \label{ssub:writing_to_handles}
