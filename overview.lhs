@@ -1534,6 +1534,7 @@ Angle.
 \subsection{Recursion}
 \label{sub:recursion}
 
+% FIXME: Feels like there ought to be a pause near 'which when'.
 Recursion is achieved by a function self-calling with reduced
 arguments. A base case exists which when satisfied will return a
 well-formed value.
@@ -1558,7 +1559,7 @@ such forms unnecessary.
 
 Angle supports two constructs for iteration: @for@ loops and @while@
 loops.
-\\
+
 \subsubsection{For loops}
 \label{ssub:for_loops}
 
