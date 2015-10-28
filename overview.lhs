@@ -1786,10 +1786,20 @@ individual characters.
 \label{ssub:writing_to_handles}
 
 % TODO: Check the wording.
+% As mentioned previously, there are two main write-modes that can be
+% used with handles in Angle; these produced the stated effects when
+% used with the @write@ function, which takes a handle and some text
+% and writes the text to the handle.
+
 As mentioned previously, there are two main write-modes that can be
-used with handles in Angle; these produced the stated effects when
-used with the @write@ function, which takes a handle and some text
-and writes the text to the handle.
+used with handles: write (clobber) and write (append).
+\\
+The clobber mode will overwrite the current contents of the resource
+on each write, whereas the append mode will add the string to the
+end of the resource.
+\\
+In both cases, when writing to a non-existent file, the file will be
+created.
 
 \subsubsection{Closing handles}
 \label{ssub:closing_handles}
@@ -1828,8 +1838,8 @@ There are two main methods of achieving this in Angle:
 
 % TODO: Want better phrasing.
 The @eval@ built-in function takes a string and attempts to parse it
-as code - this can be useful for loading small sections of source
-from a trusted location on the fly.
+as Angle source - this can be useful for loading small sections of
+source from a trusted location on the fly.
 \\
 There are a few issues with this - any use of @eval@ with user input
 is risky, as there is the potential for malicious code to be injected,
@@ -1886,7 +1896,7 @@ and division.
   Multiplication & @*@    & @(* 1 2 3)@   & @6@ \\
   Division       & @/@    & @(/ 1.0 2 3)@ & @0.1666666...@ \\
   Exponentiation & @**@   & @(** 2 4)@    & @16@ \\
-  Negation       & @-@    & @-x@          & @5@ (if @x = 5@)\\
+  Negation       & @-@    & @-x@          & @-5@ (if @x = 5@)\\
   \end{tabular}
   \caption{Arithmetical Operators}\label{tab:arithmetical_operators}
 \end{table}
@@ -1948,13 +1958,43 @@ assignment works.
   \caption{Assignment Operators}\label{tab:assignment_operators}
 \end{table}
 
-% TODO: This should be in separate section?
-The arithmetical, logical and relational operators are all expression
-operators, meaning that they act upon expressions and produce
-expressions, without any side-effects. The assignment operators do
-produce side-effects however, namely changing the value that an
-identifier references, thus the assignment operators are statements,
-not expressions.
+\subsubsection{A word on operations}
+\label{ssub:a_word_on_operations}
+
+There are a few important features to note about Angle's operators:
+\\
+\paragraph{Assignment is not an expression}
+\label{par:assignment_is_not_an_expression}
+
+All operations represent expressions, with the exception of the
+assignment operators. This means that the assignment operators cannot
+be embedded within other operations.
+% \\
+% The second is that, although general use cases for the standard
+% operations are intuitive, many of the operators will act differently
+% depending on their arguments.
+
+\paragraph{Overloading}
+\label{par:overloading}
+
+Many of the variadic operators are designed to act differently
+depending on their arguments: for example, the addition operator (@+@)
+performs arithmetic addition when all the arguments are numeric, but
+will perform appending when the first element is a list.
+\\
+Many of the special cases and miscellaneous operators are covered in
+greater detail in the documentation for
+\haskmodule{Angle.Exec.Operations}.
+
+\paragraph{List expansion in variadic operations}
+\label{par:list_expansion_in_variadic_operations}
+
+Many of the variadic operators support the special case of being
+passed a single list. When this happens, the list is expanded and
+the operator acts upon the contents of the list,
+thus @(+ [a,b,c,...,x,y,z])@ becomes @(+ a b c ... x y z)@.
+
+
 
 \subsection{Grammar}
 \label{sub:grammar}
@@ -1983,6 +2023,24 @@ to `true', an `else' form is also usually present.
 \\
 Angle is no exception to this trend and implements its own conditional
 statements: `if', and its counterpart `unless'.
+
+\subsection{Truth in Angle}
+\label{sub:truth_in_angle}
+
+Many languages have different notions of what constitutes a `truthy'
+value. In Perl, all values except for @0@, @"0"@, @""@, @()@, and
+@undef@ are considered `true'; in Ruby, only @nil@ and @false@ are
+considered to be `false'; in Haskell, only the values @True@ and
+@False@ have any meaning when used as booleans.
+\\
+% TODO: Check this...
+Angle follows the latter path, with @true@ and @false@ being the only
+values that can be used in a boolean context. The main reason for this
+is that it makes code easier to understand - writing
+@if nonzero(num_users) then...@ is a lot easier to understand than
+@if num_users then...@ (in my opinion).
+
+
 
 \subsection{Grammar}
 \label{sub:grammar}
