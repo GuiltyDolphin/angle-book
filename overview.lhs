@@ -598,11 +598,17 @@ return   & then  & true     & try   & unless & while \\
 Certain identifiers have predefined meanings in Angle, some of these
 may be overwritten, others may not.
 
-\begin{tabular}{ l c l }
+\begin{tabular}{ l c p{7cm} }
 Name & Can be overwritten? & Use \\
 main & no & Whether the current program was invoked directly. \\
 \_it & yes & Holds the value of the last computation. \\
 as\_constr & no & Whether the current function was called as a constraint. \\
+stdin & no & Handle for managing the program's standard input
+stream. \\
+stdout & no & Handle for managing the program's standard output
+stream. \\
+stderr & no & Handle for managing the program's standard error
+stream. \\
 \end{tabular}
 
 \subsubsection{Grammar}
