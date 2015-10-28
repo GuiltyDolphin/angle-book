@@ -1589,6 +1589,8 @@ Thus @for i in (1..5) do i;@ results in the list @[1, 2, 3, 4, 5]@.
 
 Unlike their @for@ loop counterparts, which traverse a series of
 values, @while@ loops execute until some condition is met.
+\footnote{Note that this example would be better solved with a
+for loop with a range (@for _ in (1..9)@).}
 
 \begin{spec}
   count = 1;
@@ -1721,20 +1723,38 @@ form of the variables @stdin@, @stdout@ and @stderr@.
 \subsubsection{Obtaining handles}
 \label{ssub:obtaining_handles}
 
-Angle provides the built-in @open@ function, which takes the form:
-@open(file_name, access_mode)@, and returns a handle providing
+The built-in @open@ function, which takes the form
+@open(file_name, access_mode)@, returns a handle providing
 access to the file @file_name@ in the specified @access_mode@.
-\\
+
+\paragraph{Access modes}
+\label{par:access_modes}
+
 There are two main access modes in general: read and write.
 Write is further split into append and write (clobber).
-`Write (clobber)' is used when the contents of the shouldn't be
+`Write (clobber)' is used when the contents of the file shouldn't be
 preserved and will overwrite the contents of the file when writing.
 `Append' on the other hand will preserve the contents and add the
 new text to the end of the file.
 \\
-Angle provides four possible access modes for handles: read
-(represented by @"<"@), write (@">"@), append (@">>"@), and
-read-write (@"<>"@).
+\\
+The four access modes are summarized below:
+\\
+\\
+\begin{tabular}{c c c c}
+Symbol & Read & Write & Append \\
+@"<"@  & Yes  & No    & - \\
+@">"@  & No   & Yes   & No \\
+@">>"@ & No   & Yes   & Yes \\
+@"<>"@ & Yes  & Yes   & No \\
+\end{tabular}
+\\
+\\
+For example, if you wanted to read from a file called "file.txt", you
+could use @open("file.txt", "<")@ to obtain the necessary handle.
+% Angle provides four possible access modes for handles: read
+% (represented by @"<"@), write (@">"@), append (@">>"@), and
+% read-write (@"<>"@).
 
 \subsubsection{Reading handles}
 \label{ssub:reading_handles}
