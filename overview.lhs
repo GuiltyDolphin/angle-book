@@ -2352,7 +2352,7 @@ depreciation `ExceptT' was used instead - https://hackage.haskell.org/package/mt
 \paragraph{The monad stack}
 \label{par:the_monad_stack}
 
-To combine these monads the used of monad transformers is required,
+To combine these monads the use of monad transformers is required,
 as mentioned earlier.
 \\
 An important point to note is that combining monads is, in general,
