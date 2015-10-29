@@ -2119,8 +2119,9 @@ by running @angle --help@.
 The parser has the job of compiling the textual source code into
 an AST representation of Angle within Haskell.
 \\
-Within the module structure, the collection of modules \haskmodule{Angle.Parse.*}
-define the implementation of the parser.
+Within the module structure, the collection of modules
+\haskmodule{Angle.Parse.*} and \haskmodule{Angle.Scanner} define the
+implementation of the parser.
 \\
 % TODO: This wording isn't very good.
 Within these modules, the @Parser a@ monad is used to define the
@@ -2229,14 +2230,6 @@ language constructs, and the main parser that combines these in order
 to parse an entire Angle program.
 \end{itemize}
 
-\haskmodule{Angle.Parse.Token} uses the previously defined combinators to
-build parsers for the basic structures in Angle (strings, keywords,
-numerics). \haskmodule{Angle.Parse.Parser} uses combinators defined in
-\haskmodule{Angle.Parse.Helpers}, along with the parsers defined in
-\haskmodule{Angle.Parse.Token} to define the parsers for each of the
-language constructs, and the main parser that combines these in
-order to parse an entire Angle program.
-
 
 \subsection{The Parser Monad}
 \label{sub:the_parser_monad}
@@ -2259,7 +2252,7 @@ is often used to represent some computation that may fail.
 \\
 \textit{A @Maybe a@ data declaration}
 \begin{spec}
-data Maybe a = Just a | Nothing
+data Maybe a = Nothing | Just a
 \end{spec}
 
 There are two operations associated with monads: `return' and `bind'.
