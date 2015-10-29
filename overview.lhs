@@ -2408,6 +2408,8 @@ of the stack.\footnote{@SyntaxError@, @Position@ and @Source@ are not
 the actual names of the types used. See \textit{Angle.Scanner} for the
 actual definition.}
 \\
+\\
+\textit{The Parser a monad}
 \begin{spec}
 type Parser a = ExceptT SyntaxError (StateT Position (Reader Source)) a
 \end{spec}
