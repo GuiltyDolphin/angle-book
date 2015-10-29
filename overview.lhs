@@ -473,8 +473,8 @@ This project aims to provide the following:
 \label{sub:the_library}
 
 The library defines all of Angle's features
-(See part~\ref{prt:language_reference}); the scanner, parser and
-language representation.\footnote{See part~\ref{prt:implementation}
+(See Part~\ref{prt:language_reference}); the scanner, parser and
+language representation.\footnote{See Part~\ref{prt:implementation}
 for an overview of how the library was implemented.}
 \\
 The library is independent of the interpreter, and thus it would be
@@ -814,7 +814,7 @@ the constraint call:
 \begin{itemize}
   \item The function must be able to take a single argument after
   any additional arguments are supplied. See
-  table~\ref{tab:calling_constraints} for some examples of valid
+  Table~\ref{tab:calling_constraints} for some examples of valid
   and non-valid constraint calls.
   \item For the given call, the constraint \textbf{must} return a
   boolean value.
@@ -1944,7 +1944,7 @@ There is a pair-wise grouping with relational operators, thus
 
 Assignment operators are all infix binary, and the use-case is always
 the same; associate some data with an identifier. See
-section~\ref{sub:assignment} for a more detailed explanation on how
+Section~\ref{sub:assignment} for a more detailed explanation on how
 assignment works.
 
 \begin{table}[h!]
@@ -2066,9 +2066,9 @@ cond_unless    = `unless' expr        stmt [ `else' stmt ] ;
 % \end{spec}
 %
 % Note the inclusion of @expr_list@ and @expr_range@ which are
-% represented as literals in section~\ref{ssub:literals}.
+% represented as literals in Section~\ref{ssub:literals}.
 %
-% See section~\ref{ssub:lists_and_ranges_as_expressions} for more
+% See Section~\ref{ssub:lists_and_ranges_as_expressions} for more
 % information.
 
 
@@ -2147,7 +2147,7 @@ the exact same abstract syntax tree - as they should.
 
 % TODO: Still not happy with this...
 The four main components of Angle mentioned in
-section~\ref{sec:project_structure} interact to form the following
+Section~\ref{sec:project_structure} interact to form the following
 execution method:
 
 \begin{enumerate}
@@ -2175,7 +2175,7 @@ execution method:
 
 % \begin{description}
 %   \item[executable] for running programs, the main interface for the
-%     user. See section~\ref{sub:the_software} for more information.
+%     user. See Section~\ref{sub:the_software} for more information.
 %   \item[parser] which will deal with translating source code into
 %     an abstract syntax tree that represents the language.
 %   \item[interpreter] which executes the AST produced by the parser
