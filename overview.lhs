@@ -2577,48 +2577,59 @@ and their impact upon the language.
 \subsection{Lists as both expressions and literals}
 \label{sub:lists_as_both_expressions_and_literals}
 
-% TODO: Better phrasing wanted!
-Internally, lists are represented both as expressions and
-as literals.
-There are two important considerations that lead to this choice:
-firstly, lists should be able to contain references to variables
-and expressions themselves. This means that a list must be an
-expression itself; second, literals are fully evaluated at the end
-of parsing (bar the expansion of ranges).
-Lists are perhaps the best structure for storing large amounts of
-data in Angle, thus it is very possible to want to store this data
-in files in the form of lists.
-\\
-If lists were just expressions, then in re-parsing a list from a file,
-each component of the list would be wrapped as an expression - meaning
-that when the list needs to be evaluated, each of the components must
-also be evaluated.
-\\
-Due to the nature of literals being fully evaluated at the end of the
-parsing stage - and the only allowed contents of literals are also
-literals, no additional wrapping would need to be done if a list
-were represented as a literal.
-\\
-Thus the decision was made to optimize data storage and reduce
-overhead when reading fully-evaluated lists.
+\subsubsection{The problem}
+\label{ssub:the_problem}
 
+\paragraph{Angle has few types}
+\label{par:angle_has_few_types}
 
-% The reason for this is that it is quite likely that a programmer would
-% want to store data in a
-% The reason for having lists and ranges defined as both literals and
-% expressions is to enable lists and ranges that have indeterminate
-% contents at run-time. Angle first attempts to parse a literal list
-% or range, meaning that if the programmer hard-codes a list containing
-% only literals, it will be treated as a literal when the file is being
-% lexed. If any part of the list or range is not a literal value, and
-% thus has no definite value, Angle will treat it as an expression
-% rather than a literal so that the contents are only known when the
-% list or range is evaluated.
+Angle provides relatively few data-types compared to many other
+languages, thus each one has to take on the roles that would
+potentially be carried out by several data-types in other
+languages.
 
-% \begin{spec}
-% expr_list    = `[' { expr `,' }                           `]' ;
-% expr_range   = `('   expr `..' [ [ expr ] [ `..' expr ] ] `)' ;
-% \end{spec}
+\paragraph{Storing data}
+\label{par:storing_data}
+
+Often times a programmer may wish to dump large amounts of data
+in a file, then read this back at a later date. Angle's lists are
+the obvious candidate for this scenario.
+
+\paragraph{Lists must be expressions}
+\label{par:lists_must_be_expressions}
+
+Angle's lists must be expressions on some level, otherwise it would
+not be possible to have lists containing values that are unknown
+before runtime (e.g. in @[1, x, 4]@, the value of @x@ is unknown
+until it is evaluated).
+\\
+Angle's method of dealing with this is to wrap every element of a list
+in an expression during the AST generation. The main issue here is
+that every time a list needs to be evaluated, each of the elements
+needs to be evaluated first.
+
+\subsubsection{The solution}
+\label{ssub:the_solution}
+
+The solution is fairly simple - have lists as both expressions and
+literals.
+
+\paragraph{Literals}
+\label{par:literals}
+
+Lists have a literal read syntax - when parsing a program, every time
+a list is encountered an attempt is made to read it as a literal -
+this can only succeed if all the contained values are literals as
+well.
+\\
+If a list can be read as a literal, then the whole list can be
+directly evaluated without needing to first evaluate each of the
+elements, thus reducing computational complexity especially when
+dealing with very large lists.
+\\
+If the list cannot be read as a literal then each of the elements
+is wrapped in an expression, as before.
+
 
 \subsection{Variadic operators}
 \label{sub:variadic_operators}
@@ -2626,12 +2637,18 @@ overhead when reading fully-evaluated lists.
 Angle's prefix variadic operators are quite unconventional. They are
 based upon a Lisp style, but are very different from operators in
 most languages.
-\\
+
+\subsubsection{The problem}
+\label{ssub:the_problem}
+
 Initially I intended to implement binary infix operators, the same
 as many other languages. I soon encountered the issue of precedence
 with my parsing library and all the workarounds for this were ugly
 and verbose.
-\\
+
+\subsubsection{The solution}
+\label{ssub:the_solution}
+
 The solution was to have the programmer explicitly state the order
 in which operations would be executed.
 \\
@@ -2650,7 +2667,8 @@ be evaluated before the higher layers.
 \label{ssub:variadic_operators_are_versatile}
 
 Although not my initial choice for operators, the variadic operators
-has proved to be very powerful.
+have proved to be very powerful.\footnote{Section~\ref{ssub:a_word_on_operations}
+outlines some prominent features.}
 
 \paragraph{Flat operations}
 \label{par:flat_operations}
@@ -2660,17 +2678,6 @@ operations needs to be applied to a set of values, one might have to
 do this: @a + b + c + ... + x + y + z@, this is inconvenient, and due
 to most of Angle's operators being variadic, all these operations
 could be combined into one: @(+ a b c ... x y z)@.
-
-\paragraph{List expansion}
-\label{par:list_expansion}
-
-Another feature of Angle's operators is that most of them are highly
-overloaded - meaning that they work differently on different types.
-\\
-A special case of this is when a single list is passed into (some of)
-the operators. When this occurs, the list is expanded and the operator
-acts upon the contents of the list, thus @(+ [a,b,c,...,x,y,z])@
-becomes @(+ a b c ... x y z)@.
 
 
 \part{Conclusion}
