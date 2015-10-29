@@ -253,7 +253,7 @@ programmer to use a single one.
 \label{par:common_paradigms}
 
 Following is a brief description of some of the more common
-paradigms.\footnote{http://cs.lmu.edu/~ray/notes/paradigms/}
+paradigms.\footnote{http://cs.lmu.edu/\~{}ray/notes/paradigms/}
 
 \subsubsection{Declarative}
 \label{ssub:declarative}
@@ -2248,7 +2248,7 @@ In the context of a purely functional language such as Haskell, a
 monad is a structure that represents a certain type of computation
 and the rules associated with it. Monads are particularly useful
 because they allow the combination of effects whilst following the
-accompanying rules.
+accompanying rules.\footnote{http://web.engr.oregonstate.edu/\~{}walkiner/teaching/cs583\textendash{}fa14/slides/6.Monads.pdf}
 
 \paragraph{The Maybe monad}
 \label{par:the_maybe_monad}
@@ -2719,7 +2719,7 @@ available at the beginning of the project.
 \\
 For example, Haskell supports Generalized Algebraic Datatypes - a
 system that allows you to explicitly state types signatures of the
-constructors of a type.\footnote{https://downloads.haskell.org/~ghc/6.6.1/docs/html/users\_guide/gadt.html}
+constructors of a type.\footnote{https://downloads.haskell.org/\~{}ghc/6.6.1/docs/html/users\_guide/gadt.html}
 Knowledge of this when starting the project may have made it easier
 and cleaner to come up with a representation for the language
 structures.
