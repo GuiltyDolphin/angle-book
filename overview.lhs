@@ -2098,7 +2098,7 @@ general structure the abstract syntax tree (AST) will take.
 \\
 The actual implementation is not described further, but the
 documentation for \haskmodule{Angle.Types.Lang} covers this in great
-detail. Additionally, section~\ref{prt:language_reference} provides
+detail. Additionally, Part~\ref{prt:language_reference} provides
 a higher-level overview.
 
 \subsection{Executable}
