@@ -27,7 +27,8 @@
   urlcolor=black
 }
 
-\title{An implementation of a basic general-purpose programming language}
+\title{Implementing a general-purpose programming language in Haskell}
+% \title{An implementation of a basic general-purpose programming language}
 \author{Ben Moon}
 \date{}
 
@@ -41,31 +42,65 @@
 \maketitle
 
 \begin{abstract}
-  % TODO: Not sure about the 'design-process' bit.
-  % NOTE(1): There is a section on design choices now.
-  This document provides an overview of the design-process, usage and
-  implementation of Angle - a general purpose programming language.
-  \\
-  Additionally, this overview will provide a language reference,
-  describing each of Angle's features in detail.
-  \\
-  The programming language `Haskell', along with standard tools such as
-  Cabal and the Glasgow Haskell Compiler have been used for the
-  implementation.
-  \\
-  % FIXME: Not sure about the colon after including.
-  Angle takes inspiration from many programming languages, including
-  Perl, Lisp, Python, Ruby, and Haskell.
-  \\
-  The end product is twofold: the language itself, its grammar,
-  implementation details and semantics; and the interpreter software
-  that can be used to execute source either interactively or
-  non-interactively.
-  % The end product is a piece of software that can be used to run
-  % syntactically correct source files either interactively or
-  % non-interactively.
+\textit{Angle} is a programming language written in Haskell.
+Angle is inspired by many languages, including Perl, Lisp, Python,
+Ruby, and Haskell.
+I cover the major areas of research which were required in order to
+be able to implement the language. I demonstrate Angle's basic
+functionality through the use of examples, whilst covering the major
+features of the language at the same time in the form of a language
+reference.
+I then go on to explain some of the design choices and how they
+affected the language, as well as providing an overview of the
+parser implementation.
+I conclude by revisiting my original expectations for the language,
+and compare them with the finished result.
+% I conclude with some observations about various design choices, and
+% revisit my original expectations of the language.
+% Many of Angle's features build upon those that can already be found
+% in languages such as Perl, Lisp, Python, Ruby and Haskell.
+% % Not sure about this line.
+% Additionally, Angle introduces features of its own.
+% In this document, I introduce some of the fundamental knowledge that
+% was required in order to implement Angle, as well as some of the
+% design process and a reference for the language itself.
 
+% In this document I introduce Angle, a programming language written
+% in Haskell.
+% \\
+% This document consists of three parts: an overview of language
+% implementation, some of the process involved in creating Angle, and
+% a language reference that describes Angle's major features.
+
+% With Angle I hope to produce a language that implements its own
+% versions of many of the features
 \end{abstract}
+% \begin{abstract}
+%   % TODO: Not sure about the 'design-process' bit.
+%   % NOTE(1): There is a section on design choices now.
+%   This document provides an overview of the design-process, usage and
+%   implementation of Angle - a general purpose programming language.
+%   \\
+%   Additionally, this overview will provide a language reference,
+%   describing each of Angle's features in detail.
+%   \\
+%   The programming language `Haskell', along with standard tools such as
+%   Cabal and the Glasgow Haskell Compiler have been used for the
+%   implementation.
+%   \\
+%   % FIXME: Not sure about the colon after including.
+%   Angle takes inspiration from many programming languages, including
+%   Perl, Lisp, Python, Ruby, and Haskell.
+%   \\
+%   The end product is twofold: the language itself, its grammar,
+%   implementation details and semantics; and the interpreter software
+%   that can be used to execute source either interactively or
+%   non-interactively.
+%   % The end product is a piece of software that can be used to run
+%   % syntactically correct source files either interactively or
+%   % non-interactively.
+%
+% \end{abstract}
 
 \tableofcontents
 
