@@ -138,7 +138,8 @@ the documentation interactively.
 
 % TODO: Uhh... Do better than this.
 Throughout this document, references to code, modules, and other
-features will be made.
+features will be made using the notation described in the following
+table.
 
 \begin{tabular}{c c c}
  Element &  Example & Represents. \\
@@ -160,8 +161,8 @@ this project.
 \label{sub:haskell}
 
 I have decided to write my project using the Haskell programming
-language. Haskell is a statically-typed, functional, lazy language
-that supports type-inference. \cite{Haskell}
+language \cite{Haskell}. Haskell is a statically-typed, functional, lazy language
+that supports type-inference.
 
 % TODO: Want better phrasing.
 Haskell's type system makes it very easy to develop projects quickly
@@ -176,7 +177,7 @@ compiling, documenting, testing and many other aspects.
 \subsubsection{Cabal}
 \label{ssub:cabal}
 
-Cabal is a package manager for projects written in Haskell. \cite{Cabal}
+Cabal \cite{Cabal} is a package manager for projects written in Haskell.
 It allows information about the package, including name, description,
 library information and test suites to be specified within a
 \texttt{.cabal} file, and can then be used to simplify the task of
@@ -186,8 +187,8 @@ compiling, running tests and installing packages.
 \subsubsection{Haddock}
 \label{ssub:haddock}
 
-Haddock is a system for generating documentation from annotated Haskell
-source files. \cite{Haddock}
+Haddock \cite{Haddock} is a system for generating documentation from annotated Haskell
+source files.
 I chose Haddock due to it's intuitive syntax, ease of readability and
 integration with Cabal.
 
@@ -195,18 +196,18 @@ integration with Cabal.
 \subsubsection{Glasgow Haskell Compiler}
 \label{ssub:glasgow_haskell_compiler}
 
-The Glasgow Haskell Compiler, or GHC, is the main actively-maintained
-compiler for Haskell. \cite{GHC} It is very
-stable and provides a lot of additional features that may be used when
-required by a programmer.
+The Glasgow Haskell Compiler \cite{GHC}, or GHC, is the main
+actively-maintained compiler for Haskell. It is very stable and
+provides many additional features that may be used when required
+by a programmer.
 
 \subsubsection{Git}
 \label{ssub:git}
 
-Git is an open source version control system that allows changes in a
-project to be staged, committed and tracked. This means that changes
-to the project can easily be undone and reviewed, and allows changes
-to be labeled for future reference. \cite{Git}
+Git \cite{Git} is an open source version control system that allows
+changes in a project to be staged, committed and tracked. This means
+that changes to the project can easily be undone and reviewed, and
+allows changes to be labeled for future reference.
 
 \subsubsection{Libraries}
 \label{ssub:libraries}
@@ -214,6 +215,22 @@ to be labeled for future reference. \cite{Git}
 Throughout the project I have used many libraries written by other
 developers. Some part of the Haskell Platform \cite{Haskell Platform},
 others standalone. Below are some of the packages I have used.
+
+% \paragraph{QuickCheck}
+% \label{par:quickcheck}
+% QuickCheck \cite{QuickCheck} is a testing library that can generate
+% random tests for checking that specified properties hold when applied
+% to different data.
+%
+% \paragraph{Tasty}
+% \label{par:tasty}
+% Tasty \cite{Tasty} is a test framework that allows the combination of
+% tests into a single test suite for running.
+%
+% \paragraph{Criterion}
+% \label{par:criterion}
+% Criterion \cite{Criterion} is a benchmarking library for measuring the
+% performance of code.
 
 \begin{description}
   \item[QuickCheck] - a testing library that can generate random tests
@@ -265,7 +282,7 @@ Interpreters differ from compilers in that instead of programs first
 being translated to machine code before being executed, instructions
 are translated into pre-compiled subroutines and executed directly at
 run-time, thus possibly incurring a speed decrease when compared to a
-similar compiled language. \cite{Compiled Versus Interpreted Languages}
+similar compiled language. \cite{VS CvI}
 \\
 One of the main disadvantages of an interpreter is that it is
 required every time a program needs to be run. Source code is also
@@ -324,12 +341,16 @@ imperative languages can greatly affect the outcome of the program.
 \subsubsection{Object-oriented}
 \label{ssub:object_oriented}
 
-In object-oriented languages, structures called objects, which have
-state (usually represented by properties) and methods that are used
-to change this state.
-\\
-Objects can call other objects' methods, or potentially directly
-modify their properties in order to change this state.
+Object-oriented languages focus on the use of objects. Objects
+are structures that carry their own state (usually in the form
+of properties) and have methods that can be used to change or
+communicate this state.
+% In object-oriented languages, structures called objects, which have
+% state (usually represented by properties) and methods that are used
+% to change this state, are used to control the flow of programs.
+% \\
+% Objects can call other objects' methods, or potentially directly
+% modify their properties in order to change this state.
 \\
 Inheritance is usually present in object-oriented languages, and
 allows a parent-child relationship between different objects.
@@ -356,7 +377,7 @@ sam = Admin("Sam")
 % TODO: This example seems a bit redundant, make sure it is clear
 % why inheritance is useful.
 In the above example, it could be said that @sam@ is an @Admin@ called
-@Sam@, and that a @Admin@ is a type of @User@.
+@"Sam"@, and that a @Admin@ is a type of @User@.
 \\
 @access@ is a class variable, and does not rely on an instance (@sam@)
 being created, thus @Admin.access == `unrestricted'@, but also
@@ -367,10 +388,14 @@ being created, thus @Admin.access == `unrestricted'@, but also
 \label{ssub:functional}
 
 In functional languages, computations are treated as the evaluation
-of mathematical functions. Side-effects are usually low to
-non-existent as in a purely functional language functions should be
-referentially transparent (the same result should always arise with
-the same arguments). \cite{HaskellWiki Functional programming}
+of mathematical functions \cite{HaskellWiki Functional programming}.
+Additionally, side-effects are usually low to non-existent, a result
+of referential transparency.\footnote{The same result should always
+arise with the same arguments.}
+% as in a purely functional language functions should be
+%referentially transparent (the same result should always arise with
+% (the same result should always arise with
+% the same arguments). \cite{HaskellWiki Functional programming}
 \\
 Several features are prominent in functional languages:
 
@@ -392,9 +417,9 @@ Haskell is an example of a purely-functional programming language.
 
 Angle is intended to be primarily a functional language. To support
 this Angle provides first-class citizen functions and higher-order
-functions. Angle is not intended to be a purely functional language
-(like Haskell), and thus imposes no restrictions on where
-side-effecting code can be performed.
+functions. Angle is not intended to be a purely functional language,
+and thus imposes no restrictions on where side-effecting code can be
+performed.
 
 \subsection{Type systems}
 \label{sub:type_systems}
@@ -554,8 +579,8 @@ interpreter. This mode is how programs should usually be run.
 % FIXME: Better phrasing please.
 The following reference describes the language features, grammar and
 methodology of Angle. Each section describes a feature or ideal of
-Angle, and sections describing syntax features will include a grammar
-in Extended Backus Naur form at the end.
+Angle; sections introducing syntax features will include a grammar in
+Extended Backus Naur Form.
 
 \subsection{Notation}
 \label{sub:notation}
@@ -621,7 +646,7 @@ stmt_comment = `#' { <any character except newline> } newline ;
 \label{ssub:reserved_words}
 
 Reserved words (or keywords) are reserved identifiers that may not be
-used for variable names.
+used for variable names, and have a special meaning in Angle.
 \\
 The following is a list of the reserved words in Angle:
 \\
@@ -635,8 +660,10 @@ return   & then  & true     & try   & unless & while \\
 \subsubsection{Reserved identifiers}
 \label{ssub:reserved_identifiers}
 
-Certain identifiers have predefined meanings in Angle, some of these
-may be overwritten, others may not.
+Certain identifiers representing variables have predefined meanings in
+Angle, some of these may be overwritten, others may not.
+%Certain identifiers have predefined meanings in Angle, some of these
+%may be overwritten, others may not.
 
 \begin{tabular}{ l c p{7cm} }
 Name & Can be overwritten? & Use \\
@@ -722,11 +749,39 @@ float   = [ `-' ] digit { digit } `.' digit { digit }             ;
 
 \end{spec}
 
+\subsubsection{Booleans}
+\label{ssub:booleans}
+
+Booleans represent truth values in Angle. They are used in conditional
+statements\footnote{Described in Section~\ref{sec:conditionals}}, and
+any other location which require a true or false value.
+
 \begin{spec}
 boolean = `true'  | `false'                                       ;
+\end{spec}
 
-list    = `[' { literal `,' }                                 `]' ;
-range   = `('   literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
+\subsubsection{Lists}
+\label{ssub:lists}
+
+Lists represent a collection of values which can be passed around in
+a single data structure. Angle's lists can contain any number of
+different types, and may even have nested lists.
+Section~\ref{sub:lists_as_both_expressions_and_literals} describes
+some specific nuances of lists.
+
+\begin{spec}
+list = `[' { literal `,' } `]' ;
+\end{spec}
+
+\subsubsection{Ranges}
+\label{ssub:ranges}
+
+Ranges can be used to specify a set of values with a common
+difference without initially producing all the values. A range can
+then be evaluated later when required.
+
+\begin{spec}
+range = `(' literal `..' [ [ literal ] [ `..' literal ] ] `)' ;
 \end{spec}
 
 
@@ -781,7 +836,7 @@ only accept a hash.
 \\
 Of course this would not be nearly as efficient as the hash implementation
 in many languages, but the principle of being able to build more
-complex data from the standard set of types still holds.
+complex data from the standard set of types is an important one.
 
 \section{Functions}
 \label{sec:functions}
@@ -810,10 +865,11 @@ dependent and will take on the value of the argument placed at the
 equivalent position in a function call.
 \\
 The second form is a catch parameter; catch parameters, when defined,
-will collect any additional additional arguments into a special list
-that can be accessed normally as a list, or expanded within a
-function call to pass in the collected arguments. Catch parameters
-allow the implementation of variadic functions.
+will collect any additional additional arguments into a list that can
+be accessed normally as a list, or expanded within a function call to
+pass in the collected arguments.\footnote{Variables containing
+lists may be expanded in a similar manner.} Catch parameters allow the
+implementation of variadic functions.
 
 \subsubsection{Parameter Constraints}
 \label{ssub:parameter_constraints}
@@ -1222,8 +1278,8 @@ stmt_assign     = local_assign
                 | nonlocal_assign
                 | global_assign           ;
 
-local_assign    = simple_ident `=' expr   ;
-nonlocal_assign = simple_ident `|=' expr  ;
+local_assign    = simple_ident `='   expr ;
+nonlocal_assign = simple_ident `|='  expr ;
 global_assign   = simple_ident `||=' expr ;
 \end{spec}
 
@@ -1609,12 +1665,14 @@ For loops, when given a enumerable value such as a list or range,
 will pass over the contained values, assigning each element to a
 temporary variable for access in the body.
 \\
-\textit{Welcoming several users with the use of a for loop.}
+\textit{A non-recursive implementation of the factorial function.}
 \begin{spec}
-users = ["Jannet", "Harry", "Theo"];
-
-for user in users do {
-  print("Welcome ", user);
+defun factorial(n) {
+  res = 1;
+  for i in (1..n) do {
+    res = (* res n);
+  }
+  return res;
 }
 \end{spec}
 
@@ -1631,8 +1689,6 @@ Thus @for i in (1..5) do i;@ results in the list @[1, 2, 3, 4, 5]@.
 
 Unlike their @for@ loop counterparts, which traverse a series of
 values, @while@ loops execute until some condition is met.
-\footnote{Note that this example would be better solved with a
-for loop with a range (@for _ in (1..9)@).}
 
 \begin{spec}
   count = 1;
@@ -1792,8 +1848,8 @@ Symbol & Read & Write & Append \\
 \end{tabular}
 \\
 \\
-For example, if you wanted to read from a file called "file.txt", you
-could use @open("file.txt", "<")@ to obtain the necessary handle.
+For example, if you wanted to read from a file called "file.txt",
+@open("file.txt", "<")@ could be used to obtain the necessary handle.
 % Angle provides four possible access modes for handles: read
 % (represented by @"<"@), write (@">"@), append (@">>"@), and
 % read-write (@"<>"@).
@@ -2072,9 +2128,10 @@ considered to be `false'; in Haskell, only the values @True@ and
 % TODO: Check this...
 Angle follows the latter path, with @true@ and @false@ being the only
 values that can be used in a boolean context. The main reason for this
-is that it makes code easier to understand - writing
-@if nonzero(num_users) then...@ is a lot easier to understand than
-@if num_users then...@ (in my opinion).
+is that it makes code easier to understand\footnote{It also avoids having to come up
+with potentially controversial ideas of what really is `true'.} -
+writing @if nonzero(num_users) then...@ is a lot easier to understand
+than @if num_users then...@.
 
 
 
@@ -2094,7 +2151,7 @@ cond_unless    = `unless' expr        stmt [ `else' stmt ] ;
 \label{prt:implementation}
 
 This section provides an overview of the implementation of Angle, some
-important design choices and their ramifications and the overall
+important design choices and their ramifications, and the overall
 layout of the project.
 
 \section{Project structure}
@@ -2138,7 +2195,8 @@ implementation of the parser.
 \\
 % TODO: This wording isn't very good.
 Within these modules, the @Parser a@ monad is used to define the
-computational ability of the parser itself.
+computational ability of the parser itself.\footnote{Described in
+more detail in Section~\ref{ssub:the_parser_monad}.}
 
 \subsection{Interpreter}
 \label{sub:interpreter}
@@ -2180,7 +2238,7 @@ execution method:
       \item \textit{Interpreter:} The AST is executed.
         \begin{enumerate}
           \item Run-time errors are raised as exceptions that may
-          be caught by the user. If an exception makes it to the
+          be caught by the program. If an exception makes it to the
           top-level, the program will halt and alert the user.
         \end{enumerate}
     \end{enumerate}
@@ -2442,19 +2500,20 @@ type Parser a = ExceptT SyntaxError (StateT Position (Reader Source)) a
 % TODO: Check the wording!
 The scanner reads in individual characters from source and passes
 them to other components (namely the parser and/or lexer) to be
-converted to tokens.% \footnote{http://forums.devshed.com/programming-languages-139/interpreter-compiler-312483.html\#post1342279}
+converted to tokens. % \footnote{http://forums.devshed.com/programming-languages-139/interpreter-compiler-312483.html\#post1342279}
 The scanner has to keep track of its position in source in order to
 be able to backtrack and/or provide contextual syntax errors.
 
-\subsubsection{The basics}
-\label{ssub:the_basics}
-
-There are two main requirements for the scanner:
-\begin{itemize}
-  \item It is able to read characters from source.
-  \item It is able to indicate the position at which these characters
-  were read.
-\end{itemize}
+% This bit seems a bit redundant.
+% \subsubsection{The basics}
+% \label{ssub:the_basics}
+%
+% There are two main requirements for the scanner:
+% \begin{itemize}
+%   \item It is able to read characters from source.
+%   \item It is able to indicate the position at which these characters
+%   were read.
+% \end{itemize}
 
 \subsubsection{The implementation}
 \label{ssub:the_implementation}
@@ -2605,7 +2664,7 @@ languages.
 \paragraph{Storing data}
 \label{par:storing_data}
 
-Often times a programmer may wish to dump large amounts of data
+Oftentimes a programmer may wish to dump large amounts of data
 in a file, then read this back at a later date. Angle's lists are
 the obvious candidate for this scenario.
 
@@ -2688,10 +2747,10 @@ outlines some prominent features.}
 \label{par:flat_operations}
 
 Conventional binary operators only have two operands, thus when an
-operations needs to be applied to a set of values, one might have to
-do this: @a + b + c + ... + x + y + z@, this is inconvenient, and due
-to most of Angle's operators being variadic, all these operations
-could be combined into one: @(+ a b c ... x y z)@.
+operation needs to be applied to a set of values, one might have to
+do the following: @a + b + c + ... + x + y + z@, this is inconvenient,
+and due to most of Angle's operators being variadic, all these
+operations could be combined into one: @(+ a b c ... x y z)@.
 
 
 \part{Conclusion}
@@ -2733,9 +2792,9 @@ As is often the case, with hindsight I am aware of areas of the
 implementation that may have been improved if certain knowledge was
 available at the beginning of the project.
 \\
-For example, Haskell supports Generalized Algebraic Datatypes - a
-system that allows you to explicitly state types signatures of the
-constructors of a type. \cite{GHC GADTs}
+For example, Haskell supports Generalized Algebraic Datatypes
+\cite{GHC GADTs} - a system that allows you to explicitly state type
+signatures for type constructors.
 Knowledge of this when starting the project may have made it easier
 and cleaner to come up with a representation for the language
 structures.
@@ -2770,8 +2829,8 @@ detailed messages - especially at the parsing stage.
 \label{sub:type_system}
 
 My choice was to have a dynamic type system for Angle - this was done
-intentionally to reduce reliance on Haskell's type system to improve
-my understanding of coping with non-static type systems.
+intentionally to reduce reliance on Haskell's type system in order
+to improve my understanding of type systems.
 \\
 In the future, when this is not a goal in mind, I believe it would be
 wise to allow Haskell to enforce type-correctness in any small
@@ -2812,7 +2871,7 @@ implement additional features and review how my methods have changed.
     \url{https://hackage.haskell.org/package/tasty}
  \bibitem{Criterion}
   Criterion. \url{https://hackage.haskell.org/package/criterion}
- \bibitem{Compiled Versus Interpreted Languages}
+ \bibitem{VS CvI}
   Vanguard Software. Compiled vs. Interpreted Languages.
   \url{http://www.vanguardsw.com/dphelp4/dph00296.htm}
  \bibitem{Ray Toal Paradigms}
