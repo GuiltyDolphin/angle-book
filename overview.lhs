@@ -16,6 +16,8 @@
 % \restylefloat{table}
 
 % This provides a table of contents that okular can read.
+\usepackage[a4paper]{geometry}
+
 \usepackage{hyperref}
 \hypersetup{
   colorlinks,
@@ -2752,7 +2754,7 @@ more small languages. I will perhaps revisit Angle in the future to
 implement additional features and review how my methods have changed.
 
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
  \bibitem{Haskell}
  The Haskell programming language. \url{https://www.haskell.org/}
  \bibitem{Cabal}
@@ -2837,7 +2839,8 @@ implement additional features and review how my methods have changed.
   Version 1.1.0.2. Control.Monad.Reader.
   \url{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Reader.html}
  \bibitem{mtl Except}
-  Andy Gill. mtl: Monad classes, using functional dependencies.
+  Andy Gill.
+  \emph{mtl: Monad classes, using functional dependencies.}
   Version 2.2.1. Control.Monad.Except.
   \url{https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
  \bibitem{GHC GADTs}
