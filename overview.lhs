@@ -15,9 +15,9 @@
 % \usepackage{float}
 % \restylefloat{table}
 
-% This provides a table of contents that okular can read.
 \usepackage[a4paper]{geometry}
 
+% This provides a table of contents that okular can read.
 \usepackage{hyperref}
 \hypersetup{
   colorlinks,
@@ -177,7 +177,7 @@ compiling, documenting, testing and many other aspects.
 \subsubsection{Cabal}
 \label{ssub:cabal}
 
-Cabal \cite{Cabal} is a package manager for projects written in Haskell.
+Cabal \cite{Jones_thehaskell} is a package manager for projects written in Haskell.
 It allows information about the package, including name, description,
 library information and test suites to be specified within a
 \texttt{.cabal} file, and can then be used to simplify the task of
@@ -187,7 +187,7 @@ compiling, running tests and installing packages.
 \subsubsection{Haddock}
 \label{ssub:haddock}
 
-Haddock \cite{Haddock} is a system for generating documentation from annotated Haskell
+Haddock \cite{haddock02} is a system for generating documentation from annotated Haskell
 source files.
 I chose Haddock due to it's intuitive syntax, ease of readability and
 integration with Cabal.
@@ -213,7 +213,7 @@ allows changes to be labeled for future reference.
 \label{ssub:libraries}
 
 Throughout the project I have used many libraries written by other
-developers. Some part of the Haskell Platform \cite{Haskell Platform},
+developers. Some part of the Haskell Platform \cite{Haskell_Platform},
 others standalone. Below are some of the packages I have used.
 
 % \paragraph{QuickCheck}
@@ -235,7 +235,7 @@ others standalone. Below are some of the packages I have used.
 \begin{description}
   \item[QuickCheck] - a testing library that can generate random tests
     for checking that specified properties hold when applied to
-    different data. \cite{QuickCheck}
+    different data. \cite{Claessen00quickcheck:a}
   \item[Tasty] - a test framework that allows the combination of tests
     into a single test suite for running. \cite{Tasty}
   \item[Criterion] - a benchmarking library for measuring the
@@ -282,7 +282,7 @@ Interpreters differ from compilers in that instead of programs first
 being translated to machine code before being executed, instructions
 are translated into pre-compiled subroutines and executed directly at
 run-time, thus possibly incurring a speed decrease when compared to a
-similar compiled language. \cite{VS CvI}
+similar compiled language. \cite{VS_CvI}
 \\
 One of the main disadvantages of an interpreter is that it is
 required every time a program needs to be run. Source code is also
@@ -310,7 +310,7 @@ programmer to use a single one.
 \label{par:common_paradigms}
 
 Following is a brief description of some of the more common
-paradigms. \cite{Ray Toal Paradigms}
+paradigms. \cite{Ray_Toal_Paradigms}
 
 \subsubsection{Declarative}
 \label{ssub:declarative}
@@ -333,7 +333,7 @@ SELECT column FROM table WHERE condition
 
 In the opposite spectrum of paradigms to declarative is imperative.
 In imperative languages the programmer specifies how to perform
-computations via a sequence of step-by-step instructions. \cite{MSDN Functional vs. Imperative}
+computations via a sequence of step-by-step instructions. \cite{MSDN_func_versus_imperative}
 Contrary to declarative languages, the order of execution in
 imperative languages can greatly affect the outcome of the program.
 
@@ -388,7 +388,7 @@ being created, thus @Admin.access == `unrestricted'@, but also
 \label{ssub:functional}
 
 In functional languages, computations are treated as the evaluation
-of mathematical functions \cite{HaskellWiki Functional programming}.
+of mathematical functions \cite{HaskellWiki_Functional_programming}.
 Additionally, side-effects are usually low to non-existent, a result
 of referential transparency.\footnote{The same result should always
 arise with the same arguments.}
@@ -433,7 +433,7 @@ checking is performed.
 In static type systems, certain type-related criterion must be met
 before a program can be executed. These criterion can ensure a
 program will have well-typed operations and that types are not used
-incorrectly. \cite{Keunwoo Lee CSE 341}
+incorrectly. \cite{Keunwoo_Lee_CSE_341}
 \\
 Statically-typed languages often require the programmer to annotate
 code, stating the types of variables and functions when they are
@@ -446,7 +446,7 @@ declared; leading to increased verbosity.
 In a dynamically-typed language, types are checked at run-time, this
 means that type-correctness is not ensured and errors may occur as a
 result of types being used in places for which they are not valid.
-\cite{C2 Dynamic Typing}
+\cite{C2_Dynamic_Typing}
 
 \subsubsection{Angle}
 \label{ssub:angle}
@@ -482,7 +482,7 @@ used in different operations.
 
 Weakly-typed languages are likely to perform type conversions or
 coercions and provide a lesser distinction between the different
-types. \cite{C2 Weakly Typed}
+types. \cite{C2_Weakly_Typed}
 
 \subsubsection{Angle}
 \label{ssub:angle}
@@ -589,9 +589,9 @@ Extended Backus Naur Form.
 \label{ssub:extended_backus_naur_form_ebnf_}
 
 EBNF is an extended version of Backus Naur Form, a notation that can be
-used to express the grammar of formal languages. \cite{LMG BNF}
+used to express the grammar of formal languages. \cite{LMG_BNF}
 \\
-BNF can be used to describe context-free grammars, \cite{Matt Might BNF}
+BNF can be used to describe context-free grammars, \cite{Matt_Might_BNF}
 which are grammars that consist of names and expansions
 (the components), meaning that it may be used to express a grammar for
 Angle.
@@ -700,7 +700,7 @@ function_ident = `\$' simple_ident                     ;
 \label{sub:literals}
 
 Literals allow the specification of constant values for some of
-Angle's built-in types. \cite{Dave Marshall Literal Values}
+Angle's built-in types. \cite{Dave_Marshall_Literal_Values}
 
 \subsubsection{Strings}
 \label{ssub:strings}
@@ -729,7 +729,7 @@ char_char = <any character allowed in a Haskell Char> ;
 \end{spec}
 
 Note that Angle uses the same character escaping as Haskell.
-\cite{Base Data.Char}
+\cite{Base_Data.Char}
 
 
 \subsubsection{Numeric literals}
@@ -737,7 +737,7 @@ Note that Angle uses the same character escaping as Haskell.
 
 Two types of numeric are supported by Angle: floats (which should
 have at least the range and precision of the IEEE double-precision
-type), \cite{Base Prelude Double}
+type), \cite{Base_Prelude_Double}
  and integers.
 
 
@@ -1593,7 +1593,7 @@ Raised when issues arise whilst performing IO. Can be caught with
 \\
 
 These closely follow the errors outlined in the Haskell's IO error
-system. \cite{Base System.IO.Error}
+system. \cite{Base_System.IO.Error}
 
 \subsubsection{Syntax exceptions}
 \label{ssub:syntax_exceptions}
@@ -2314,7 +2314,7 @@ In the context of a purely functional language such as Haskell, a
 monad is a structure that represents a certain type of computation
 and the rules associated with it. Monads are particularly useful
 because they allow the combination of effects whilst following the
-accompanying rules. \cite{Eric Walkingshaw Monads}
+accompanying rules. \cite{Walkingshaw_Monads}
 
 \paragraph{The Maybe monad}
 \label{par:the_maybe_monad}
@@ -2362,7 +2362,7 @@ parsing.
 \label{par:monad_transformers}
 
 Monad transformers are special structures that allow the combination
-of monads. \cite{RWH Monad Transformers, Wikibooks Monad Transformers}
+of monads. \cite{RWH:MonadTransformers, Wikibooks_Monad_Transformers}
 \\
 Monad transformers must satisfy the standard monad laws, but possess
 an additional operation `lift' that promotes monadic computations
@@ -2394,7 +2394,7 @@ result.
 \\
 The @State s a@ monad was chosen to satisfy this as it provides a
 simple interface and all the required functionality without
-side-effects. \cite{mtl State}
+side-effects. \cite{mtl_State}
 
 \paragraph{Environment}
 \label{par:environment}
@@ -2402,7 +2402,7 @@ side-effects. \cite{mtl State}
 The @Parser a@ monad will need access to a source string throughout
 its lifetime. In Haskell, the @Reader e a@ monad is used when a static
 `environment' of type @e@ should be passed along with computations
-without being altered. \cite{mtl Reader}
+without being altered. \cite{mtl_Reader}
 
 \paragraph{Failure}
 \label{par:failure}
@@ -2418,7 +2418,7 @@ indicate that the computation failed, not \textit{why}.
 \\
 For failure with additional information, the @Except e@ monad can
 be used.\footnote{Initially `ErrorT' was used, but due to
-depreciation `ExceptT' was used instead - \cite{mtl Except}}
+depreciation `ExceptT' was used instead - \cite{mtl_Except}}
 
 
 \paragraph{The monad stack}
@@ -2793,7 +2793,7 @@ implementation that may have been improved if certain knowledge was
 available at the beginning of the project.
 \\
 For example, Haskell supports Generalized Algebraic Datatypes
-\cite{GHC GADTs} - a system that allows you to explicitly state type
+\cite{GHC_GADTs} - a system that allows you to explicitly state type
 signatures for type constructors.
 Knowledge of this when starting the project may have made it easier
 and cleaner to come up with a representation for the language
@@ -2847,101 +2847,121 @@ gained enough knowledge to study the topic more in-depth and implement
 more small languages. I will perhaps revisit Angle in the future to
 implement additional features and review how my methods have changed.
 
-
-\begin{thebibliography}{99}
- \bibitem{Haskell}
- The Haskell programming language. \url{https://www.haskell.org/}
- \bibitem{Cabal}
-  The Haskell Cabal. \url{https://www.haskell.org/cabal/}
- \bibitem{Haddock}
-  Haddock: A Haskell Documentation Tool.
-  \url{https://www.haskell.org/haddock/}
- \bibitem{GHC}
-  The Glasgow Haskell Compiler. \url{https://www.haskell.org/ghc/}
- \bibitem{Git}
-  Git. \url{https://git-scm.com/}
- \bibitem{Haskell Platform}
-  Haskell Platform.
-  \url{https://www.haskell.org/platform/contents.html}
- \bibitem{QuickCheck}
-  QuickCheck, Version 2.7.6.
-    \url{https://hackage.haskell.org/package/QuickCheck}
- \bibitem{Tasty}
-  Tasty, Version 0.10.1.2.
-    \url{https://hackage.haskell.org/package/tasty}
- \bibitem{Criterion}
-  Criterion. \url{https://hackage.haskell.org/package/criterion}
- \bibitem{VS CvI}
-  Vanguard Software. Compiled vs. Interpreted Languages.
-  \url{http://www.vanguardsw.com/dphelp4/dph00296.htm}
- \bibitem{Ray Toal Paradigms}
-  Ray Toal, Loyola Marymount University. Programming Paradigms.
-  \url{http://cs.lmu.edu/~ray/notes/paradigms/}
- \bibitem{MSDN Functional vs. Imperative}
-  Microsoft Developer Network. Functional Programming vs. Imperative
-  Programming.
-  \url{https://msdn.microsoft.com/en-gb/library/bb669144.aspx}
- \bibitem{HaskellWiki Functional programming}
-  HaskellWiki. Functional programming.
-  \url{https://wiki.haskell.org/Functional\_programming}
- \bibitem{Keunwoo Lee CSE 341}
-  Keunwoo Lee. UW-CSE 341 (Programming Languages) Winter 2004 Course
-  Notes. Dynamic typing vs. static typing.
-  \url{http://courses.cs.washington.edu/courses/cse341/04wi/lectures/13-dynamic-vs-static-types.html}
- \bibitem{C2 Dynamic Typing}
-  C2 Wiki. Dynamic Typing. \url{http://c2.com/cgi/wiki?DynamicTyping}
- \bibitem{C2 Weakly Typed}
-  C2 Wiki. Weakly Typed. \url{http://c2.com/cgi/wiki?WeaklyTyped}
- \bibitem{LMG BNF}
-  Lars Marius Garshol. BNF and EBNF: What are they and how do they
-  work?
-  \url{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
- \bibitem{Matt Might BNF}
-  Matt Might. The language of languages.
-  \url{http://matt.might.net/articles/grammars-bnf-ebnf/}
- \bibitem{Dave Marshall Literal Values}
-  Dave Marshall. Literal Values.
-  \url{https://www.cs.cf.ac.uk/Dave/Multimedia/node71.html}
- \bibitem{Eric Walkingshaw Monads}
-  Eric Walkingshaw. Monads.
-  \url{http://web.engr.oregonstate.edu/~walkiner/teaching/cs583-fa14/slides/6.Monads.pdf}
- \bibitem{RWH Monad Transformers}
-  Bryan O'Sullivan, Don Stewart, and John Goerzen. Real World Haskell.
-  Chapter 18. Monad Transformers.
-  \url{http://book.realworldhaskell.org/read/monad-transformers.html}
- \bibitem{Wikibooks Monad Transformers}
-  Wikibooks. Haskell/Monad transformers.
-  \url{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
- \bibitem{Base Data.Char}
-  base: Basic libraries. Version 4.8.1.0. Data.Char.
-  \url{https://hackage.haskell.org/package/base-4.8.1.0/docs/Data-Char.html\#t:Char}
- \bibitem{Base Prelude Double}
-  base: Basic libraries. Version 4.8.1.0. Prelude.
-  \url{http://hackage.haskell.org/package/base-4.8.1.0/docs/Prelude.html\#t:Double}
- \bibitem{Base System.IO.Error}
-  base: Basic libraries. Version 4.8.1.0. System.IO.Error.
-  \url{http://hackage.haskell.org/package/base-4.8.1.0/docs/System-IO-Error.html}
- \bibitem{transformers}
-  Andy Gill, Ross Paterson. transformers: Concrete functor and monad
-  transformers. \url{https://hackage.haskell.org/package/transformers}
- \bibitem{mtl State}
-  Andy Gill. mtl: Monad classes, using functional dependencies.
-  Version 1.1.0.2. Control.Monad.State.Lazy.
-  \url{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-State-Lazy.html}
- \bibitem{mtl Reader}
-  Andy Gill. mtl: Monad classes, using functional dependencies.
-  Version 1.1.0.2. Control.Monad.Reader.
-  \url{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Reader.html}
- \bibitem{mtl Except}
-  Andy Gill.
-  \emph{mtl: Monad classes, using functional dependencies.}
-  Version 2.2.1. Control.Monad.Except.
-  \url{https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
- \bibitem{GHC GADTs}
-  The GHC Team. The Glorious Glasgow Haskell Compilation System
-  User's Guide, Version 6.6.1. Chapter 7. GHC Language Features.
-  Section 7.5. Generalized Algebraic Data Types (GADTs).
-  \url{https://downloads.haskell.org/~ghc/6.6.1/docs/html/users\_guide/gadt.html}
-\end{thebibliography}
+\bibliographystyle{plain}
+\bibliography{overview}
+% \begin{thebibliography}{99}
+%  \bibitem{Haskell}
+%  \emph{The Haskell programming language.} \\
+%  \url{https://www.haskell.org/}
+%  \bibitem{Cabal}
+%   \emph{The Haskell Cabal.} \\
+%   \url{https://www.haskell.org/cabal/}
+%  \bibitem{Haddock}
+%   Haddock: A Haskell Documentation Tool.
+%   \url{https://www.haskell.org/haddock/}
+%  \bibitem{GHC}
+%   The Glasgow Haskell Compiler. \url{https://www.haskell.org/ghc/}
+%  \bibitem{Git}
+%   Git. \url{https://git-scm.com/}
+%  \bibitem{Haskell Platform}
+%   Haskell Platform.
+%   \url{https://www.haskell.org/platform/contents.html}
+%  \bibitem{QuickCheck}
+%   QuickCheck, Version 2.7.6.
+%     \url{https://hackage.haskell.org/package/QuickCheck}
+%  \bibitem{Tasty}
+%   Tasty, Version 0.10.1.2.
+%     \url{https://hackage.haskell.org/package/tasty}
+%  \bibitem{Criterion}
+%   Criterion. \url{https://hackage.haskell.org/package/criterion}
+%  \bibitem{VS CvI}
+%   Vanguard Software.
+%   \emph{Compiled vs. Interpreted Languages.}
+%   \url{http://www.vanguardsw.com/dphelp4/dph00296.htm}
+%  \bibitem{Ray Toal Paradigms}
+%   Ray Toal, Loyola Marymount University.
+%   \emph{Programming Paradigms.}
+%   \url{http://cs.lmu.edu/~ray/notes/paradigms/}
+%  \bibitem{MSDN Functional vs. Imperative}
+%   Microsoft Developer Network.
+%   \emph{Functional Programming vs. Imperative Programming.}
+%   \url{https://msdn.microsoft.com/en-gb/library/bb669144.aspx}
+%  \bibitem{HaskellWiki Functional programming}
+%   HaskellWiki.
+%   \emph{Functional programming.}
+%   \url{https://wiki.haskell.org/Functional\_programming}
+%  \bibitem{Keunwoo Lee CSE 341}
+%   Keunwoo Lee.
+%   UW-CSE 341 (Programming Languages) Winter 2004 Course Notes.
+%   Dynamic typing vs. static typing. \\
+%   \url{http://courses.cs.washington.edu/courses/cse341/04wi/lectures/13-dynamic-vs-static-types.html}
+%  \bibitem{C2 Dynamic Typing}
+%   C2 Wiki.
+%   \emph{Dynamic Typing. }
+%   \url{http://c2.com/cgi/wiki?DynamicTyping}
+%  \bibitem{C2 Weakly Typed}
+%   C2 Wiki.
+%   \emph{Weakly Typed. }
+%   \url{http://c2.com/cgi/wiki?WeaklyTyped}
+%  \bibitem{LMG BNF}
+%   Lars Marius Garshol.
+%   \emph{BNF and EBNF: What are they and how do they work?}
+%   \url{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
+%  \bibitem{Matt Might BNF}
+%   Matt Might.
+%   \emph{The language of languages.} \\
+%   \url{http://matt.might.net/articles/grammars-bnf-ebnf/}
+%  \bibitem{Dave Marshall Literal Values}
+%   Dave Marshall.
+%   \emph{Literal Values.}
+%   \url{https://www.cs.cf.ac.uk/Dave/Multimedia/node71.html}
+%  \bibitem{Eric Walkingshaw Monads}
+%   Eric Walkingshaw.
+%   Monads.
+%   \url{http://web.engr.oregonstate.edu/~walkiner/teaching/cs583-fa14/slides/6.Monads.pdf}
+%  \bibitem{RWH Monad Transformers}
+%   Bryan O'Sullivan, Don Stewart, and John Goerzen.
+%   Real World Haskell.
+%   Chapter 18. Monad Transformers.
+%   \url{http://book.realworldhaskell.org/read/monad-transformers.html}
+%  \bibitem{Wikibooks Monad Transformers}
+%   Wikibooks.
+%   \emph{Haskell/Monad transformers.} \\
+%   \url{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
+%  \bibitem{Base Data.Char}
+%   base: Basic libraries. Version 4.8.1.0. Data.Char.
+%   \url{https://hackage.haskell.org/package/base-4.8.1.0/docs/Data-Char.html\#t:Char}
+%  \bibitem{Base Prelude Double}
+%   base: Basic libraries. Version 4.8.1.0. Prelude.
+%   \url{http://hackage.haskell.org/package/base-4.8.1.0/docs/Prelude.html\#t:Double}
+%  \bibitem{Base System.IO.Error}
+%   base: Basic libraries. Version 4.8.1.0. System.IO.Error.
+%   \url{http://hackage.haskell.org/package/base-4.8.1.0/docs/System-IO-Error.html}
+%  \bibitem{transformers}
+%   Andy Gill, Ross Paterson.
+%   \emph{transformers: Concrete functor and monad transformers.}
+%   \url{https://hackage.haskell.org/package/transformers}
+%  \bibitem{mtl State}
+%   Andy Gill.
+%   mtl: Monad classes, using functional dependencies.
+%   Version 1.1.0.2. Control.Monad.State.Lazy.
+%   \url{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-State-Lazy.html}
+%  \bibitem{mtl Reader}
+%   Andy Gill.
+%   mtl: Monad classes, using functional dependencies.
+%   Version 1.1.0.2. Control.Monad.Reader.
+%   \url{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Reader.html}
+%  \bibitem{mtl Except}
+%   Andy Gill.
+%   \emph{mtl: Monad classes, using functional dependencies.}
+%   Version 2.2.1. Control.Monad.Except.
+%   \url{https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
+%  \bibitem{GHC GADTs}
+%   The GHC Team.
+%   The Glorious Glasgow Haskell Compilation System
+%   User's Guide, Version 6.6.1. Chapter 7. GHC Language Features.
+%   Section 7.5. Generalized Algebraic Data Types (GADTs).
+%   \url{https://downloads.haskell.org/~ghc/6.6.1/docs/html/users\_guide/gadt.html}
+% \end{thebibliography}
 
 \end{document}
