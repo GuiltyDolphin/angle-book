@@ -8,13 +8,6 @@
 %include lhs2TeX.sty
 %include polycode.fmt
 
-% \usepackage[nounderscore]{syntax}
-% \usepackage{underscore}
-
-% For table positioning
-% \usepackage{float}
-% \restylefloat{table}
-
 \usepackage[a4paper]{geometry}
 
 % This provides a table of contents that okular can read.
@@ -28,7 +21,6 @@
 }
 
 \title{Implementing a general-purpose programming language in Haskell}
-% \title{An implementation of a basic general-purpose programming language}
 \author{Ben Moon}
 \date{}
 
@@ -55,52 +47,7 @@ affected the language, as well as providing an overview of the
 parser implementation.
 I conclude by revisiting my original expectations for the language,
 and compare them with the finished result.
-% I conclude with some observations about various design choices, and
-% revisit my original expectations of the language.
-% Many of Angle's features build upon those that can already be found
-% in languages such as Perl, Lisp, Python, Ruby and Haskell.
-% % Not sure about this line.
-% Additionally, Angle introduces features of its own.
-% In this document, I introduce some of the fundamental knowledge that
-% was required in order to implement Angle, as well as some of the
-% design process and a reference for the language itself.
-
-% In this document I introduce Angle, a programming language written
-% in Haskell.
-% \\
-% This document consists of three parts: an overview of language
-% implementation, some of the process involved in creating Angle, and
-% a language reference that describes Angle's major features.
-
-% With Angle I hope to produce a language that implements its own
-% versions of many of the features
 \end{abstract}
-% \begin{abstract}
-%   % TODO: Not sure about the 'design-process' bit.
-%   % NOTE(1): There is a section on design choices now.
-%   This document provides an overview of the design-process, usage and
-%   implementation of Angle - a general purpose programming language.
-%   \\
-%   Additionally, this overview will provide a language reference,
-%   describing each of Angle's features in detail.
-%   \\
-%   The programming language `Haskell', along with standard tools such as
-%   Cabal and the Glasgow Haskell Compiler have been used for the
-%   implementation.
-%   \\
-%   % FIXME: Not sure about the colon after including.
-%   Angle takes inspiration from many programming languages, including
-%   Perl, Lisp, Python, Ruby, and Haskell.
-%   \\
-%   The end product is twofold: the language itself, its grammar,
-%   implementation details and semantics; and the interpreter software
-%   that can be used to execute source either interactively or
-%   non-interactively.
-%   % The end product is a piece of software that can be used to run
-%   % syntactically correct source files either interactively or
-%   % non-interactively.
-%
-% \end{abstract}
 
 \tableofcontents
 
@@ -216,22 +163,6 @@ Throughout the project I have used many libraries written by other
 developers. Some part of the Haskell Platform \cite{Haskell_Platform},
 others standalone. Below are some of the packages I have used.
 
-% \paragraph{QuickCheck}
-% \label{par:quickcheck}
-% QuickCheck \cite{QuickCheck} is a testing library that can generate
-% random tests for checking that specified properties hold when applied
-% to different data.
-%
-% \paragraph{Tasty}
-% \label{par:tasty}
-% Tasty \cite{Tasty} is a test framework that allows the combination of
-% tests into a single test suite for running.
-%
-% \paragraph{Criterion}
-% \label{par:criterion}
-% Criterion \cite{Criterion} is a benchmarking library for measuring the
-% performance of code.
-
 \begin{description}
   \item[QuickCheck] - a testing library that can generate random tests
     for checking that specified properties hold when applied to
@@ -241,9 +172,6 @@ others standalone. Below are some of the packages I have used.
   \item[Criterion] - a benchmarking library for measuring the
     performance of code. \cite{Criterion}
 \end{description}
-
-
-
 
 \section{A brief overview of language implementation}
 \label{sec:a_brief_overview_of_language_implementation}
@@ -345,12 +273,6 @@ Object-oriented languages focus on the use of objects. Objects
 are structures that carry their own state (usually in the form
 of properties) and have methods that can be used to change or
 communicate this state.
-% In object-oriented languages, structures called objects, which have
-% state (usually represented by properties) and methods that are used
-% to change this state, are used to control the flow of programs.
-% \\
-% Objects can call other objects' methods, or potentially directly
-% modify their properties in order to change this state.
 \\
 Inheritance is usually present in object-oriented languages, and
 allows a parent-child relationship between different objects.
@@ -392,10 +314,6 @@ of mathematical functions \cite{HaskellWiki_Functional_programming}.
 Additionally, side-effects are usually low to non-existent, a result
 of referential transparency.\footnote{The same result should always
 arise with the same arguments.}
-% as in a purely functional language functions should be
-%referentially transparent (the same result should always arise with
-% (the same result should always arise with
-% the same arguments). \cite{HaskellWiki Functional programming}
 \\
 Several features are prominent in functional languages:
 
@@ -662,8 +580,6 @@ return   & then  & true     & try   & unless & while \\
 
 Certain identifiers representing variables have predefined meanings in
 Angle, some of these may be overwritten, others may not.
-%Certain identifiers have predefined meanings in Angle, some of these
-%may be overwritten, others may not.
 
 \begin{tabular}{ l c p{7cm} }
 Name & Can be overwritten? & Use \\
@@ -1850,9 +1766,6 @@ Symbol & Read & Write & Append \\
 \\
 For example, if you wanted to read from a file called "file.txt",
 @open("file.txt", "<")@ could be used to obtain the necessary handle.
-% Angle provides four possible access modes for handles: read
-% (represented by @"<"@), write (@">"@), append (@">>"@), and
-% read-write (@"<>"@).
 
 \subsubsection{Reading handles}
 \label{ssub:reading_handles}
@@ -1878,11 +1791,6 @@ individual characters.
 \label{ssub:writing_to_handles}
 
 % TODO: Check the wording.
-% As mentioned previously, there are two main write-modes that can be
-% used with handles in Angle; these produced the stated effects when
-% used with the @write@ function, which takes a handle and some text
-% and writes the text to the handle.
-
 As mentioned previously, there are two main write-modes that can be
 used with handles: write (clobber) and write (append).
 \\
@@ -1900,19 +1808,6 @@ When a handle is no longer in use it can be closed for reading and
 writing with the @close@ function. It is advisable to explicitly close
 handles when they are no longer needed to free up file descriptors and
 allow them to be accessed by other operations later on.
-
-
-% \subsubsection{Basic functions for user interaction}
-% \label{ssub:basic_functions_for_user_interaction}
-%
-% A basic commandline program could easily get away with using just two
-% of Angle's IO functions for user interaction: @print@ and @input@.
-% \\
-% \paragraph{Print}
-% \label{par:print}
-%
-% The @print@ function takes some text and prints it to the @stdout@
-% handle
 
 \section{Including code from other files}
 \label{sec:including_code_from_other_files}
@@ -2061,10 +1956,6 @@ There are a few important features to note about Angle's operators:
 All operations represent expressions, with the exception of the
 assignment operators. This means that the assignment operators cannot
 be embedded within other operations.
-% \\
-% The second is that, although general use cases for the standard
-% operations are intuitive, many of the operators will act differently
-% depending on their arguments.
 
 \paragraph{Overloading}
 \label{par:overloading}
@@ -2245,20 +2136,6 @@ execution method:
   \item \textit{Executable:} The program exits and memory is freed.
 \end{enumerate}
 
-
-
-% \begin{description}
-%   \item[executable] for running programs, the main interface for the
-%     user. See Section~\ref{sub:the_software} for more information.
-%   \item[parser] which will deal with translating source code into
-%     an abstract syntax tree that represents the language.
-%   \item[interpreter] which executes the AST produced by the parser
-%     and performs IO actions.
-%   % TODO: Check this.
-%   \item[language representation] describes Angle in terms of Haskell,
-%   and provides the form that the abstract syntax tree will take.
-% \end{description}
-
 \section{Parser implementation}
 \label{sec:parser_implementation}
 
@@ -2276,8 +2153,6 @@ Haskell types.
 
 Angle builds its parser on top of the @Parser a@ monad - a custom
 monad that supports a combinatory parsing style.
-% Angle builds its parser on a custom parser-combinator style parsing
-% monad.
 \\
 \\
 \textit{The parser-library components:}
@@ -2287,9 +2162,6 @@ fundamental functionality of the parser.
   \item \haskmodule{Angle.Parse.Helpers} defines the functions to support
   combinatory parsing.
 \end{itemize}
-%\haskmodule{Angle.Scanner} defines the @Parser a@ monad and the
-%fundamental functionality of the parser; \haskmodule{Angle.Parse.Helpers}
-%defines the functions to support combinatory parsing.
 
 \textit{Parser implementation:}
 \begin{itemize}
@@ -2500,20 +2372,9 @@ type Parser a = ExceptT SyntaxError (StateT Position (Reader Source)) a
 % TODO: Check the wording!
 The scanner reads in individual characters from source and passes
 them to other components (namely the parser and/or lexer) to be
-converted to tokens. % \footnote{http://forums.devshed.com/programming-languages-139/interpreter-compiler-312483.html\#post1342279}
+converted to tokens.
 The scanner has to keep track of its position in source in order to
 be able to backtrack and/or provide contextual syntax errors.
-
-% This bit seems a bit redundant.
-% \subsubsection{The basics}
-% \label{ssub:the_basics}
-%
-% There are two main requirements for the scanner:
-% \begin{itemize}
-%   \item It is able to read characters from source.
-%   \item It is able to indicate the position at which these characters
-%   were read.
-% \end{itemize}
 
 \subsubsection{The implementation}
 \label{ssub:the_implementation}
@@ -2586,13 +2447,6 @@ several modules.
 Having a `Parser' type alone doesn't automatically allow the parsing
 of Angle syntax. Angle must be described in Haskell's type system
 and functions must be defined to parse each of the constructs.
-
-% The parsing functions are defined through three modules.
-% \haskmodule{Angle.Parse.Helpers} defines the most basic parsers for use in
-% other modules. \haskmodule{Angle.Parse.Token} defines parsers that deal
-% with very basic structures, such as strings and integers.
-% \haskmodule{Angle.Parse.Parser} defines the parsers that read Angle syntax
-% into Angle types.
 
 \subsubsection{Implementing strings - an example}
 \label{ssub:implementing_strings_an_example}
@@ -2849,119 +2703,5 @@ implement additional features and review how my methods have changed.
 
 \bibliographystyle{plain}
 \bibliography{overview}
-% \begin{thebibliography}{99}
-%  \bibitem{Haskell}
-%  \emph{The Haskell programming language.} \\
-%  \url{https://www.haskell.org/}
-%  \bibitem{Cabal}
-%   \emph{The Haskell Cabal.} \\
-%   \url{https://www.haskell.org/cabal/}
-%  \bibitem{Haddock}
-%   Haddock: A Haskell Documentation Tool.
-%   \url{https://www.haskell.org/haddock/}
-%  \bibitem{GHC}
-%   The Glasgow Haskell Compiler. \url{https://www.haskell.org/ghc/}
-%  \bibitem{Git}
-%   Git. \url{https://git-scm.com/}
-%  \bibitem{Haskell Platform}
-%   Haskell Platform.
-%   \url{https://www.haskell.org/platform/contents.html}
-%  \bibitem{QuickCheck}
-%   QuickCheck, Version 2.7.6.
-%     \url{https://hackage.haskell.org/package/QuickCheck}
-%  \bibitem{Tasty}
-%   Tasty, Version 0.10.1.2.
-%     \url{https://hackage.haskell.org/package/tasty}
-%  \bibitem{Criterion}
-%   Criterion. \url{https://hackage.haskell.org/package/criterion}
-%  \bibitem{VS CvI}
-%   Vanguard Software.
-%   \emph{Compiled vs. Interpreted Languages.}
-%   \url{http://www.vanguardsw.com/dphelp4/dph00296.htm}
-%  \bibitem{Ray Toal Paradigms}
-%   Ray Toal, Loyola Marymount University.
-%   \emph{Programming Paradigms.}
-%   \url{http://cs.lmu.edu/~ray/notes/paradigms/}
-%  \bibitem{MSDN Functional vs. Imperative}
-%   Microsoft Developer Network.
-%   \emph{Functional Programming vs. Imperative Programming.}
-%   \url{https://msdn.microsoft.com/en-gb/library/bb669144.aspx}
-%  \bibitem{HaskellWiki Functional programming}
-%   HaskellWiki.
-%   \emph{Functional programming.}
-%   \url{https://wiki.haskell.org/Functional\_programming}
-%  \bibitem{Keunwoo Lee CSE 341}
-%   Keunwoo Lee.
-%   UW-CSE 341 (Programming Languages) Winter 2004 Course Notes.
-%   Dynamic typing vs. static typing. \\
-%   \url{http://courses.cs.washington.edu/courses/cse341/04wi/lectures/13-dynamic-vs-static-types.html}
-%  \bibitem{C2 Dynamic Typing}
-%   C2 Wiki.
-%   \emph{Dynamic Typing. }
-%   \url{http://c2.com/cgi/wiki?DynamicTyping}
-%  \bibitem{C2 Weakly Typed}
-%   C2 Wiki.
-%   \emph{Weakly Typed. }
-%   \url{http://c2.com/cgi/wiki?WeaklyTyped}
-%  \bibitem{LMG BNF}
-%   Lars Marius Garshol.
-%   \emph{BNF and EBNF: What are they and how do they work?}
-%   \url{http://www.garshol.priv.no/download/text/bnf.html\#id1.2.}
-%  \bibitem{Matt Might BNF}
-%   Matt Might.
-%   \emph{The language of languages.} \\
-%   \url{http://matt.might.net/articles/grammars-bnf-ebnf/}
-%  \bibitem{Dave Marshall Literal Values}
-%   Dave Marshall.
-%   \emph{Literal Values.}
-%   \url{https://www.cs.cf.ac.uk/Dave/Multimedia/node71.html}
-%  \bibitem{Eric Walkingshaw Monads}
-%   Eric Walkingshaw.
-%   Monads.
-%   \url{http://web.engr.oregonstate.edu/~walkiner/teaching/cs583-fa14/slides/6.Monads.pdf}
-%  \bibitem{RWH Monad Transformers}
-%   Bryan O'Sullivan, Don Stewart, and John Goerzen.
-%   Real World Haskell.
-%   Chapter 18. Monad Transformers.
-%   \url{http://book.realworldhaskell.org/read/monad-transformers.html}
-%  \bibitem{Wikibooks Monad Transformers}
-%   Wikibooks.
-%   \emph{Haskell/Monad transformers.} \\
-%   \url{https://en.wikibooks.org/wiki/Haskell/Monad\_transformers}
-%  \bibitem{Base Data.Char}
-%   base: Basic libraries. Version 4.8.1.0. Data.Char.
-%   \url{https://hackage.haskell.org/package/base-4.8.1.0/docs/Data-Char.html\#t:Char}
-%  \bibitem{Base Prelude Double}
-%   base: Basic libraries. Version 4.8.1.0. Prelude.
-%   \url{http://hackage.haskell.org/package/base-4.8.1.0/docs/Prelude.html\#t:Double}
-%  \bibitem{Base System.IO.Error}
-%   base: Basic libraries. Version 4.8.1.0. System.IO.Error.
-%   \url{http://hackage.haskell.org/package/base-4.8.1.0/docs/System-IO-Error.html}
-%  \bibitem{transformers}
-%   Andy Gill, Ross Paterson.
-%   \emph{transformers: Concrete functor and monad transformers.}
-%   \url{https://hackage.haskell.org/package/transformers}
-%  \bibitem{mtl State}
-%   Andy Gill.
-%   mtl: Monad classes, using functional dependencies.
-%   Version 1.1.0.2. Control.Monad.State.Lazy.
-%   \url{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-State-Lazy.html}
-%  \bibitem{mtl Reader}
-%   Andy Gill.
-%   mtl: Monad classes, using functional dependencies.
-%   Version 1.1.0.2. Control.Monad.Reader.
-%   \url{https://hackage.haskell.org/package/mtl-1.1.0.2/docs/Control-Monad-Reader.html}
-%  \bibitem{mtl Except}
-%   Andy Gill.
-%   \emph{mtl: Monad classes, using functional dependencies.}
-%   Version 2.2.1. Control.Monad.Except.
-%   \url{https://hackage.haskell.org/package/mtl-2.2.1/docs/Control-Monad-Except.html\#t:ExceptT}
-%  \bibitem{GHC GADTs}
-%   The GHC Team.
-%   The Glorious Glasgow Haskell Compilation System
-%   User's Guide, Version 6.6.1. Chapter 7. GHC Language Features.
-%   Section 7.5. Generalized Algebraic Data Types (GADTs).
-%   \url{https://downloads.haskell.org/~ghc/6.6.1/docs/html/users\_guide/gadt.html}
-% \end{thebibliography}
 
 \end{document}
