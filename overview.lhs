@@ -1,8 +1,4 @@
 \documentclass[a4paper,11pt,oneside]{article}
-% addtolength might be useful for changing page margins.
-
-% TODO: Report and article both look pretty good, decide on one.
-% Report doesn't seem to recognize subsubsections?
 
 %include lhs2TeX.fmt
 %include lhs2TeX.sty
@@ -56,16 +52,13 @@ and compare them with the finished result.
 \part{Introduction}
 \label{prt:introduction}
 
-% TODO: Check this paragraph!
 The following section introduces Angle, some implementation concepts
 and the software used to create it.
 \\
-% TODO: Maybe mention the 'reading this document' section?
 
 \section{Reading this document}
 \label{sec:reading_this_document}
 
-% FIXME: There is repetition on '...refer to the source files...'
 This document should be read in conjunction with the source files
 provided. Examples of code in this document are for illustration
 purposes and should be assumed to be non-functional - the source files
@@ -83,7 +76,6 @@ the documentation interactively.
 \label{sub:notation}
 
 
-% TODO: Uhh... Do better than this.
 Throughout this document, references to code, modules, and other
 features will be made using the notation described in the following
 table.
@@ -99,8 +91,6 @@ table.
 \section{Background}
 \label{sec:background}
 
-% TODO: Better phrasing, need to say that it also introduces some
-% terminology.
 What follows is an overview of external software and libraries used in
 this project.
 
@@ -111,7 +101,6 @@ I have decided to write my project using the Haskell programming
 language \cite{Haskell}. Haskell is a statically-typed, functional, lazy language
 that supports type-inference.
 
-% TODO: Want better phrasing.
 Haskell's type system makes it very easy to develop projects quickly
 and safely as a project will not compile unless types match up.
 
@@ -176,7 +165,6 @@ others standalone. Below are some of the packages I have used.
 \section{A brief overview of language implementation}
 \label{sec:a_brief_overview_of_language_implementation}
 
-% TODO: Check this paragraph!
 The following section introduces some concepts relevant to language
 design, along with a summary of which concepts are most appropriate
 to Angle.
@@ -184,7 +172,6 @@ to Angle.
 \subsection{Translator Software}
 \label{sub:translator_software}
 
-% TODO: Get a link for this bit.
 Translator software is used to translate a program written in one
 language to another language, without loosing any functionality.
 \\
@@ -194,8 +181,6 @@ itself, and thus a language could be both interpreted \textit{and}
 compiled.\footnote{This is quite common with the more popular
 languages, for example: Python and Lisp both have compiler and
 interpreter implementations.}
-% TODO: Not sure about that previous paragraph!
-
 
 \subsubsection{Compilers}
 \label{ssub:compilers}
@@ -296,8 +281,6 @@ class Admin(User):
 
 sam = Admin("Sam")
 \end{spec}
-% TODO: This example seems a bit redundant, make sure it is clear
-% why inheritance is useful.
 In the above example, it could be said that @sam@ is an @Admin@ called
 @"Sam"@, and that a @Admin@ is a type of @User@.
 \\
@@ -369,7 +352,6 @@ result of types being used in places for which they are not valid.
 \subsubsection{Angle}
 \label{ssub:angle}
 
-% TODO: Don't like this paragraph, especially the last sentence.
 Angle is dynamically typed. I chose this system for a few reasons:
 firstly, it can be very difficult and time-consuming to write a type
 checker, and due to time constraints this would not be feasible;
@@ -494,7 +476,6 @@ interpreter. This mode is how programs should usually be run.
 \section{Introduction}
 \label{sec:introduction}
 
-% FIXME: Better phrasing please.
 The following reference describes the language features, grammar and
 methodology of Angle. Each section describes a feature or ideal of
 Angle; sections introducing syntax features will include a grammar in
@@ -607,10 +588,6 @@ identifier     = simple_ident  | function_ident        ;
 simple_ident   = (alpha | `_') { alpha | digit | `_' } ;
 function_ident = `\$' simple_ident                     ;
 \end{spec}
-% FIXME: Another $ that needs escaping in the source code.
-% unescape it for final document.
-
-
 
 \subsection{Literals}
 \label{sub:literals}
@@ -709,7 +686,6 @@ obtained through the use of built-in functions and language features.
 \section{Data}
 \label{sec:data}
 
-% FIXME: Better phrasing please!
 Within a program it is important to be able to acquire, process, and
 output data. From a low level perspective, data is just represented
 in binary form, but this is very inconvenient for a programmer to
@@ -877,7 +853,6 @@ defun int(x) {
 \paragraph{Constraints outside of parameters}
 \label{par:constraints_outside_of_parameters}
 
-% FIXME: Bit of repetition here? Each paragraph says the same thing?
 As constraints represent a very useful family of predicate functions,
 Angle allows the programmer to call them outside of parameter lists.
 \\
@@ -1022,7 +997,6 @@ bar = \$(() x;);
   # > 6
 \end{spec}
 
-% TODO: Check this!
 In the above example, @foo@ returns a closure @bar@ which takes a
 single argument and returns the sum of its argument and the value of
 @x@ as it was when the closure was produced.
@@ -1053,7 +1027,6 @@ in the variable.
 \subsubsection{Producing values from functions}
 \label{ssub:producing_values_from_functions}
 
-% FIXME: Fix the phrasing.
 By default, when no return value is specified in a function, the last
 produced value will be returned. Otherwise, the @return@ statement can
 be used to exit early from the function and set the produced value to
@@ -1131,7 +1104,6 @@ and the second is a lambda that represents the variable as a function
 \subsection{Resolving variables}
 \label{sub:resolving_variables}
 
-% TODO: Add scope stuff.
 Angle is lexically scoped - meaning that the location at which a
 variable is defined determines where it can be accessed.
 \\
@@ -1155,7 +1127,6 @@ functions for resolving variables differently:
 \end{itemize}
 
 
-% TODO: Check the phrasing of this section.
 \subsection{Assignment}
 \label{sub:assignment}
 
@@ -1320,7 +1291,6 @@ an exception, based on the circumstances.
 \subsubsection{Re-raising exceptions}
 \label{ssub:re_raising_exceptions}
 
-% FIXME: I have a case of the *cough* bad *cough* *cough* wording...
 When the @raise@ statement is used within the body of a @catch@
 clause, and the exception being handled matches the exception being
 raised, then the old exception will be re-raised with all the
@@ -1329,8 +1299,6 @@ original information.
 \paragraph{Example}
 \label{par:example}
 
-% FIXME: I too *cough* *splutter* have a case of the *gasp* bad
-% phrasing.
 An example of when a programmer may wish to re-raise exceptions is
 when some operations are to be performed on a resource which must
 be closed when it is finished with.
@@ -1548,7 +1516,6 @@ Angle.
 \subsection{Recursion}
 \label{sub:recursion}
 
-% FIXME: Feels like there ought to be a pause near 'which when'.
 Recursion is achieved by a function self-calling with reduced
 arguments. A base case exists which when satisfied will return a
 well-formed value.
@@ -1620,7 +1587,6 @@ values, @while@ loops execute until some condition is met.
 There are times at which it may be useful to exit a loop before it
 would naturally finish, or skip the rest of the current execution.
 \\
-% TODO: Better wording...
 The @break@ and @continue@ statements provide support for these cases
 respectively.
 
@@ -1630,8 +1596,6 @@ respectively.
 
 The @break [val]@ statement ends the execution of the current looping
 structure, and sets the value produced to @val@, when supplied.
-% TODO: Maybe add link to the section where break :try is used (or
-% mention special cases of :break)
 
 \begin{spec}
 nom = 0;
@@ -1692,7 +1656,6 @@ control_continue = `continue'          ;
 \section{Input and Output}
 \label{sec:input_and_output}
 
-% FIXME: Want better wording for this.
 Although the logic of a program can be defined in terms of pure
 functions that do not interact with the outside world - a non-library
 program must perform some input-output operations in order to be
@@ -1777,7 +1740,6 @@ then the modifier @:char@ can be appended to the call to read
 individual characters.
 \\
 \\
-% TODO: Check this (and the above paragraph)
 \begin{tabular}{l p{7cm}}
  Form & Meaning \\
  @read(handle)@ & Reads from @handle@ until it hits the end of the
@@ -1790,7 +1752,6 @@ individual characters.
 \subsubsection{Writing to handles}
 \label{ssub:writing_to_handles}
 
-% TODO: Check the wording.
 As mentioned previously, there are two main write-modes that can be
 used with handles: write (clobber) and write (append).
 \\
@@ -1823,7 +1784,6 @@ There are two main methods of achieving this in Angle:
 \subsection{Eval}
 \label{sub:eval}
 
-% TODO: Want better phrasing.
 The @eval@ built-in function takes a string and attempts to parse it
 as Angle source - this can be useful for loading small sections of
 source from a trusted location on the fly.
@@ -2016,7 +1976,6 @@ value. In Perl, all values except for @0@, @"0"@, @""@, @()@, and
 considered to be `false'; in Haskell, only the values @True@ and
 @False@ have any meaning when used as booleans.
 \\
-% TODO: Check this...
 Angle follows the latter path, with @true@ and @false@ being the only
 values that can be used in a boolean context. The main reason for this
 is that it makes code easier to understand\footnote{It also avoids having to come up
@@ -2036,7 +1995,6 @@ cond_if        = `if'     expr `then' stmt [ `else' stmt ] ;
 cond_unless    = `unless' expr        stmt [ `else' stmt ] ;
 \end{spec}
 
-% FIXME: Not really happy about this whole section.
 
 \part{Implementation}
 \label{prt:implementation}
@@ -2065,7 +2023,6 @@ a higher-level overview.
 \subsection{Executable}
 \label{sub:executable}
 
-% TODO: Check this section.
 The executable is the tool that users will make use of in order to
 run software written in Angle.
 \\
@@ -2076,7 +2033,6 @@ by running @angle --help@.
 \subsection{Parser}
 \label{sub:parser}
 
-% TODO: Check the wording.
 The parser has the job of compiling the textual source code into
 an AST representation of Angle within Haskell.
 \\
@@ -2084,7 +2040,6 @@ Within the module structure, the collection of modules
 \haskmodule{Angle.Parse.*} and \haskmodule{Angle.Scanner} define the
 implementation of the parser.
 \\
-% TODO: This wording isn't very good.
 Within these modules, the @Parser a@ monad is used to define the
 computational ability of the parser itself.\footnote{Described in
 more detail in Section~\ref{ssub:the_parser_monad}.}
@@ -2095,11 +2050,9 @@ more detail in Section~\ref{ssub:the_parser_monad}.}
 The role of the interpreter is to execute the program according to
 the structure of the AST produced by the parser.
 \\
-% TODO: Huh... Do you need this?
 Within the implementation, the interpreter is the first stage that
 is able to interact via IO, all previous steps are pure-monadic.
 \\
-% TODO: Don't think this feels quite right...
 The advantage of having the parser execute purely in terms of pure
 functions means that any two source-texts that are the same produce
 the exact same abstract syntax tree - as they should.
@@ -2108,13 +2061,10 @@ the exact same abstract syntax tree - as they should.
 \section{Process}
 \label{sec:process}
 
-% TODO: Still not happy with this...
 The four main components of Angle mentioned in
 Section~\ref{sec:project_structure} interact to form the following
 execution method:
 
-% TODO: Maybe make a better distinction between the `programmer'
-% and the `user'
 \begin{enumerate}
   \item \textit{User:} The programmer writes a program using Angle syntax.
   \item \textit{Executable:} The source file is run using the `angle' program.
@@ -2258,7 +2208,6 @@ monads and combine them to form the final monad.
 \paragraph{State}
 \label{par:state}
 
-% TODO: Better wording please.
 The @Parser a@ monad will obviously need to be able to keep track of
 its internal state. The parser will be running through a source file,
 making requests to the scanner and collecting characters to form the
@@ -2303,7 +2252,6 @@ An important point to note is that combining monads is, in general,
 not commutative - meaning that the order of operations \textit{is}
 important.
 \\
-% TODO: Oh God... Please fix the phrasiiiinggg...
 An example of this would be @ExceptT e (State s) a@ versus
 @StateT s (Except e) a@. The former describes a monad in which it is possible for the result
 of each computation to be a failure, whereas the latter describes
@@ -2326,7 +2274,6 @@ runExcept (runStateT message2 1)
 # The entire computation is wrapped in the Either e a monad.
 \end{spec}
 
-% FIXME: Uhmm... Repetition?
 As the above example shows, the former monad is wrapping the inner
 value in exceptions, whereas the latter is wrapping the whole
 computation with potential failure.
@@ -2369,7 +2316,6 @@ type Parser a = ExceptT SyntaxError (StateT Position (Reader Source)) a
 \subsubsection{What is a Scanner?}
 \label{ssub:what_is_a_scanner_}
 
-% TODO: Check the wording!
 The scanner reads in individual characters from source and passes
 them to other components (namely the parser and/or lexer) to be
 converted to tokens.
@@ -2397,11 +2343,9 @@ useful as it provides the most simple grammar on top of which all the
 other parsing functions can be built, by refining the grammar from
 `any character' to a set of characters in sequence.
 \\
-% TODO: This feels a bit incomplete, like it is leading somewhere?
 The @scanChar@ function does have a couple of other duties, such as
 explicitly updating the state (See below), and checking for special
 characters such as newlines.
-% FIXME: What below?
 
 \paragraph{As a type}
 \label{par:as_a_type}
@@ -2579,7 +2523,6 @@ and verbose.
 The solution was to have the programmer explicitly state the order
 in which operations would be executed.
 \\
-% TODO: Better phrasing please.
 For example: with binary operators, @1 + 2 * 5 / 7@ becomes
 @1 + (2 * 5 / 7)@, which then becomes @(1 + (2 * (5 / 7)))@ because
 even though multiplication and division generally have the same
@@ -2589,7 +2532,6 @@ However, in Angle, an equal statement would be @(+ 1 (* 2 (/ 5 7)))@,
 thus there cannot be precedence clashes due to each layer needing to
 be evaluated before the higher layers.
 
-% TODO: I think this should be moved to the language reference.
 \subsubsection{Variadic operators are versatile}
 \label{ssub:variadic_operators_are_versatile}
 
@@ -2628,7 +2570,6 @@ Regarding the internal structure: the design of Angle allows for new
 syntax, built-in functions, types and language structures to be defined
 relatively easily. This extensibility means that creating new language
 features in the future is a definite possibility.
-% FIXME: ^ not sure about 'definite possibility'
 \\
 The documentation for the source code is satisfactory, and the use of
 Haddock means that this documentation may be displayed in a
