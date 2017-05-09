@@ -4,7 +4,6 @@
 *.blg
 *.log
 *.out
-*.pdf
 # Build-file as we are using literate Haskell.
 *.tex
 *.toc
